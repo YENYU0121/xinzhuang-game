@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>聽音辨位：新莊聲音地圖挑戰賽</title>
+    <title>大使出任務，解鎖新莊聲</title>
     <style>
         :root {
             --primary-color: #9E2A2B; /* 廟宇磚紅 */
@@ -28,8 +28,16 @@
             min-height: 100vh;
         }
 
-        header { text-align: center; margin: 20px 0; max-width: 600px; width: 100%; }
-        h1 { color: var(--primary-color); font-size: 1.8rem; margin-bottom: 12px; font-weight: bold; }
+        /* 💡 標題視覺質感大強化 */
+        header { text-align: center; margin: 25px 0 20px 0; max-width: 650px; width: 100%; }
+        h1 { 
+            color: var(--primary-color); 
+            font-size: 2.1rem; 
+            font-weight: 900; 
+            letter-spacing: 2px;
+            text-shadow: 1px 1px 0px rgba(224, 159, 62, 0.2);
+            margin-bottom: 15px; 
+        }
         
         .instructions-board {
             background: var(--card-bg); padding: 18px; border-radius: 14px;
@@ -80,39 +88,55 @@
         @keyframes shakeBall { 0%, 100% { transform: translate(0,0); } 20% { transform: translate(-4px,2px); } 40% { transform: translate(3px,-1px); } 60% { transform: translate(-2px,-2px); } }
         .gacha-btn { background: #E11D48; color: white; border: none; padding: 12px 24px; border-radius: 50px; font-weight: bold; cursor: pointer; }
 
-        /* 📝 2. 表單視覺高級優化（按鈕化卡片結構） */
+        /* 表單視覺優化 */
         .survey-group { text-align: left; margin-bottom: 22px; background: #FAF9F5; padding: 16px; border-radius: 12px; border: 1px solid #F0EDE4; }
         .survey-group label { display: block; font-weight: bold; font-size: 14px; margin-bottom: 10px; color: var(--primary-color); }
         .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
         .options-grid.full-width { grid-template-columns: 1fr; }
-        
-        /* 隱藏原生 Radio，改用漂亮的方塊按鈕襯托 */
         .option-item { position: relative; }
         .option-item input[type="radio"] { position: absolute; opacity: 0; width: 100%; height: 100%; cursor: pointer; z-index: 2; }
-        .option-tile {
-            display: block; padding: 10px; background: white; border: 1.5px solid #DDD;
-            text-align: center; border-radius: 8px; font-size: 13px; font-weight: 600;
-            color: #555; transition: 0.2s;
-        }
-        .option-item input[type="radio"]:checked + .option-tile {
-            background: #F4EBE1; color: var(--primary-color); border-color: var(--secondary-color);
-            box-shadow: 0 2px 6px rgba(224, 159, 62, 0.15);
-        }
+        .option-tile { display: block; padding: 10px; background: white; border: 1.5px solid #DDD; text-align: center; border-radius: 8px; font-size: 13px; font-weight: 600; color: #555; transition: 0.2s; }
+        .option-item input[type="radio"]:checked + .option-tile { background: #F4EBE1; color: var(--primary-color); border-color: var(--secondary-color); box-shadow: 0 2px 6px rgba(224, 159, 62, 0.15); }
 
         /* 工作人員核銷面板區 */
         .staff-panel {
             background: #FFFDF2; border: 3px double var(--secondary-color); border-radius: 20px;
             padding: 24px; width: 100%; max-width: 950px; margin: 25px 0 20px 0; position: relative;
+            transition: all 0.3s ease;
         }
+        
+        /* 💡 沒達標時的灰白鎖定狀態 */
+        .staff-panel.disabled-panel {
+            background: #F2F1ED !important;
+            border-color: #A3A29E !important;
+            opacity: 0.65;
+            box-shadow: none !important;
+        }
+
         .staff-header { color: var(--primary-color); font-weight: 900; font-size: 16px; text-align: center; border-bottom: 2px dashed var(--secondary-color); padding-bottom: 12px; margin-bottom: 20px; }
+        .staff-panel.disabled-panel .staff-header { color: #555; border-bottom-color: #A3A29E; }
+
         .verification-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; background: white; border-radius: 10px; overflow: hidden; border: 1px solid #EAE6DF; }
+        .staff-panel.disabled-panel .verification-table { border-color: #D1D0CC; }
+
         .v-row { display: flex; border-bottom: 1px solid #F0EDE6; }
         .v-label { width: 130px; background: #F7F5EC; color: #555; padding: 12px; font-size: 13px; font-weight: bold; border-right: 1px solid #EAE6DF; display: flex; align-items: center; }
+        .staff-panel.disabled-panel .v-label { background: #EAE9E3; color: #777; border-right-color: #D1D0CC; }
+
         .v-value { flex: 1; padding: 12px; font-size: 14px; font-weight: 600; display: flex; align-items: center; }
         .status-ok { color: var(--success-color); background: #E8F5E9; padding: 2px 8px; border-radius: 4px; font-size: 12.5px; }
         .prize-highlight { font-size: 18px; font-weight: 800; color: #E11D48; }
+        .prize-highlight.no-prize { color: var(--danger-color); }
 
         .stamp-btn { background: #2F3E46; color: white; border: none; padding: 14px 20px; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 15px; width: 100%; }
+        
+        /* 💡 沒達標時顯著的警告橫條提示 */
+        .retry-alert-box {
+            background-color: #FFEBEE; border: 1.5px solid var(--danger-color); color: var(--danger-color);
+            padding: 14px; border-radius: 10px; font-weight: bold; font-size: 14px; text-align: center;
+            margin-bottom: 15px; line-height: 1.5; box-shadow: 0 2px 8px rgba(198, 40, 40, 0.08);
+        }
+
         .stamp-overlay {
             display: none; position: absolute; top: 40%; right: 5%; transform: rotate(-15deg);
             border: 4px solid var(--danger-color); color: var(--danger-color); font-size: 28px; font-weight: 900;
@@ -122,13 +146,8 @@
         .csv-btn { background: #3E6B41; color: white; border: none; padding: 10px 20px; border-radius: 8px; font-size: 13px; font-weight: bold; cursor: pointer; margin-top: 15px; }
         .close-btn { background: var(--primary-color); color: white; border: none; padding: 10px 24px; border-radius: 25px; cursor: pointer; font-weight: bold; }
 
-        /* 💡 1. 官方 Logo 壓印區塊 */
-        .footer-logo-zone {
-            margin: 40px 0 20px 0; text-align: center; width: 100%;
-        }
-        .footer-logo-zone img {
-            width: 180px; height: auto; object-fit: contain; opacity: 0.9;
-        }
+        .footer-logo-zone { margin: 40px 0 20px 0; text-align: center; width: 100%; }
+        .footer-logo-zone img { width: 180px; height: auto; object-fit: contain; opacity: 0.9; }
     </style>
 </head>
 <body>
@@ -143,7 +162,8 @@
 </div>
 
 <header>
-    <h1>🎧 新莊聲音地圖大挑戰</h1>
+    <!-- 💡 1. 改名為新指定大標題 -->
+    <h1>大使出任務，解鎖新莊聲</h1>
     <div class="instructions-board">
         <div class="board-title">📋 現行關卡機制與進度說明</div>
         <p style="font-size:13px; color:#555; line-height:1.5;">請先透過下方 <b>Google 互動地圖</b> 縮放觀察新莊區域。聽完聲音後直接在正下方的選單完成答案配對，填完送出並填寫簡短問卷即可解鎖核銷領獎！</p>
@@ -166,6 +186,7 @@
     </div>
 </div>
 
+<!-- 複合解析與扭蛋機彈窗 -->
 <div class="modal" id="winModal">
     <div class="modal-content">
         <h2 id="win-status-title">📊 挑戰成果核對</h2>
@@ -182,6 +203,7 @@
     </div>
 </div>
 
+<!-- 表單回饋 -->
 <div class="section-card" id="survey-section-card" style="display:none; max-width:950px; margin:20px auto;">
     <h3 style="color:var(--primary-color);">📝 3. 活動滿意度回饋表單</h3>
     <p style="font-size:12px; color:#666; margin-bottom:20px;">感謝您的參與！請點選以下卡片欄位完成回饋，即可開啟領獎核銷明細單。</p>
@@ -269,10 +291,16 @@
     <button class="submit-btn" id="submit-survey-btn" onclick="saveSurveyData()" style="background:#777;" disabled>🔒 請完成上述所有的星號必填題</button>
 </div>
 
+<!-- 💡 2. 工作人員核銷面板區（加入未達標準灰白防呆） -->
 <div class="staff-panel" id="final-staff-panel" style="display:none;">
     <div class="stamp-overlay" id="verification-stamp">已兌獎</div>
     <div class="staff-header">🔒 現場工作人員領獎核銷明細單</div>
     
+    <!-- 💡 沒達標時動態跳出的灰白警告條 -->
+    <div id="retry-alert-zone" class="retry-alert-box" style="display:none;">
+        💡 提示：本張闖關卡未達兌獎門檻。<br>歡迎重新整理網頁，即可再次重新挑戰一次喔！
+    </div>
+
     <div class="verification-table">
         <div class="v-row"><div class="v-label">● 遊戲機制</div><div class="v-value" id="summary-mode">載入中...</div></div>
         <div class="v-row"><div class="v-label">● 回答正確題數</div><div class="v-value" id="summary-score" style="color:var(--primary-color);">0 題</div></div>
@@ -280,10 +308,12 @@
         <div class="v-row"><div class="v-label">● 應發放獎品</div><div class="v-value prize-highlight" id="summary-prize">尚未抽獎</div></div>
     </div>
     
+    <!-- 💡 核銷按鈕（沒達標時在 JS 會被自動隱藏，不會被誤按） -->
     <button class="stamp-btn" id="stamp-execute-btn" onclick="applyVerificationStamp()">確認發放實體獎品 ➡️ 現場蓋章銷帳</button>
     <center><button class="csv-btn" onclick="exportWithPassword()">📊 導出本台設備所有統計報表 (CSV)</button></center>
 </div>
 
+<!-- 新北文化大使官方識別 Logo -->
 <div class="footer-logo-zone">
     <img src="NTPC Logo-03.png" alt="新北文化大使 Logo">
 </div>
@@ -295,7 +325,7 @@ const spotsData = [
     { id: 3, name: "輔仁大學(聖言樓)", audio: "輔仁大學_彌撒聲.mp3", info: "輔仁大學為天主教名校，校園內的彌撒鐘聲與聖歌，展現出莊嚴平和的宗教與多元學術氛圍。" },
     { id: 4, name: "新莊棒球場", audio: "新莊棒球場.mp3", info: "新莊棒球場是北台灣職棒重鎮，賽季時充滿極具張力的現場應援敲擊樂與球迷吶喊聲。" },
     { id: 5, name: "新莊廟街夜市", audio: "新莊廟街夜市.mp3", info: "廟街白天是古蹟密布的文史老街，晚上則是傳統叫賣與美食攤販齊聚、人潮喧鬧的在地夜市。" },
-    { id: 6, name: "捷運新莊站", audio: "捷運橘線聲音.m4a", info: "台北捷運橘線的開通串聯了新莊與大台北生活圈，車廂廣播與進站聲為現代通勤的交響樂。" },
+    { id: 6, name: "捷運新莊站", audio: "捷運橘線聲音.m4a", info: "台北捷運中和新蘆線（橘線）的通車，讓新莊與雙北生活圈緊密相連。進站音樂與車廂廣播聲，是新莊通勤族每天最熟悉的城市現代生活交響樂。" },
     { id: 7, name: "中港大排", audio: "中港大排(幸福路上） .mp3", info: "中港大排歷經綠化整治，從黑水溝華麗轉身為親水公園。走在幸福路上能聽見淙淙流水的療癒環境音。" },
     { id: 8, name: "化成路(異國美食街)", audio: "化成路 蓮花泰式小吃店 音檔.mp3", info: "化成路周邊工廠多，吸引大量東南亞移工進駐，異國餐廳的小吃香氣與點餐聲構築了多元包容文化。" }
 ];
@@ -411,7 +441,6 @@ function openSurveyZone() {
     document.getElementById('survey-section-card').scrollIntoView({ behavior: 'smooth' });
 }
 
-// 💡 2. 驗證 Radio 卡片勾選狀態
 function validateSurvey() {
     const age = document.querySelector('input[name="age"]:checked');
     const gender = document.querySelector('input[name="gender"]:checked');
@@ -452,13 +481,37 @@ function saveSurveyData() {
     goToVerification();
 }
 
+// 💡 2. 核心邏輯優化：未達標直接灰白卡片、隱藏按鈕、跳出再挑戰提示
 function goToVerification() {
+    const panel = document.getElementById('final-staff-panel');
+    const alertBox = document.getElementById('retry-alert-zone');
+    const stampBtn = document.getElementById('stamp-execute-btn');
+    const prizeCell = document.getElementById('summary-prize');
+
     document.getElementById('summary-mode').innerText = targetScore === 3 ? '體驗版 (精選 3 個景點)' : '達人挑戰版 (挑戰 8 個景點)';
     document.getElementById('summary-score').innerText = `${finalCorrectCount} / ${targetScore} 題`;
-    document.getElementById('summary-prize').innerText = finalPrizeName;
-    if(finalPrizeName === "無獎品") { document.getElementById('summary-prize').style.color = "var(--danger-color)"; } else { document.getElementById('summary-prize').style.color = "#E11D48"; }
-    document.getElementById('final-staff-panel').style.display = 'block';
-    document.getElementById('final-staff-panel').scrollIntoView({ behavior: 'smooth' });
+    
+    // 判斷是否符合過關門檻（體驗版3/3、達人版>=6）
+    const isQualified = (targetScore === 3 && finalCorrectCount === 3) || (targetScore === 8 && finalCorrectCount >= 6);
+
+    if (isQualified) {
+        // 符合資格：恢復正常彩色、顯示抽到的獎品、顯示核銷章按鈕
+        panel.classList.remove('disabled-panel');
+        alertBox.style.display = 'none';
+        stampBtn.style.display = 'block';
+        prizeCell.innerText = finalPrizeName;
+        prizeCell.className = "v-value prize-highlight";
+    } else {
+        // ❌ 不符合資格：強制卡片變灰、隱藏核銷按鈕、跳出紅色重新挑戰警告
+        panel.classList.add('disabled-panel');
+        alertBox.style.display = 'block';
+        stampBtn.style.display = 'none';
+        prizeCell.innerText = "❌ 未達兌獎標準";
+        prizeCell.className = "v-value prize-highlight no-prize";
+    }
+
+    panel.style.display = 'block';
+    panel.scrollIntoView({ behavior: 'smooth' });
 }
 
 function applyVerificationStamp() {
@@ -469,14 +522,9 @@ function applyVerificationStamp() {
     document.getElementById('submit-game-btn').disabled = true;
 }
 
-// 💡 3. 加密安全鎖：確認 PIN 碼驗證才能下載
 function exportWithPassword() {
     const inputPin = prompt("🔒 請工作人員輸入後台導出安全密碼 (PIN)：");
-    if (inputPin === "0121") {
-        exportToCSV();
-    } else if (inputPin !== null) {
-        alert("❌ 密碼錯誤！無權限下載統計報表。");
-    }
+    if (inputPin === "0121") { exportToCSV(); } else if (inputPin !== null) { alert("❌ 密碼錯誤！無權限下載統計報表。"); }
 }
 
 function exportToCSV() {
@@ -484,9 +532,7 @@ function exportToCSV() {
     if(records.length === 0) { alert("目前尚未有任何填寫紀錄喔！"); return; }
     let csvContent = "\uFEFF";
     csvContent += "填寫時間,遊玩機制,答對題數,獲得獎品,年齡,性別,職業,活動有趣度,認識新莊落實度,文化大使滿意度,小點心與獎品滿意度,其他回饋意見\n";
-    records.forEach(r => {
-        csvContent += `${r.timestamp},${r.mode},${r.score},${r.prize},${r.age},${r.gender},${r.job},${r.fun},${r.help},${r.ambassador},${r.prizeSatisfy},${r.comment}\n`;
-    });
+    records.forEach(r => { csvContent += `${r.timestamp},${r.mode},${r.score},${r.prize},${r.age},${r.gender},${r.job},${r.fun},${r.help},${r.ambassador},${r.prizeSatisfy},${r.comment}\n`; });
     let blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     let link = document.createElement("a"); link.href = URL.createObjectURL(blob);
     link.setAttribute("download", "新莊聲音地圖_活動回饋滿意度總統計報表.csv");
