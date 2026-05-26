@@ -67,36 +67,17 @@
         .audio-track span { display: block; font-weight: bold; font-size: 14px; margin-bottom: 6px; color: #555; }
         audio { width: 100%; height: 32px; }
 
-        .map-mock {
-            width: 100%; height: 320px; 
-            background-image: url('map.jpg'); 
-            background-size: cover;
-            background-position: center;
-            background-color: #EAE6DF; 
+        /* 🌐 Google 地圖外框優化 */
+        .map-container-box {
+            width: 100%; height: 350px; 
             border-radius: 12px;
-            position: relative; margin-bottom: 25px; border: 2px solid var(--secondary-color);
+            overflow: hidden;
+            border: 2px solid var(--secondary-color);
             box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            margin-bottom: 25px;
+            position: relative;
         }
-
-        .map-hint {
-            position: absolute; top: 10px; left: 10px; color: white;
-            font-size: 12px; font-weight: bold; background: var(--primary-color);
-            padding: 4px 10px; border-radius: 6px; z-index: 10;
-        }
-
-        .spot-marker {
-            position: absolute; background: rgba(255, 255, 255, 0.95); color: #333;
-            border: 1.5px solid var(--primary-color); padding: 5px 10px;
-            border-radius: 8px; font-size: 12px; font-weight: bold;
-            box-shadow: 0 3px 8px rgba(0,0,0,0.15); transform: translate(-50%, -50%);
-            white-space: nowrap; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            z-index: 5;
-        }
-
-        .spot-marker.matched {
-            background: var(--success-color); color: white; border-color: var(--success-color);
-            transform: translate(-50%, -50%) scale(1.1);
-        }
+        iframe { width: 100%; height: 100%; border: none; }
 
         .match-zone { display: flex; flex-direction: column; gap: 10px; }
         .match-row {
@@ -116,7 +97,6 @@
             background-color: #FFEBEE; color: var(--danger-color); border-color: var(--danger-color);
         }
 
-        /* 終局送出按鈕 */
         .submit-btn {
             background: var(--primary-color); color: white; border: none; padding: 12px;
             border-radius: 8px; font-size: 15px; font-weight: bold; cursor: pointer; width: 100%;
@@ -131,8 +111,8 @@
             justify-content: center; align-items: center; z-index: 1000;
         }
         .modal-content {
-            background: white; padding: 30px; border-radius: 24px; text-align: center;
-            max-width: 440px; width: 90%; max-height: 85vh; overflow-y: auto;
+            background: white; padding: 25px; border-radius: 24px; text-align: center;
+            max-width: 480px; width: 90%; max-height: 85vh; overflow-y: auto;
             box-shadow: 0 10px 30px rgba(0,0,0,0.25); border: 3px solid var(--secondary-color);
         }
         
@@ -144,28 +124,54 @@
         .mode-btn.light { background: #4A5759; }
         .mode-btn:hover { transform: translateY(-2px); }
 
+        /* 👑 數字放大樣式 */
+        .big-score-box {
+            margin: 15px 0;
+            font-size: 16px;
+            color: #555;
+        }
+        .big-score-number {
+            display: block;
+            font-size: 42px;
+            font-weight: 900;
+            color: var(--primary-color);
+            line-height: 1.2;
+            margin-top: 5px;
+        }
+        .big-score-number.all-correct {
+            color: var(--success-color);
+            text-shadow: 0 2px 4px rgba(56, 142, 60, 0.1);
+        }
+
         .prize-box {
             background: var(--bg-color); padding: 12px; border-radius: 12px;
             font-size: 16px; font-weight: bold; color: var(--primary-color);
             margin: 15px 0; border: 1px dashed var(--secondary-color);
         }
         
-        /* 📋 核對清單專用樣式 */
-        .report-card {
-            text-align: left; background: #F9F8F6; padding: 15px; border-radius: 12px;
-            margin: 15px 0; border: 1px solid #EAE6DF;
-        }
+        /* 📋 核對清單與解析專用樣式 */
+        .report-card { text-align: left; margin: 15px 0; }
         .report-item {
-            display: flex; align-items: flex-start; gap: 8px; margin-bottom: 10px;
-            font-size: 13px; line-height: 1.4; border-bottom: 1px dashed #EAE6DF; padding-bottom: 8px;
+            background: #F9F8F6; padding: 14px; border-radius: 12px;
+            margin-bottom: 12px; border: 1px solid #EAE6DF;
         }
-        .report-item:last-child { margin-bottom: 0; border-bottom: none; padding-bottom: 0; }
-        .badge-success { color: var(--success-color); font-weight: bold; }
-        .badge-danger { color: var(--danger-color); font-weight: bold; }
+        .report-item-header {
+            display: flex; justify-content: space-between; align-items: center;
+            font-weight: bold; font-size: 14px; margin-bottom: 6px;
+        }
+        .badge-success { color: var(--success-color); }
+        .badge-danger { color: var(--danger-color); }
+        
+        /* 💡 解析區區塊樣式 */
+        .analysis-box {
+            font-size: 12.5px; color: #666; background: #FFF; 
+            padding: 10px; border-radius: 8px; border-left: 3px solid var(--secondary-color);
+            margin-top: 8px; line-height: 1.5;
+        }
 
         .close-btn {
             background: var(--primary-color); color: white; border: none;
-            padding: 12px 30px; border-radius: 25px; cursor: pointer; font-weight: bold;
+            padding: 12px 30px; border-radius: 25px; cursor: pointer; font-weight: bold; margin-top: 10px;
         }
         .score-board { font-size: 15px; font-weight: bold; color: var(--primary-color); margin-top: 6px; }
     </style>
@@ -192,7 +198,7 @@
 <header>
     <h1>🎧 新莊聲音地圖大挑戰</h1>
     <div class="instructions">
-        <strong>🎁 遊戲玩法：</strong> 依序點擊左側播放鈕聆聽新莊的聲音，並在右側地圖與下方選單中為每個題目找到它對應的正确地點。
+        <strong>🎁 遊戲玩法：</strong> 依序點擊左側播放鈕聆聽新莊的聲音，並透過右側的 <b>Google 互動地圖</b> 放大觀察環境，最後在下方選單選出正確地點。
         <br>
         <div class="mode-badge" id="current-mode-text">模式：載入中...</div>
         <div class="score-board" id="score-text">答題進度：0 題</div>
@@ -206,10 +212,12 @@
     </div>
     
     <div class="section-card">
-        <h3>📍 2. 對照地圖完成配對</h3>
-        <div class="map-mock" id="map">
-            <div class="map-hint">🧭 新莊區實體文史地圖</div>
+        <h3>📍 2. 觀察 Google 地圖並完成配對</h3>
+        
+        <div class="map-container-box">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m124.0347!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442a8f8e02d4c0b%3A0x6b13e2bb61bc1ba4!2zMjQ0OOS_oeeogee4o-iZp-WknOW4gg!5e0!3m2!1szh-TW!2stw!4v1716730000000!5m2!1szh-TW!2stw" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
+
         <div class="match-zone" id="match-zone"></div>
         <button class="submit-btn" id="submit-game-btn" onclick="submitGame()" style="display:none;">📤 寫好了！送出答案核對</button>
     </div>
@@ -218,25 +226,31 @@
 <div class="modal" id="winModal">
     <div class="modal-content">
         <h2 id="win-title-text">🎉 挑戰完成！</h2>
-        <p style="font-size: 15px; font-weight: bold; margin-top: 5px;" id="win-score-summary"></p>
         
+        <div class="big-score-box">
+            您的核對戰績為
+            <span class="big-score-number" id="win-score-big">0 / 0</span>
+        </div>
+        
+        <p style="font-size: 14px; color:#555; font-weight: bold; margin-bottom: 5px;">📜 各題聲音景點小解析：</p>
         <div class="report-card" id="report-zone"></div>
 
         <div class="prize-box" id="prize-text">🎁 獎品換取中...</div>
-        <button class="close-btn" onclick="closeModal()">太棒了</button>
+        <button class="close-btn" onclick="closeModal()">關閉視窗</button>
     </div>
 </div>
 
 <script>
+// 景點數據 + 新增文史故事解析欄位 (info)
 const spotsData = [
-    { id: 1, name: "新莊慈祐宮", audio: "廟宇-慈祐宮.m4a", top: "72%", left: "22%" },
-    { id: 2, name: "地藏庵(大眾廟)", audio: "廟宇-大眾廟 .m4a", top: "25%", left: "75%" },
-    { id: 3, name: "輔仁大學(聖言樓)", audio: "輔仁大學_彌撒聲.mp3", top: "45%", left: "18%" },
-    { id: 4, name: "新莊棒球場", audio: "新莊棒球場.mp3", top: "22%", left: "45%" },
-    { id: 5, name: "新莊廟街夜市", audio: "新莊廟街夜市.mp3", top: "78%", left: "42%" },
-    { id: 6, name: "捷運新莊站", audio: "捷運橘線聲音.m4a", top: "55%", left: "50%" },
-    { id: 7, name: "中港大排", audio: "中港大排(幸福路上） .mp3", top: "40%", left: "65%" },
-    { id: 8, name: "化成路(異國美食街)", audio: "化成路 蓮花泰式小吃店 音檔.mp3", top: "60%", left: "82%" }
+    { id: 1, name: "新莊慈祐宮", audio: "廟宇-慈祐宮.m4a", info: "慈祐宮是新莊最古老的廟宇，建於清康熙年間（1729年）。主祀媽祖，見證了新莊作為大漢溪重要港口「新莊街」的黃金商貿時期，廟內的古匾與石雕充滿歷史價值。" },
+    { id: 2, name: "地藏庵(大眾廟)", audio: "廟宇-大眾廟 .m4a", info: "新莊地藏庵又稱大眾廟，建於清乾隆年間。主要奉祀地藏王菩薩與大眾爺，其「文武大眾爺祭典」（新莊大拜拜）是北台灣極具代表性的宗教盛事，也是當地的無形文化資產。" },
+    { id: 3, name: "輔仁大學(聖言樓)", audio: "輔仁大學_彌撒聲.mp3", info: "輔仁大學是台灣著名的天主教大學。音檔中的彌撒聲展現了校園內莊嚴平和的西方宗教儀式氛圍，聖言樓周邊更是充滿了多元文化融合的學術氣息。" },
+    { id: 4, name: "新莊棒球場", audio: "新莊棒球場.mp3", info: "新莊棒球場是台灣職棒的重要基地，也是富邦悍將的主場。每到賽季，現場充滿震耳欲聾的應援打擊樂與球迷吶喊聲，是新莊現代活力與運動文化的象徵。" },
+    { id: 5, name: "新莊廟街夜市", audio: "新莊廟街夜市.mp3", top: "78%", left: "42%", info: "新莊廟街有「千帆泊靠」的美譽，白天是古蹟密布的文史老街，晚上則搖身一變成為熱鬧的夜市。傳統小吃如潤餅、鹹光餅、粿店等皆座落於此，叫賣聲不絕於耳。" },
+    { id: 6, name: "捷運新莊站", audio: "捷運橘線聲音.m4a", info: "台北捷運中和新蘆線（橘線）的通車，讓新莊與雙北生活圈緊密相連。進站音樂與車廂廣播聲，是新莊通勤族每天最熟悉的城市現代生活交響樂。" },
+    { id: 7, name: "中港大排", audio: "中港大排(幸福路上） .mp3", info: "中港大排過去曾是黑水溝，經過整治後華麗轉身為「台版清溪川」。沿著幸福路段漫步，可以聽見淙淙流水聲與綠帶鳥鳴，是新莊市民引以為傲的親水親綠空間。" },
+    { id: 8, name: "化成路(異國美食街)", audio: "化成路 蓮花泰式小吃店 音檔.mp3", info: "化成路周邊由於早期工業區聚集了許多東南亞移工，逐漸發展出極具特色的泰國、越南小吃街。店家播放的家鄉樂曲與泰語點餐聲，展現了新莊包容的多元飲食文化。" }
 ];
 
 let targetScore = 8; 
@@ -244,17 +258,14 @@ let activeSpots = [];
 
 const audioListDiv = document.getElementById('audio-list');
 const matchZoneDiv = document.getElementById('match-zone');
-const mapDiv = document.getElementById('map');
 
 function selectMode(count) {
     targetScore = count;
     document.getElementById('modeModal').style.display = 'none';
     
-    // 隨機抽選與題目數量對齊
     const shuffled = [...spotsData].sort(() => Math.random() - 0.5);
     activeSpots = shuffled.slice(0, targetScore);
     
-    // 重新排序讓題目在畫面呈亂序
     const displayOrder = [...activeSpots].sort(() => Math.random() - 0.5);
 
     if(count === 3) {
@@ -270,17 +281,16 @@ function selectMode(count) {
 
 function renderGame(displayOrder) {
     displayOrder.forEach((spot, index) => {
-        // 💡 關鍵優化一：將「聲音 A」改為動態生成的「第 1 題」、「第 2 題」
         const questionName = `🎵 第 ${index + 1} 題`;
-        spot.displayQuestionName = questionName; // 暫存名稱供後續核對報告使用
+        spot.displayQuestionName = questionName; 
 
-        // 生成左側音檔元件
+        // 生成左側音檔
         const track = document.createElement('div');
         track.className = 'audio-track';
         track.innerHTML = `<span>${questionName}</span><audio controls src="${spot.audio}"></audio>`;
         audioListDiv.appendChild(track);
 
-        // 生成下方配對選單
+        // 生成下方配對
         const row = document.createElement('div');
         row.className = 'match-row';
         row.innerHTML = `
@@ -292,20 +302,8 @@ function renderGame(displayOrder) {
         `;
         matchZoneDiv.appendChild(row);
     });
-
-    // 渲染地圖上的景點標記
-    spotsData.forEach(spot => {
-        const marker = document.createElement('div');
-        marker.className = 'spot-marker';
-        marker.id = `marker-${spot.id}`;
-        marker.style.top = spot.top;
-        marker.style.left = spot.left;
-        marker.innerText = spot.name;
-        mapDiv.appendChild(marker);
-    });
 }
 
-// 即時追蹤民眾填寫了幾題，填完才顯示送出按鈕
 function updateProgress() {
     const allSelects = document.querySelectorAll('#match-zone select');
     let filledCount = 0;
@@ -313,7 +311,6 @@ function updateProgress() {
     
     document.getElementById('score-text').innerText = `答題進度：已填寫 ${filledCount} / ${targetScore} 題`;
     
-    // 當目標題目全部填選完畢，跳出「送出答案」的按鈕
     if(filledCount === targetScore) {
         document.getElementById('submit-game-btn').style.display = 'block';
     } else {
@@ -321,55 +318,59 @@ function updateProgress() {
     }
 }
 
-// 💡 關鍵優化二：點擊送出後進行「總核對過程」，並計算對了幾題
 function submitGame() {
     let correctCount = 0;
     let reportHtml = "";
 
     activeSpots.forEach((spot) => {
         const selectElem = document.getElementById(`select-${spot.id}`);
-        const markerElem = document.getElementById(`marker-${spot.id}`);
         const userChoose = parseInt(selectElem.value);
         
-        selectElem.disabled = true; // 核對後鎖定欄位
+        selectElem.disabled = true; 
 
         if (userChoose === spot.id) {
-            // 答對了
             correctCount++;
             selectElem.className = 'correct';
-            if (markerElem) {
-                markerElem.classList.add('matched');
-                if(!markerElem.innerText.startsWith('✓')) markerElem.innerText = `✓ ${markerElem.innerText}`;
-            }
-            // 寫入報告
             reportHtml += `
                 <div class="report-item">
-                    <span class="badge-success">🟢 ${spot.displayQuestionName} 答對！</span>
-                    <span>地點：${spot.name}</span>
+                    <div class="report-item-header">
+                        <span>${spot.displayQuestionName}</span>
+                        <span class="badge-success">🟢 答對</span>
+                    </div>
+                    <div>正確解答：<b>${spot.name}</b></div>
+                    <div class="analysis-box">📖 <b>景點解析：</b>${spot.info}</div>
                 </div>
             `;
         } else {
-            // 答錯了
             selectElem.className = 'wrong';
-            // 找出民眾選錯的那個名字
             const wrongSpotObj = spotsData.find(s => s.id === userChoose);
             const wrongName = wrongSpotObj ? wrongSpotObj.name : "未選擇";
             
-            // 寫入報告
             reportHtml += `
                 <div class="report-item">
-                    <span class="badge-danger">🔴 ${spot.displayQuestionName} 答錯</span>
-                    <span>您選了「${wrongName}」<br><small style="color:#777;">正確答案應為：${spot.name}</small></span>
+                    <div class="report-item-header">
+                        <span>${spot.displayQuestionName}</span>
+                        <span class="badge-danger">🔴 答錯</span>
+                    </div>
+                    <div>您選了：<span style="color:var(--danger-color);">${wrongName}</span> (正確答案：<b>${spot.name}</b>)</div>
+                    <div class="analysis-box">📖 <b>景點解析：</b>${spot.info}</div>
                 </div>
             `;
         }
     });
 
-    // 處理與顯示核對清單彈窗
-    document.getElementById('win-score-summary').innerText = `核對結果：您總共答對了 ${correctCount} / ${targetScore} 題！`;
+    // 👑 更新大數字得分顯示
+    const scoreBigElem = document.getElementById('win-score-big');
+    scoreBigElem.innerText = `${correctCount} / ${targetScore}`;
+    if(correctCount === targetScore) {
+        scoreBigElem.className = "big-score-number all-correct";
+    } else {
+        scoreBigElem.className = "big-score-number";
+    }
+
     document.getElementById('report-zone').innerHTML = reportHtml;
 
-    // 判斷是否符合領獎門檻
+    // 判斷給獎門檻
     if (correctCount === targetScore) {
         document.getElementById('win-title-text').innerText = "🎉 完美過關！";
         if (targetScore === 3) {
@@ -379,10 +380,9 @@ function submitGame() {
         }
     } else {
         document.getElementById('win-title-text').innerText = "💪 再接再厲！";
-        document.getElementById('prize-text').innerText = "❌ 尚未達到全對門檻，可以重新整理網頁再次挑戰喔！";
+        document.getElementById('prize-text').innerText = "❌ 尚未達到全對門檻，可重新整理網頁再次挑戰！";
     }
 
-    // 顯示結果視窗
     document.getElementById('winModal').style.display = 'flex';
 }
 
