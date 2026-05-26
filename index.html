@@ -59,43 +59,40 @@
             padding-bottom: 8px; border-bottom: 2px solid var(--bg-color);
         }
 
-        .audio-list { display: flex; flex-direction: column; gap: 12px; }
-        .audio-track {
-            background: var(--bg-color); padding: 12px; border-radius: 10px;
-            border: 1px solid #F0EDE6; transition: 0.2s;
+        .audio-list { display: flex; flex-direction: column; gap: 16px; }
+        
+        /* 💡 修正版排版：音檔與選題結合的獨立外框 */
+        .qa-block {
+            background: var(--bg-color); padding: 14px; border-radius: 12px;
+            border: 1px solid #F0EDE6; display: flex; flex-direction: column; gap: 8px;
         }
-        .audio-track span { display: block; font-weight: bold; font-size: 14px; margin-bottom: 6px; color: #555; }
+        .qa-block span { display: block; font-weight: bold; font-size: 14px; color: #555; }
         audio { width: 100%; height: 32px; }
+
+        /* 💡 選單寬度調整為全寬，方便手機直接點選 */
+        select {
+            padding: 8px 12px; border-radius: 8px; border: 1.5px solid #CCC;
+            font-size: 13px; background: white; outline: none; width: 100%; cursor: pointer;
+            margin-top: 4px;
+        }
+        select.correct { background-color: #E8F5E9; color: var(--success-color); border-color: var(--success-color); font-weight: bold; }
+        select.wrong { background-color: #FFEBEE; color: var(--danger-color); border-color: var(--danger-color); }
 
         .map-container-box {
             width: 100%; height: 380px; 
             border-radius: 12px; overflow: hidden;
             border: 2px solid var(--secondary-color);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08); margin-bottom: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
         }
         iframe { width: 100%; height: 100%; border: none; }
 
-        .match-zone { display: flex; flex-direction: column; gap: 10px; }
-        .match-row {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 10px 0; border-bottom: 1px dashed #E0DCD3;
-        }
-        .match-row span { font-size: 14px; font-weight: bold; }
-        
-        select {
-            padding: 8px 12px; border-radius: 8px; border: 1.5px solid #CCC;
-            font-size: 13px; background: white; outline: none; width: 170px; cursor: pointer;
-        }
-        select.correct { background-color: #E8F5E9; color: var(--success-color); border-color: var(--success-color); font-weight: bold; }
-        select.wrong { background-color: #FFEBEE; color: var(--danger-color); border-color: var(--danger-color); }
-
         .submit-btn {
-            background: var(--primary-color); color: white; border: none; padding: 12px;
-            border-radius: 8px; font-size: 15px; font-weight: bold; cursor: pointer; width: 100%;
+            background: var(--primary-color); color: white; border: none; padding: 14px;
+            border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; width: 100%;
             margin-top: 15px; transition: 0.2s; box-shadow: 0 4px 10px rgba(158, 42, 43, 0.2);
         }
 
-        /* 彈窗基本樣式 */
+        /* 彈窗樣式 */
         .modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(40, 30, 24, 0.6); backdrop-filter: blur(5px);
@@ -116,13 +113,13 @@
         .big-score-box { margin: 10px 0; font-size: 15px; color: #555; }
         .big-score-number { display: block; font-size: 48px; font-weight: 900; color: var(--primary-color); }
 
-        /* 📋 核對清單與解析 */
+        /* 核對報告 */
         .report-card { text-align: left; margin: 15px 0; }
         .report-item { background: #F9F8F6; padding: 12px; border-radius: 12px; margin-bottom: 10px; border: 1px solid #EAE6DF; }
         .report-item-header { display: flex; justify-content: space-between; align-items: center; font-weight: bold; font-size: 13px; }
         .analysis-box { font-size: 12px; color: #666; background: #FFF; padding: 8px; border-radius: 6px; border-left: 3px solid var(--secondary-color); margin-top: 6px; }
 
-        /* 🎡 扭蛋機特效區塊 */
+        /* 🎡 扭蛋機區塊 */
         .gacha-zone {
             background: #FFF1F2; padding: 20px; border-radius: 16px; margin: 15px 0; border: 2px dashed #FDA4AF;
         }
@@ -144,7 +141,7 @@
             font-weight: bold; cursor: pointer; font-size: 15px; box-shadow: 0 4px 10px rgba(225,29,72,0.3);
         }
 
-        /* 📋 最終工作人員核銷面板區 */
+        /* 工作人員核銷面板 */
         .staff-panel {
             background: #FDFBEE; border: 2px solid var(--secondary-color); border-radius: 16px;
             padding: 20px; width: 100%; max-width: 950px; margin: 25px 0 50px 0;
@@ -157,13 +154,13 @@
             font-weight: bold; cursor: pointer; font-size: 14px; margin-top: 10px; width: 100%;
         }
 
-        /* 💮 已兌獎復古大鋼印鋼印 */
+        /* 已兌獎復古大鋼印 */
         .stamp-overlay {
             display: none; position: absolute; top: 50%; right: 40px; transform: translateY(-50%) rotate(-15deg);
             border: 4px solid var(--danger-color); color: var(--danger-color); font-size: 24px; font-weight: 900;
             padding: 8px 18px; border-radius: 8px; background: rgba(255, 255, 255, 0.9);
             letter-spacing: 4px; box-shadow: 0 0 12px rgba(211,47,47,0.15);
-            animation: stampIn 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            z-index: 15;
         }
         @keyframes stampIn { from { transform: translateY(-50%) scale(2) rotate(-45deg); opacity: 0; } to { transform: translateY(-50%) scale(1) rotate(-15deg); opacity: 1; } }
 
@@ -173,20 +170,19 @@
 </head>
 <body>
 
-<!-- 初始模式選擇彈窗 -->
 <div class="modal" id="modeModal" style="display: flex;">
     <div class="modal-content">
         <h2 style="color: var(--primary-color); margin-bottom: 15px;">📜 請選擇遊玩模式</h2>
         <p style="font-size: 14px; color: #666; margin-bottom: 20px;">歡迎來到新莊聲音地圖！請選擇您今天想挑戰的任務：</p>
-        <button class="mode-btn light" onclick="selectMode(3)">體驗版：精選 3 個景點 (全對可抽獎)<br><span style="font-size:12px; font-weight:normal; opacity:0.9;">🎁 送「小包餅乾」或驚喜抽獎</span></button>
-        <button class="mode-btn" onclick="selectMode(8)">達人版：挑戰 8 個景點 (答對6題解鎖)<br><span style="font-size:12px; font-weight:normal; opacity:0.9;">🎁 答對 6 題以上即可參加大扭蛋抽獎</span></button>
+        <button class="mode-btn light" onclick="selectMode(3)">體驗版：精選 3 個景點<br><span style="font-size:12px; font-weight:normal; opacity:0.9;">🎁 全對送：小包餅乾</span></button>
+        <button class="mode-btn" onclick="selectMode(8)">達人版：挑戰 8 個景點<br><span style="font-size:12px; font-weight:normal; opacity:0.9;">🎁 答對 6 題以上即可參加扭蛋抽獎</span></button>
     </div>
 </div>
 
 <header>
     <h1>🎧 新莊聲音地圖大挑戰</h1>
     <div class="instructions">
-        <strong>🎁 遊戲機制說明：</strong> 依序聆聽左側環境音並透過右側 <b>Google 互動地圖</b> 搜尋對照。達人版(8題)只要<b>答對滿 6 題</b>即可開啟終極扭蛋機抽大獎！
+        <strong>🎁 遊戲機制：</strong> 依序聆聽音檔並於其正下方選單對照填答。達人版只要<b>答對滿 6 題</b>，看完解析報告後即可開啟線上扭蛋機抽取新莊限量獎品！
         <br>
         <div class="mode-badge" id="current-mode-text">模式：載入中...</div>
         <div class="score-board" id="score-text">答題進度：0 題</div>
@@ -194,70 +190,64 @@
 </header>
 
 <div class="game-container">
-    <!-- 左側音檔 -->
     <div class="section-card">
-        <h3>🎵 1. 聆聽在地聲音線索</h3>
+        <h3>🎵 1. 聆聽聲音並於下方直接配對</h3>
         <div class="audio-list" id="audio-list"></div>
+        <button class="submit-btn" id="submit-game-btn" onclick="submitGame()" style="display:none;">📤 寫好了！送出答案並看解析報告</button>
     </div>
     
-    <!-- 右側Google互動地圖與下拉 -->
     <div class="section-card">
-        <h3>📍 2. 觀察 Google 地圖並完成配對</h3>
+        <h3>📍 2. 觀察 Google 互動地圖</h3>
         <div class="map-container-box">
             <iframe src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m12!1m3!1d14459.718610534571!2d121.43445914561001!3d25.036449176374945!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1z5paw6I6K5oWI56WC5b6p!5e0!3m2!1szh-TW!2stw!4v1716744000000!5m2!1szh-TW!2stw" allowfullscreen="" loading="lazy"></iframe>
         </div>
-        <div class="match-zone" id="match-zone"></div>
-        <button class="submit-btn" id="submit-game-btn" onclick="submitGame()" style="display:none;">📤 寫好了！送出答案並看解析報告</button>
     </div>
 </div>
 
-<!-- 終局文史解析與扭蛋機複合彈窗 -->
 <div class="modal" id="winModal">
     <div class="modal-content">
         <h2>📊 挑戰成果核對</h2>
         <div class="big-score-box">您總共答對了：<span class="big-score-number" id="win-score-big">0</span></div>
         
-        <!-- 🎡 扭蛋抽獎區（達標準才開放） -->
         <div class="gacha-zone" id="gacha-area" style="display:none;">
-            <h4 style="color:#E11D48;">🎁 恭喜達到門檻！解鎖新莊文創大扭蛋</h4>
+            <h4 style="color:#E11D48;">🎁 恭喜達到門檻！解鎖線上扭蛋機</h4>
             <div class="gacha-ball-animation" id="gacha-ball"></div>
-            <p id="gacha-status" style="font-size:13px; font-weight:bold; margin-bottom:10px; color:#666;">點擊下方按鈕，現場啟動搖獎機制！</p>
-            <button class="gacha-btn" id="gacha-start-btn" onclick="startDraw()">🎰 開啟扭蛋抽獎</button>
+            <p id="gacha-status" style="font-size:13px; font-weight:bold; margin-bottom:10px; color:#666;">點擊下方按鈕啟動扭蛋</p>
+            <button class="gacha-btn" id="gacha-start-btn" onclick="startDraw()">開啟扭蛋</button>
         </div>
 
         <p style="font-size: 14px; color:#333; font-weight: bold; text-align:left; margin-top:15px;">📜 各題聲音景點小解析：</p>
         <div class="report-card" id="report-zone"></div>
-        <button class="close-btn" onclick="goToVerification()">看完了解析，前往核銷領獎</button>
+        <button class="close-btn" onclick="goToVerification()">看完解析，前往工作人員核銷區</button>
     </div>
 </div>
 
-<!-- 📋 3. 現場工作人員專用核銷面板區 -->
 <div class="staff-panel" id="final-staff-panel" style="display:none;">
     <div class="stamp-overlay" id="verification-stamp">已兌獎</div>
     <div class="staff-header">🔒 現場工作人員領獎核銷專區</div>
     <div class="staff-info-row" id="summary-mode">● 遊戲機制：載入中...</div>
-    <div class="staff-info-row" id="summary-score" style="font-size:16px; font-weight:bold; color:var(--primary-color);">● 最終答對題數：0 題</div>
+    <div class="staff-info-row" id="summary-score">● 最終答對題數：0 題</div>
     <div class="staff-info-row" id="summary-prize" style="font-size:18px; font-weight:bold; color:var(--success-color); background:#FFF; padding:8px; border-radius:6px; margin:8px 0; border:1px solid #EAE6DF;">● 抽取/應得獎品：尚未抽獎</div>
-    <p style="font-size:11px; color:#888; margin-top:5px;">※ 請核對民眾手機上的戰績與獎項，發放實體獎品後點擊下方按鈕進行電子蓋章銷帳。</p>
+    <p style="font-size:11px; color:#888; margin-top:5px;">※ 請核對民眾手機上的戰績與獎項，發放實體獎品後點擊下方按鈕進行蓋章銷帳。</p>
     <button class="stamp-btn" id="stamp-execute-btn" onclick="applyVerificationStamp()">確認發放實體獎品 ➡️ 現場蓋章銷帳</button>
 </div>
 
 <script>
 const spotsData = [
-    { id: 1, name: "新莊慈祐宮", audio: "廟宇-慈祐宮.m4a", info: "慈祐宮是新莊最古老的廟宇，主祀媽祖，見證了新莊大漢溪重要港口商貿的黃金時期。" },
+    { id: 1, name: "新莊慈祐宮", audio: "廟宇-慈祐宮.m4a", info: "慈祐宮是新莊最古老的廟宇，建於清雍正九年（1731年）。主祀媽祖，見證了新莊大漢溪重要港口商貿的黃金時期。" },
     { id: 2, name: "地藏庵(大眾廟)", audio: "廟宇-大眾廟 .m4a", info: "新莊地藏庵奉祀地藏王菩薩與大眾爺，其「文武大眾爺祭典」（新莊大拜拜）是著名無形文化資產。" },
     { id: 3, name: "輔仁大學(聖言樓)", audio: "輔仁大學_彌撒聲.mp3", info: "輔仁大學為天主教名校，校園內的彌撒鐘聲與聖歌，展現出莊嚴平和的宗教與多元學術氛圍。" },
-    { id: 4, name: "新莊棒球場", audio: "新莊棒球場.mp3", info: "新莊棒球場是北台灣職棒重鎮，賽季時充滿極具張力的現場應援敲擊樂與球迷吶喊動能。" },
+    { id: 4, name: "新莊棒球場", audio: "新裝棒球場.mp3", info: "新莊棒球場是北台灣職棒重鎮，賽季時充滿極具張力的現場應援敲擊樂與球迷吶喊動能。" },
     { id: 5, name: "新莊廟街夜市", audio: "新莊廟街夜市.mp3", info: "廟街白天是古蹟密布的文史老街，晚上則是傳統叫賣與美食攤販齊聚、人潮喧鬧的在地夜市。" },
     { id: 6, name: "捷運新莊站", audio: "捷運橘線聲音.m4a", info: "台北捷運橘線的開通串聯了新莊與大台北生活圈，車廂廣播與進站聲為現代通勤的交響樂。" },
     { id: 7, name: "中港大排", audio: "中港大排(幸福路上） .mp3", info: "中港大排歷經綠化整治，從黑水溝華麗轉身為親水公園。走在幸福路上能聽見淙淙流水的療癒環境音。" },
     { id: 8, name: "化成路(異國美食街)", audio: "化成路 蓮花泰式小吃店 音檔.mp3", info: "化成路周邊工廠多，吸引大量東南亞移工進駐，異國餐廳的小吃香氣與點餐聲構築了多元包容文化。" }
 ];
 
-// 🎡 扭蛋機精密獎品池與剩餘庫存（嚴格扣除防止超額）
+// ⚠️ 嚴格限定名稱，絕不亂改、絕不額外增加字眼
 let prizePool = [
     { name: "媽祖平安符", count: 50 },
-    { name: "新莊朝盛飄帶", count: 70 },
+    { name: "新莊朝聖飄帶", count: 70 },
     { name: "玻璃杯墊", count: 23 },
     { name: "旅行組", count: 8 },
     { name: "立牌", count: 10 }
@@ -266,7 +256,7 @@ let prizePool = [
 let targetScore = 8; 
 let activeSpots = []; 
 let finalCorrectCount = 0;
-let finalPrizeName = "小包餅乾 (體驗版完賽獎)"; 
+let finalPrizeName = "小包餅乾"; 
 let hasDrawn = false; 
 
 const audioListDiv = document.getElementById('audio-list');
@@ -280,42 +270,40 @@ function selectMode(count) {
     const displayOrder = [...activeSpots].sort(() => Math.random() - 0.5);
 
     if(count === 3) {
-        document.getElementById('current-mode-text').innerText = "🎯 體驗版 (3 題模式)";
+        document.getElementById('current-mode-text').innerText = "🎯 體驗版 (隨機 3 題挑戰)";
         document.getElementById('score-text').innerText = "答題進度：已填寫 0 / 3 題";
-        finalPrizeName = "小包餅乾 (體驗獎品)";
+        finalPrizeName = "小包餅乾";
     } else {
-        document.getElementById('current-mode-text').innerText = "🏆 達人版 (8 題模式)";
+        document.getElementById('current-mode-text').innerText = "🏆 達人版 (全數 8 題挑戰)";
         document.getElementById('score-text').innerText = "答題進度：已填寫 0 / 8 題";
-        finalPrizeName = "再接再厲小安慰禮品"; 
+        finalPrizeName = "未達抽獎門檻"; 
     }
     renderGame(displayOrder);
 }
 
+// 💡 渲染：直接把「音檔」與「下拉選單」打包在同一個 .qa-block 區塊內
 function renderGame(displayOrder) {
     displayOrder.forEach((spot, index) => {
         const questionName = `🎵 第 ${index + 1} 題`;
         spot.displayQuestionName = questionName; 
 
-        const track = document.createElement('div');
-        track.className = 'audio-track';
-        track.innerHTML = `<span>${questionName}</span><audio controls src="${spot.audio}"></audio>`;
-        audioListDiv.appendChild(track);
-
-        const row = document.createElement('div');
-        row.className = 'match-row';
-        row.innerHTML = `
-            <span>${questionName} 的正確地點？</span>
+        const qaBlock = document.createElement('div');
+        qaBlock.className = 'qa-block';
+        qaBlock.innerHTML = `
+            <span>${questionName}</span>
+            <audio controls src="${spot.audio}"></audio>
+            <span>正確地點是？</span>
             <select id="select-${spot.id}" onchange="updateProgress()">
                 <option value="">請選擇景點...</option>
                 ${spotsData.map(s => `<option value="${s.id}">${s.name}</option>`).join('')}
             </select>
         `;
-        matchZoneDiv.appendChild(row);
+        audioListDiv.appendChild(qaBlock);
     });
 }
 
 function updateProgress() {
-    const allSelects = document.querySelectorAll('#match-zone select');
+    const allSelects = document.querySelectorAll('.qa-block select');
     let filledCount = 0;
     allSelects.forEach(select => { if(select.value !== "") filledCount++; });
     document.getElementById('score-text').innerText = `答題進度：已填寫 ${filledCount} / ${targetScore} 題`;
@@ -348,23 +336,25 @@ function submitGame() {
         }
     });
 
-    // 更新分數與小解析
     document.getElementById('win-score-big').innerText = `${finalCorrectCount} / ${targetScore} 題`;
     document.getElementById('report-zone').innerHTML = reportHtml;
 
-    // 🎯 核心判斷：達人版(8題)答對6題以上，或體驗版(3題)全部答對，即解鎖扭蛋機！
+    // 門檻：達人版滿6題，或體驗版滿3題
     if ((targetScore === 8 && finalCorrectCount >= 6) || (targetScore === 3 && finalCorrectCount === 3)) {
-        document.getElementById('gacha-area').style.display = 'block';
-        if(targetScore === 3) finalPrizeName = "小包餅乾"; // 體驗版保底
+        if(targetScore === 8) {
+            document.getElementById('gacha-area').style.display = 'block';
+        } else {
+            document.getElementById('gacha-area').style.display = 'none';
+            finalPrizeName = "小包餅乾";
+        }
     } else {
         document.getElementById('gacha-area').style.display = 'none';
-        finalPrizeName = "文史小卡 (安慰獎)";
+        finalPrizeName = "無獎品";
     }
 
     document.getElementById('winModal').style.display = 'flex';
 }
 
-// 🎡 啟動精密庫存扭蛋抽獎機制
 function startDraw() {
     if (hasDrawn) return;
     hasDrawn = true;
@@ -372,23 +362,20 @@ function startDraw() {
     document.getElementById('gacha-start-btn').disabled = true;
     const ball = document.getElementById('gacha-ball');
     ball.classList.add('shake');
-    document.getElementById('gacha-status').innerText = "扭蛋滾動中... 線上精密配額扣除中...";
 
     setTimeout(() => {
         ball.classList.remove('shake');
         
-        // 篩選出目前在資料庫中「庫存量 > 0」的獎品項目
         let availablePrizes = prizePool.filter(p => p.count > 0);
         
         if (availablePrizes.length === 0) {
-            finalPrizeName = "大會特製文史明信片 (驚喜池已全數抽完)";
+            finalPrizeName = "獎品已全數抽完";
         } else {
-            // 計算總剩餘權重權重
             let totalAvailable = availablePrizes.reduce((sum, item) => sum + item.count, 0);
             let randomWeight = Math.floor(Math.random() * totalAvailable);
             
             let currentSum = 0;
-            let selectedPrize = availablePrizes[availablePrizes.length - 1]; // 備份
+            let selectedPrize = availablePrizes[availablePrizes.length - 1];
             
             for (let i = 0; i < availablePrizes.length; i++) {
                 currentSum += availablePrizes[i].count;
@@ -398,39 +385,33 @@ function startDraw() {
                 }
             }
 
-            // ⚠️ 扣除實體庫存，防止後續民眾超額獲獎
-            selectedPrize.count--;
-            finalPrizeName = `文創大獎：【${selectedPrize.name}】`;
-            
-            // 後台紀錄控制台觀看剩餘用
-            console.log("獎池扣除成功，剩餘狀態:", JSON.stringify(prizePool));
+            selectedPrize.count--; // 扣除實體庫存
+            finalPrizeName = selectedPrize.name; // 嚴格採用乾淨名稱
         }
 
-        document.getElementById('gacha-status').innerHTML = `🎉 搖獎完畢！恭喜抽中：<br><span style="font-size:18px; color:#E11D48; font-weight:bold;">${finalPrizeName}</span>`;
+        document.getElementById('gacha-status').innerHTML = `🎉 恭喜抽中：<b>${finalPrizeName}</b>`;
     }, 1500);
 }
 
-// 看完解析並抽完獎，導向終局工作人員核銷面板
 function goToVerification() {
     document.getElementById('winModal').style.display = 'none';
     window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
 
-    // 渲染核銷資訊
-    document.getElementById('summary-mode').innerText = `● 遊戲機制：${targetScore === 3 ? '體驗版 (認3題)' : '達人挑戰版 (挑戰8題)'}`;
+    document.getElementById('summary-mode').innerText = `● 遊戲機制：${targetScore === 3 ? '體驗版 (精選 3 個景點)' : '達人版 (挑戰 8 個景點)'}`;
     document.getElementById('summary-score').innerText = `● 最終答對題數：${finalCorrectCount} / ${targetScore} 題`;
-    document.getElementById('summary-prize').innerText = `● 抽取/應得獎品：${finalPrizeName}`;
+    document.getElementById('summary-prize').innerText = `● 獎品項目：${finalPrizeName}`;
     
     document.getElementById('final-staff-panel').style.display = 'block';
 }
 
-// 💮 工作人員核銷實體大鋼印蓋章
 function applyVerificationStamp() {
-    document.getElementById('verification-stamp').style.display = 'block';
-    document.getElementById('stamp-execute-btn').disabled = true;
-    document.getElementById('stamp-execute-btn').innerText = "🔒 本張闖關卡已成功執行銷帳";
-    document.getElementById('stamp-execute-btn').style.background = "#777";
+    const stamp = document.getElementById('verification-stamp');
+    stamp.style.display = 'block';
+    stamp.style.animation = "stampIn 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards";
     
-    // 鎖定全網頁的所有操控
+    document.getElementById('stamp-execute-btn').disabled = true;
+    document.getElementById('stamp-execute-btn').innerText = "🔒 本張闖關卡已完成核銷";
+    document.getElementById('stamp-execute-btn').style.background = "#777";
     document.getElementById('submit-game-btn').disabled = true;
 }
 </script>
