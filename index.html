@@ -67,7 +67,7 @@
         .audio-track span { display: block; font-weight: bold; font-size: 14px; margin-bottom: 6px; color: #555; }
         audio { width: 100%; height: 32px; }
 
-        /* 🌐 Google 地圖外框優化 */
+        /* 🌐 Google 地圖外框修正 */
         .map-container-box {
             width: 100%; height: 350px; 
             border-radius: 12px;
@@ -75,7 +75,6 @@
             border: 2px solid var(--secondary-color);
             box-shadow: 0 4px 15px rgba(0,0,0,0.08);
             margin-bottom: 25px;
-            position: relative;
         }
         iframe { width: 100%; height: 100%; border: none; }
 
@@ -215,7 +214,7 @@
         <h3>📍 2. 觀察 Google 地圖並完成配對</h3>
         
         <div class="map-container-box">
-            <iframe src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m124.0347!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442a8f8e02d4c0b%3A0x6b13e2bb61bc1ba4!2zMjQ0OOS_oeeogee4o-iZp-WknOW4gg!5e0!3m2!1szh-TW!2stw!4v1716730000000!5m2!1szh-TW!2stw" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            <iframe src="https://maps.google.com/maps?q=新莊慈祐宮&hl=zh-TW&z=15&output=embed" allowfullscreen="" loading="lazy"></iframe>
         </div>
 
         <div class="match-zone" id="match-zone"></div>
@@ -241,13 +240,12 @@
 </div>
 
 <script>
-// 景點數據 + 新增文史故事解析欄位 (info)
 const spotsData = [
-    { id: 1, name: "新莊慈祐宮", audio: "廟宇-慈祐宮.m4a", info: "慈祐宮是新莊最古老的廟宇，建於清康熙年間（1729年）。主祀媽祖，見證了新莊作為大漢溪重要港口「新莊街」的黃金商貿時期，廟內的古匾與石雕充滿歷史價值。" },
-    { id: 2, name: "地藏庵(大眾廟)", audio: "廟宇-大眾廟 .m4a", info: "新莊地藏庵又稱大眾廟，建於清乾隆年間。主要奉祀地藏王菩薩與大眾爺，其「文武大眾爺祭典」（新莊大拜拜）是北台灣極具代表性的宗教盛事，也是當地的無形文化資產。" },
+    { id: 1, name: "新莊慈祐宮", audio: "廟宇-慈祐宮.m4a", info: "慈祐宮是新莊最古老的廟宇，建於清雍正九年（1731年）。主祀媽祖，見證了新莊作為大漢溪重要港口「新莊街」的黃金商貿時期，廟內的古匾與石雕充滿歷史價值。" },
+    { id: 2, name: "地藏庵(大眾廟)", audio: "廟宇-大眾廟 .m4a", info: "新莊地藏庵又稱大眾廟，建於清乾隆二十二年（1757年）。主要奉祀地藏王菩薩與大眾爺，其「文武大眾爺祭典」（新莊大拜拜）是北台灣極具代表性的宗教盛事，也是當地的無形文化資產。" },
     { id: 3, name: "輔仁大學(聖言樓)", audio: "輔仁大學_彌撒聲.mp3", info: "輔仁大學是台灣著名的天主教大學。音檔中的彌撒聲展現了校園內莊嚴平和的西方宗教儀式氛圍，聖言樓周邊更是充滿了多元文化融合的學術氣息。" },
     { id: 4, name: "新莊棒球場", audio: "新莊棒球場.mp3", info: "新莊棒球場是台灣職棒的重要基地，也是富邦悍將的主場。每到賽季，現場充滿震耳欲聾的應援打擊樂與球迷吶喊聲，是新莊現代活力與運動文化的象徵。" },
-    { id: 5, name: "新莊廟街夜市", audio: "新莊廟街夜市.mp3", top: "78%", left: "42%", info: "新莊廟街有「千帆泊靠」的美譽，白天是古蹟密布的文史老街，晚上則搖身一變成為熱鬧的夜市。傳統小吃如潤餅、鹹光餅、粿店等皆座落於此，叫賣聲不絕於耳。" },
+    { id: 5, name: "新莊廟街夜市", audio: "新莊廟街夜市.mp3", info: "新莊廟街有「千帆泊靠」的美譽，白天是古蹟密布的文史老街，晚上則搖身一變成為熱鬧的夜市。傳統小吃如潤餅、鹹光餅、粿店等皆座落於此，叫賣聲不絕於耳。" },
     { id: 6, name: "捷運新莊站", audio: "捷運橘線聲音.m4a", info: "台北捷運中和新蘆線（橘線）的通車，讓新莊與雙北生活圈緊密相連。進站音樂與車廂廣播聲，是新莊通勤族每天最熟悉的城市現代生活交響樂。" },
     { id: 7, name: "中港大排", audio: "中港大排(幸福路上） .mp3", info: "中港大排過去曾是黑水溝，經過整治後華麗轉身為「台版清溪川」。沿著幸福路段漫步，可以聽見淙淙流水聲與綠帶鳥鳴，是新莊市民引以為傲的親水親綠空間。" },
     { id: 8, name: "化成路(異國美食街)", audio: "化成路 蓮花泰式小吃店 音檔.mp3", info: "化成路周邊由於早期工業區聚集了許多東南亞移工，逐漸發展出極具特色的泰國、越南小吃街。店家播放的家鄉樂曲與泰語點餐聲，展現了新莊包容的多元飲食文化。" }
@@ -284,13 +282,11 @@ function renderGame(displayOrder) {
         const questionName = `🎵 第 ${index + 1} 題`;
         spot.displayQuestionName = questionName; 
 
-        // 生成左側音檔
         const track = document.createElement('div');
         track.className = 'audio-track';
         track.innerHTML = `<span>${questionName}</span><audio controls src="${spot.audio}"></audio>`;
         audioListDiv.appendChild(track);
 
-        // 生成下方配對
         const row = document.createElement('div');
         row.className = 'match-row';
         row.innerHTML = `
@@ -359,7 +355,6 @@ function submitGame() {
         }
     });
 
-    // 👑 更新大數字得分顯示
     const scoreBigElem = document.getElementById('win-score-big');
     scoreBigElem.innerText = `${correctCount} / ${targetScore}`;
     if(correctCount === targetScore) {
@@ -370,7 +365,6 @@ function submitGame() {
 
     document.getElementById('report-zone').innerHTML = reportHtml;
 
-    // 判斷給獎門檻
     if (correctCount === targetScore) {
         document.getElementById('win-title-text').innerText = "🎉 完美過關！";
         if (targetScore === 3) {
