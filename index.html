@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🎧 聽音辨位：新莊聲音地圖挑戰賽</title>
+    <title>聽音辨位：新莊聲音地圖挑戰賽</title>
     <style>
         :root {
             --primary-color: #9E2A2B; /* 廟宇磚紅 */
@@ -28,16 +28,8 @@
             min-height: 100vh;
         }
 
-        /* 💡 標題視覺質感大強化 */
-        header { text-align: center; margin: 25px 0 20px 0; max-width: 650px; width: 100%; }
-        h1 { 
-            color: var(--primary-color); 
-            font-size: 2.1rem; 
-            font-weight: 900; 
-            letter-spacing: 2px;
-            text-shadow: 1px 1px 0px rgba(224, 159, 62, 0.2);
-            margin-bottom: 15px; 
-        }
+        header { text-align: center; margin: 20px 0; max-width: 600px; width: 100%; }
+        h1 { color: var(--primary-color); font-size: 1.8rem; margin-bottom: 12px; font-weight: bold; }
         
         .instructions-board {
             background: var(--card-bg); padding: 18px; border-radius: 14px;
@@ -104,15 +96,7 @@
             padding: 24px; width: 100%; max-width: 950px; margin: 25px 0 20px 0; position: relative;
             transition: all 0.3s ease;
         }
-        
-        /* 💡 沒達標時的灰白鎖定狀態 */
-        .staff-panel.disabled-panel {
-            background: #F2F1ED !important;
-            border-color: #A3A29E !important;
-            opacity: 0.65;
-            box-shadow: none !important;
-        }
-
+        .staff-panel.disabled-panel { background: #F2F1ED !important; border-color: #A3A29E !important; opacity: 0.65; box-shadow: none !important; }
         .staff-header { color: var(--primary-color); font-weight: 900; font-size: 16px; text-align: center; border-bottom: 2px dashed var(--secondary-color); padding-bottom: 12px; margin-bottom: 20px; }
         .staff-panel.disabled-panel .staff-header { color: #555; border-bottom-color: #A3A29E; }
 
@@ -130,7 +114,6 @@
 
         .stamp-btn { background: #2F3E46; color: white; border: none; padding: 14px 20px; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 15px; width: 100%; }
         
-        /* 💡 沒達標時顯著的警告橫條提示 */
         .retry-alert-box {
             background-color: #FFEBEE; border: 1.5px solid var(--danger-color); color: var(--danger-color);
             padding: 14px; border-radius: 10px; font-weight: bold; font-size: 14px; text-align: center;
@@ -162,8 +145,8 @@
 </div>
 
 <header>
-    <!-- 💡 1. 改名為新指定大標題 -->
-    <h1>大使出任務，解鎖新莊聲</h1>
+    <!-- 💡 標題已完美回復至原本設定 -->
+    <h1>新莊聲音地圖大挑戰</h1>
     <div class="instructions-board">
         <div class="board-title">📋 現行關卡機制與進度說明</div>
         <p style="font-size:13px; color:#555; line-height:1.5;">請先透過下方 <b>Google 互動地圖</b> 縮放觀察新莊區域。聽完聲音後直接在正下方的選單完成答案配對，填完送出並填寫簡短問卷即可解鎖核銷領獎！</p>
@@ -291,12 +274,12 @@
     <button class="submit-btn" id="submit-survey-btn" onclick="saveSurveyData()" style="background:#777;" disabled>🔒 請完成上述所有的星號必填題</button>
 </div>
 
-<!-- 💡 2. 工作人員核銷面板區（加入未達標準灰白防呆） -->
+<!-- 工作人員核銷面板區 -->
 <div class="staff-panel" id="final-staff-panel" style="display:none;">
     <div class="stamp-overlay" id="verification-stamp">已兌獎</div>
     <div class="staff-header">🔒 現場工作人員領獎核銷明細單</div>
     
-    <!-- 💡 沒達標時動態跳出的灰白警告條 -->
+    <!-- 沒達標時動態跳出的灰白警告條 -->
     <div id="retry-alert-zone" class="retry-alert-box" style="display:none;">
         💡 提示：本張闖關卡未達兌獎門檻。<br>歡迎重新整理網頁，即可再次重新挑戰一次喔！
     </div>
@@ -308,7 +291,6 @@
         <div class="v-row"><div class="v-label">● 應發放獎品</div><div class="v-value prize-highlight" id="summary-prize">尚未抽獎</div></div>
     </div>
     
-    <!-- 💡 核銷按鈕（沒達標時在 JS 會被自動隱藏，不會被誤按） -->
     <button class="stamp-btn" id="stamp-execute-btn" onclick="applyVerificationStamp()">確認發放實體獎品 ➡️ 現場蓋章銷帳</button>
     <center><button class="csv-btn" onclick="exportWithPassword()">📊 導出本台設備所有統計報表 (CSV)</button></center>
 </div>
@@ -481,7 +463,6 @@ function saveSurveyData() {
     goToVerification();
 }
 
-// 💡 2. 核心邏輯優化：未達標直接灰白卡片、隱藏按鈕、跳出再挑戰提示
 function goToVerification() {
     const panel = document.getElementById('final-staff-panel');
     const alertBox = document.getElementById('retry-alert-zone');
@@ -491,18 +472,15 @@ function goToVerification() {
     document.getElementById('summary-mode').innerText = targetScore === 3 ? '體驗版 (精選 3 個景點)' : '達人挑戰版 (挑戰 8 個景點)';
     document.getElementById('summary-score').innerText = `${finalCorrectCount} / ${targetScore} 題`;
     
-    // 判斷是否符合過關門檻（體驗版3/3、達人版>=6）
     const isQualified = (targetScore === 3 && finalCorrectCount === 3) || (targetScore === 8 && finalCorrectCount >= 6);
 
     if (isQualified) {
-        // 符合資格：恢復正常彩色、顯示抽到的獎品、顯示核銷章按鈕
         panel.classList.remove('disabled-panel');
         alertBox.style.display = 'none';
         stampBtn.style.display = 'block';
         prizeCell.innerText = finalPrizeName;
         prizeCell.className = "v-value prize-highlight";
     } else {
-        // ❌ 不符合資格：強制卡片變灰、隱藏核銷按鈕、跳出紅色重新挑戰警告
         panel.classList.add('disabled-panel');
         alertBox.style.display = 'block';
         stampBtn.style.display = 'none';
