@@ -12,6 +12,7 @@
             --card-bg: #FFFFFF;
             --text-color: #333333;
             --success-color: #388E3C;
+            --danger-color: #D32F2F;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -66,14 +67,12 @@
         .audio-track span { display: block; font-weight: bold; font-size: 14px; margin-bottom: 6px; color: #555; }
         audio { width: 100%; height: 32px; }
 
-        /* 🗺️ 實體化地圖區塊優化 */
         .map-mock {
             width: 100%; height: 320px; 
-            /* 💡 在這裡引入你畫的地圖！如果圖檔叫 map.jpg，放同資料夾就會自動套用 */
             background-image: url('map.jpg'); 
             background-size: cover;
             background-position: center;
-            background-color: #EAE6DF; /* 若沒圖檔，維持原本灰色背景 */
+            background-color: #EAE6DF; 
             border-radius: 12px;
             position: relative; margin-bottom: 25px; border: 2px solid var(--secondary-color);
             box-shadow: 0 4px 15px rgba(0,0,0,0.08);
@@ -82,11 +81,9 @@
         .map-hint {
             position: absolute; top: 10px; left: 10px; color: white;
             font-size: 12px; font-weight: bold; background: var(--primary-color);
-            padding: 4px 10px; border-radius: 6px; box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            z-index: 10;
+            padding: 4px 10px; border-radius: 6px; z-index: 10;
         }
 
-        /* 地圖上的景點標記：改為更文青精緻的定位標籤 */
         .spot-marker {
             position: absolute; background: rgba(255, 255, 255, 0.95); color: #333;
             border: 1.5px solid var(--primary-color); padding: 5px 10px;
@@ -111,14 +108,23 @@
         select {
             padding: 8px 12px; border-radius: 8px; border: 1.5px solid #CCC;
             font-size: 13px; background: white; outline: none; width: 170px; cursor: pointer;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
         }
         select.correct {
-            background-color: #E8F5E9; color: var(--success-color);
-            border-color: var(--success-color); font-weight: bold;
+            background-color: #E8F5E9; color: var(--success-color); border-color: var(--success-color); font-weight: bold;
+        }
+        select.wrong {
+            background-color: #FFEBEE; color: var(--danger-color); border-color: var(--danger-color);
         }
 
-        /* 彈窗樣式 (通用) */
+        /* 終局送出按鈕 */
+        .submit-btn {
+            background: var(--primary-color); color: white; border: none; padding: 12px;
+            border-radius: 8px; font-size: 15px; font-weight: bold; cursor: pointer; width: 100%;
+            margin-top: 15px; transition: 0.2s; box-shadow: 0 4px 10px rgba(158, 42, 43, 0.2);
+        }
+        .submit-btn:hover { background: #822223; }
+
+        /* 彈窗樣式 */
         .modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(40, 30, 24, 0.6); backdrop-filter: blur(5px);
@@ -126,38 +132,46 @@
         }
         .modal-content {
             background: white; padding: 30px; border-radius: 24px; text-align: center;
-            max-width: 400px; width: 90%; box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-            border: 3px solid var(--secondary-color);
+            max-width: 440px; width: 90%; max-height: 85vh; overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.25); border: 3px solid var(--secondary-color);
         }
         
-        /* 模式選擇鈕 */
         .mode-btn {
-            background: var(--primary-color); color: white; border: none;
-            padding: 16px 20px; border-radius: 14px; cursor: pointer; font-weight: bold;
-            font-size: 16px; margin: 12px 0; width: 100%; display: block; transition: 0.2s;
-            box-shadow: 0 4px 10px rgba(158, 42, 43, 0.2);
+            background: var(--primary-color); color: white; border: none; padding: 16px 20px;
+            border-radius: 14px; cursor: pointer; font-weight: bold; font-size: 16px;
+            margin: 12px 0; width: 100%; display: block; transition: 0.2s;
         }
-        .mode-btn.light { background: #4A5759; box-shadow: 0 4px 10px rgba(74, 87, 89, 0.2); }
-        .mode-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(0,0,0,0.15); }
+        .mode-btn.light { background: #4A5759; }
+        .mode-btn:hover { transform: translateY(-2px); }
 
         .prize-box {
-            background: var(--bg-color); padding: 14px; border-radius: 12px;
+            background: var(--bg-color); padding: 12px; border-radius: 12px;
             font-size: 16px; font-weight: bold; color: var(--primary-color);
-            margin: 18px 0; border: 1px dashed var(--secondary-color);
+            margin: 15px 0; border: 1px dashed var(--secondary-color);
         }
+        
+        /* 📋 核對清單專用樣式 */
+        .report-card {
+            text-align: left; background: #F9F8F6; padding: 15px; border-radius: 12px;
+            margin: 15px 0; border: 1px solid #EAE6DF;
+        }
+        .report-item {
+            display: flex; align-items: flex-start; gap: 8px; margin-bottom: 10px;
+            font-size: 13px; line-height: 1.4; border-bottom: 1px dashed #EAE6DF; padding-bottom: 8px;
+        }
+        .report-item:last-child { margin-bottom: 0; border-bottom: none; padding-bottom: 0; }
+        .badge-success { color: var(--success-color); font-weight: bold; }
+        .badge-danger { color: var(--danger-color); font-weight: bold; }
+
         .close-btn {
             background: var(--primary-color); color: white; border: none;
             padding: 12px 30px; border-radius: 25px; cursor: pointer; font-weight: bold;
         }
-        
-        .score-board {
-            font-size: 15px; font-weight: bold; color: var(--primary-color); margin-top: 6px;
-        }
+        .score-board { font-size: 15px; font-weight: bold; color: var(--primary-color); margin-top: 6px; }
     </style>
 </head>
 <body>
 
-<!-- 初始模式選擇彈窗 -->
 <div class="modal" id="modeModal" style="display: flex;">
     <div class="modal-content">
         <h2 style="color: var(--primary-color); margin-bottom: 15px;">📜 請選擇遊玩模式</h2>
@@ -178,99 +192,100 @@
 <header>
     <h1>🎧 新莊聲音地圖大挑戰</h1>
     <div class="instructions">
-        <strong>🎁 遊戲玩法：</strong> 依序點擊左側播放鈕聆聽新莊的聲音，並在右側地圖與下拉選單中為每個聲音找到它對應的正确景點地點。
+        <strong>🎁 遊戲玩法：</strong> 依序點擊左側播放鈕聆聽新莊的聲音，並在右側地圖與下方選單中為每個題目找到它對應的正确地點。
         <br>
         <div class="mode-badge" id="current-mode-text">模式：載入中...</div>
-        <div class="score-board" id="score-text">目前得分：0 題</div>
+        <div class="score-board" id="score-text">答題進度：0 題</div>
     </div>
 </header>
 
 <div class="game-container">
-    <!-- 左側：音檔聆聽區 -->
     <div class="section-card">
         <h3>🎵 1. 聆聽在地聲音線索</h3>
         <div class="audio-list" id="audio-list"></div>
     </div>
     
-    <!-- 右側：配對與地圖區 -->
     <div class="section-card">
         <h3>📍 2. 對照地圖完成配對</h3>
         <div class="map-mock" id="map">
             <div class="map-hint">🧭 新莊區實體文史地圖</div>
         </div>
         <div class="match-zone" id="match-zone"></div>
+        <button class="submit-btn" id="submit-game-btn" onclick="submitGame()" style="display:none;">📤 寫好了！送出答案核對</button>
     </div>
 </div>
 
-<!-- 獲獎彈窗 -->
 <div class="modal" id="winModal">
     <div class="modal-content">
-        <h2>🎉 恭喜任務完成！</h2>
-        <p id="win-p-text">你成功分辨出了新莊的聲音故事！</p>
+        <h2 id="win-title-text">🎉 挑戰完成！</h2>
+        <p style="font-size: 15px; font-weight: bold; margin-top: 5px;" id="win-score-summary"></p>
+        
+        <div class="report-card" id="report-zone"></div>
+
         <div class="prize-box" id="prize-text">🎁 獎品換取中...</div>
         <button class="close-btn" onclick="closeModal()">太棒了</button>
     </div>
 </div>
 
 <script>
-// 基礎景點數據
 const spotsData = [
-    { id: 1, name: "新莊慈祐宮", audio: "廟宇-慈祐宮.m4a", top: "72%", left: "22%", soundName: "🔊 聲音 A" },
-    { id: 2, name: "地藏庵(大眾廟)", audio: "廟宇-大眾廟 .m4a", top: "25%", left: "75%", soundName: "🔊 聲音 B" },
-    { id: 3, name: "輔仁大學(聖言樓)", audio: "輔仁大學_彌撒聲.mp3", top: "45%", left: "18%", soundName: "🔊 聲音 C" },
-    { id: 4, name: "新莊棒球場", audio: "新莊棒球場.mp3", top: "22%", left: "45%", soundName: "🔊 聲音 D" },
-    { id: 5, name: "新莊廟街夜市", audio: "新莊廟街夜市.mp3", top: "78%", left: "42%", soundName: "🔊 聲音 E" },
-    { id: 6, name: "捷運新莊站", audio: "捷運橘線聲音.m4a", top: "55%", left: "50%", soundName: "🔊 聲音 F" },
-    { id: 7, name: "中港大排", audio: "中港大排(幸福路上） .mp3", top: "40%", left: "65%", soundName: "🔊 聲音 G" },
-    { id: 8, name: "化成路(異國美食街)", audio: "化成路 蓮花泰式小吃店 音檔.mp3", top: "60%", left: "82%", soundName: "🔊 聲音 H" }
+    { id: 1, name: "新莊慈祐宮", audio: "廟宇-慈祐宮.m4a", top: "72%", left: "22%" },
+    { id: 2, name: "地藏庵(大眾廟)", audio: "廟宇-大眾廟 .m4a", top: "25%", left: "75%" },
+    { id: 3, name: "輔仁大學(聖言樓)", audio: "輔仁大學_彌撒聲.mp3", top: "45%", left: "18%" },
+    { id: 4, name: "新莊棒球場", audio: "新莊棒球場.mp3", top: "22%", left: "45%" },
+    { id: 5, name: "新莊廟街夜市", audio: "新莊廟街夜市.mp3", top: "78%", left: "42%" },
+    { id: 6, name: "捷運新莊站", audio: "捷運橘線聲音.m4a", top: "55%", left: "50%" },
+    { id: 7, name: "中港大排", audio: "中港大排(幸福路上） .mp3", top: "40%", left: "65%" },
+    { id: 8, name: "化成路(異國美食街)", audio: "化成路 蓮花泰式小吃店 音檔.mp3", top: "60%", left: "82%" }
 ];
 
 let targetScore = 8; 
-let currentScore = 0; 
-let activeSpots = []; // 實際要玩的題目
+let activeSpots = []; 
 
 const audioListDiv = document.getElementById('audio-list');
 const matchZoneDiv = document.getElementById('match-zone');
 const mapDiv = document.getElementById('map');
 
-// 選擇模式
 function selectMode(count) {
     targetScore = count;
     document.getElementById('modeModal').style.display = 'none';
     
-    // 🎲 核心優化：如果選 3 題，就從 8 個景點中隨機抽 3 個出來當題目！
+    // 隨機抽選與題目數量對齊
     const shuffled = [...spotsData].sort(() => Math.random() - 0.5);
     activeSpots = shuffled.slice(0, targetScore);
     
-    // 為了讓播放列表外觀也是亂序
+    // 重新排序讓題目在畫面呈亂序
     const displayOrder = [...activeSpots].sort(() => Math.random() - 0.5);
 
     if(count === 3) {
-        document.getElementById('current-mode-text').innerText = "🎯 當前目標：體驗版 (隨機 3 題挑戰)";
-        document.getElementById('score-text').innerText = "目前得分：0 / 3 題";
+        document.getElementById('current-mode-text').innerText = "🎯 體驗版 (隨機 3 題挑戰)";
+        document.getElementById('score-text').innerText = "答題進度：已填寫 0 / 3 題";
     } else {
-        document.getElementById('current-mode-text').innerText = "🏆 當前目標：達人版 (全數 8 題挑戰)";
-        document.getElementById('score-text').innerText = "Thread得分：0 / 8 題";
+        document.getElementById('current-mode-text').innerText = "🏆 達人版 (全數 8 題挑戰)";
+        document.getElementById('score-text').innerText = "答題進度：已填寫 0 / 8 題";
     }
     
-    // 開始渲染網頁畫面
     renderGame(displayOrder);
 }
 
 function renderGame(displayOrder) {
-    displayOrder.forEach((spot) => {
+    displayOrder.forEach((spot, index) => {
+        // 💡 關鍵優化一：將「聲音 A」改為動態生成的「第 1 題」、「第 2 題」
+        const questionName = `🎵 第 ${index + 1} 題`;
+        spot.displayQuestionName = questionName; // 暫存名稱供後續核對報告使用
+
         // 生成左側音檔元件
         const track = document.createElement('div');
         track.className = 'audio-track';
-        track.innerHTML = `<span>${spot.soundName}</span><audio controls src="${spot.audio}"></audio>`;
+        track.innerHTML = `<span>${questionName}</span><audio controls src="${spot.audio}"></audio>`;
         audioListDiv.appendChild(track);
 
-        // 生成下方配對選單 (選單內依然包含所有 8 個選項供填答)
+        // 生成下方配對選單
         const row = document.createElement('div');
         row.className = 'match-row';
         row.innerHTML = `
-            <span>${spot.soundName} 的出處？</span>
-            <select id="select-${spot.id}" onchange="checkAnswer(${spot.id})">
+            <span>${questionName} 的正確地點是？</span>
+            <select id="select-${spot.id}" onchange="updateProgress()">
                 <option value="">請選擇景點...</option>
                 ${spotsData.map(s => `<option value="${s.id}">${s.name}</option>`).join('')}
             </select>
@@ -278,7 +293,7 @@ function renderGame(displayOrder) {
         matchZoneDiv.appendChild(row);
     });
 
-    // 渲染地圖上的景點標記 (為了方便對照，無論哪種模式地圖上都會顯示所有 8 個點位)
+    // 渲染地圖上的景點標記
     spotsData.forEach(spot => {
         const marker = document.createElement('div');
         marker.className = 'spot-marker';
@@ -290,43 +305,85 @@ function renderGame(displayOrder) {
     });
 }
 
-function checkAnswer(spotId) {
-    const selectElem = document.getElementById(`select-${spotId}`);
-    const markerElem = document.getElementById(`marker-${spotId}`);
+// 即時追蹤民眾填寫了幾題，填完才顯示送出按鈕
+function updateProgress() {
+    const allSelects = document.querySelectorAll('#match-zone select');
+    let filledCount = 0;
+    allSelects.forEach(select => { if(select.value !== "") filledCount++; });
     
-    if (parseInt(selectElem.value) === spotId) {
-        selectElem.className = 'correct';
-        selectElem.disabled = true;
-        if (markerElem) {
-            markerElem.classList.add('matched');
-            markerElem.innerText = `✓ ${markerElem.innerText.replace('✓ ', '')}`;
-        }
-        
-        currentScore++;
-        document.getElementById('score-text').innerText = `目前得分：${currentScore} / ${targetScore} 題`;
-        
-        checkWinCondition();
+    document.getElementById('score-text').innerText = `答題進度：已填寫 ${filledCount} / ${targetScore} 題`;
+    
+    // 當目標題目全部填選完畢，跳出「送出答案」的按鈕
+    if(filledCount === targetScore) {
+        document.getElementById('submit-game-btn').style.display = 'block';
     } else {
-        selectElem.className = '';
+        document.getElementById('submit-game-btn').style.display = 'none';
     }
 }
 
-function checkWinCondition() {
-    if (currentScore >= targetScore) {
-        if (targetScore === 3) {
-            document.getElementById('win-p-text').innerText = "太棒了！你已經成功認識了 3 個新莊在地聲音景點！";
-            document.getElementById('prize-text').innerText = "🎁 請向導覽員出示此畫面領取「小包餅乾」！";
+// 💡 關鍵優化二：點擊送出後進行「總核對過程」，並計算對了幾題
+function submitGame() {
+    let correctCount = 0;
+    let reportHtml = "";
+
+    activeSpots.forEach((spot) => {
+        const selectElem = document.getElementById(`select-${spot.id}`);
+        const markerElem = document.getElementById(`marker-${spot.id}`);
+        const userChoose = parseInt(selectElem.value);
+        
+        selectElem.disabled = true; // 核對後鎖定欄位
+
+        if (userChoose === spot.id) {
+            // 答對了
+            correctCount++;
+            selectElem.className = 'correct';
+            if (markerElem) {
+                markerElem.classList.add('matched');
+                if(!markerElem.innerText.startsWith('✓')) markerElem.innerText = `✓ ${markerElem.innerText}`;
+            }
+            // 寫入報告
+            reportHtml += `
+                <div class="report-item">
+                    <span class="badge-success">🟢 ${spot.displayQuestionName} 答對！</span>
+                    <span>地點：${spot.name}</span>
+                </div>
+            `;
         } else {
-            document.getElementById('win-p-text').innerText = "太厲害了！你完美分辨出了全數 8 個新莊的聲音故事！";
-            document.getElementById('prize-text').innerText = "🎁 請向導覽員出示此畫面領取「精美導覽大禮物」！";
+            // 答錯了
+            selectElem.className = 'wrong';
+            // 找出民眾選錯的那個名字
+            const wrongSpotObj = spotsData.find(s => s.id === userChoose);
+            const wrongName = wrongSpotObj ? wrongSpotObj.name : "未選擇";
+            
+            // 寫入報告
+            reportHtml += `
+                <div class="report-item">
+                    <span class="badge-danger">🔴 ${spot.displayQuestionName} 答錯</span>
+                    <span>您選了「${wrongName}」<br><small style="color:#777;">正確答案應為：${spot.name}</small></span>
+                </div>
+            `;
         }
-        
-        document.querySelectorAll('#match-zone select').forEach(select => select.disabled = true);
-        
-        setTimeout(() => {
-            document.getElementById('winModal').style.display = 'flex';
-        }, 300);
+    });
+
+    // 處理與顯示核對清單彈窗
+    document.getElementById('win-score-summary').innerText = `核對結果：您總共答對了 ${correctCount} / ${targetScore} 題！`;
+    document.getElementById('report-zone').innerHTML = reportHtml;
+
+    // 判斷是否符合領獎門檻
+    if (correctCount === targetScore) {
+        document.getElementById('win-title-text').innerText = "🎉 完美過關！";
+        if (targetScore === 3) {
+            document.getElementById('prize-text').innerText = "🎁 太棒了！請向導覽員出示此畫面領取「小包餅乾」！";
+        } else {
+            document.getElementById('prize-text').innerText = "🎁 絕頂聰明！請向導覽員出示此畫面領取「精美大禮物」！";
+        }
+    } else {
+        document.getElementById('win-title-text').innerText = "💪 再接再厲！";
+        document.getElementById('prize-text').innerText = "❌ 尚未達到全對門檻，可以重新整理網頁再次挑戰喔！";
     }
+
+    // 顯示結果視窗
+    document.getElementById('winModal').style.display = 'flex';
 }
 
 function closeModal() { document.getElementById('winModal').style.display = 'none'; }
