@@ -67,38 +67,17 @@
         .audio-track span { display: block; font-weight: bold; font-size: 14px; margin-bottom: 6px; color: #555; }
         audio { width: 100%; height: 32px; }
 
-        /* 🗺️ 實體化文創地圖區塊 */
-        .map-mock {
-            width: 100%; height: 350px; 
-            /* 💡 請將你畫的地圖截圖命名為 map.jpg 放同資料夾，就會自動變成背景 */
-            background-image: url('map.jpg'); 
-            background-size: cover;
-            background-position: center;
-            background-color: #EAE6DF; /* 如果沒有圖檔，會維持原本經典灰色 */
+        /* 🌐 真正的 Google 互動地圖外框，優化手勢與邊框 */
+        .map-container-box {
+            width: 100%; height: 380px; 
             border-radius: 12px;
-            position: relative; margin-bottom: 25px; border: 2px solid var(--secondary-color);
+            overflow: hidden;
+            border: 2px solid var(--secondary-color);
             box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            margin-bottom: 25px;
+            position: relative;
         }
-
-        .map-hint {
-            position: absolute; top: 10px; left: 10px; color: white;
-            font-size: 12px; font-weight: bold; background: var(--primary-color);
-            padding: 4px 10px; border-radius: 6px; z-index: 10;
-        }
-
-        /* 📍 精緻定位大頭針標籤（完美浮動在你的地圖上方） */
-        .spot-marker {
-            position: absolute; background: rgba(255, 255, 255, 0.95); color: #333;
-            border: 2px solid var(--primary-color); padding: 5px 10px;
-            border-radius: 8px; font-size: 11px; font-weight: bold;
-            box-shadow: 0 3px 8px rgba(0,0,0,0.15); transform: translate(-50%, -50%);
-            white-space: nowrap; transition: all 0.3s ease;
-            z-index: 5;
-        }
-        .spot-marker.matched {
-            background: var(--success-color); color: white; border-color: var(--success-color);
-            transform: translate(-50%, -50%) scale(1.05);
-        }
+        iframe { width: 100%; height: 100%; border: none; }
 
         .match-zone { display: flex; flex-direction: column; gap: 10px; }
         .match-row {
@@ -209,7 +188,7 @@
 <header>
     <h1>🎧 新莊聲音地圖大挑戰</h1>
     <div class="instructions">
-        <strong>🎁 遊戲玩法：</strong> 依序點擊左側播放鈕聆聽新莊的聲音，並透過右側的地圖觀察環境，最後在下方選單選出正確地點。
+        <strong>🎁 遊戲玩法：</strong> 依序點擊左側播放鈕聆聽新莊的聲音，並透過右側的 <b>Google 互動地圖</b> 放大移動觀察環境，最後在下方選單選出正確地點。
         <br>
         <div class="mode-badge" id="current-mode-text">模式：載入中...</div>
         <div class="score-board" id="score-text">答題進度：0 題</div>
@@ -223,10 +202,10 @@
     </div>
     
     <div class="section-card">
-        <h3>📍 2. 對照地圖並完成配對</h3>
+        <h3>📍 2. 觀察互動地圖並完成配對</h3>
         
-        <div class="map-mock" id="map-mock-zone">
-            <div class="map-hint">🧭 新莊區文史地圖</div>
+        <div class="map-container-box">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m12!1m3!1d14459.718610534571!2d121.43445914561001!3d25.036449176374945!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1z5paw6I6K5oWI56WC5b6p!5e0!3m2!1szh-TW!2stw!4v1716744000000!5m2!1szh-TW!2stw" allowfullscreen="" loading="lazy"></iframe>
         </div>
 
         <div class="match-zone" id="match-zone"></div>
@@ -254,14 +233,14 @@
 <script>
 // 景點歷史文史小解析資料庫
 const spotsData = [
-    { id: 1, name: "新莊慈祐宮", audio: "廟宇-慈祐宮.m4a", top: "72%", left: "28%", info: "慈祐宮是新莊最古老的廟宇，建於清雍正九年（1731年）。主祀媽祖，見證了新莊作為大漢溪重要港口「新莊街」的黃金商貿時期，廟內的古匾與石雕充滿歷史價值。" },
-    { id: 2, name: "地藏庵(大眾廟)", audio: "廟宇-大眾廟 .m4a", top: "25%", left: "75%", info: "新莊地藏庵又稱大眾廟，建於清乾隆二十二年（1757年）。主要奉祀地藏王菩薩與大眾爺，其「文武大眾爺祭典」（新莊大拜拜）是北台灣極具代表性的宗教盛事，也是當地的無形文化資產。" },
-    { id: 3, name: "輔仁大學(聖言樓)", audio: "輔仁大學_彌撒聲.mp3", top: "45%", left: "18%", info: "輔仁大學是台灣著名的天主教大學。音檔中的彌撒聲展現了校園內莊嚴平和的西方宗教儀式氛圍，聖言樓周邊更是充滿了多元文化融合的學術氣息。" },
-    { id: 4, name: "新莊棒球場", audio: "新莊棒球場.mp3", top: "22%", left: "45%", info: "新莊棒球場是台灣職棒的重要基地，也是富邦悍將的主場。每到賽季，現場充滿震耳欲聾的應援打擊樂與球迷呐喊聲，是新莊現代活力與運動文化的象徵。" },
-    { id: 5, name: "新莊廟街夜市", audio: "新莊廟街夜市.mp3", top: "78%", left: "42%", info: "新莊廟街有「千帆泊靠」的美譽，白天是古蹟密布的文史老街，晚上則搖身一變成為熱鬧的夜市。傳統小吃如潤餅、鹹光餅、粿店等皆座落於此，叫賣聲不絕於耳。" },
-    { id: 6, name: "捷運新莊站", audio: "捷運橘線聲音.m4a", top: "55%", left: "50%", info: "台北捷運中和新蘆線（橘線）的通車，讓新莊與雙北生活圈緊密相連。進站音樂與車廂廣播聲，是新莊通勤族每天最熟悉的城市現代生活交響樂。" },
-    { id: 7, name: "中港大排", audio: "中港大排(幸福路上） .mp3", top: "40%", left: "65%", info: "中港大排過去曾死黑水溝，經過整治後華麗轉身為「台版清溪川」。沿著幸福路段漫步，可以聽見淙淙流水聲與綠帶鳥鳴，是新莊市民引以為傲的親水親綠空間。" },
-    { id: 8, name: "化成路(異國美食街)", audio: "化成路 蓮花泰式小吃店 音檔.mp3", top: "60%", left: "82%", info: "化成路周邊由於早期工業區聚集了許多東南亞移工，逐漸發展出極具特色的泰國、越南小吃街。店家播放的家鄉樂曲與泰語點餐聲，展現了新莊包容的多元飲食文化。" }
+    { id: 1, name: "新莊慈祐宮", audio: "廟宇-慈祐宮.m4a", info: "慈祐宮是新莊最古老的廟宇，建於清雍正九年（1731年）。主祀媽祖，見證了新莊作為大漢溪重要港口「新莊街」的黃金商貿時期，廟內的古匾與石雕充滿歷史價值。" },
+    { id: 2, name: "地藏庵(大眾廟)", audio: "廟宇-大眾廟 .m4a", info: "新莊地藏庵又稱大眾廟，建於清乾隆二十二年（1757年）。主要奉祀地藏王菩薩與大眾爺，其「文武大眾爺祭典」（新莊大拜拜）是北台灣極具代表性的宗教盛事，也是當地的無形文化資產。" },
+    { id: 3, name: "輔仁大學(聖言樓)", audio: "輔仁大學_彌撒聲.mp3", info: "輔仁大學是台灣著名的天主教大學。音檔中的彌撒聲展現了校園內莊嚴平和的西方宗教儀式氛圍，聖言樓周邊更是充滿了多元文化融合的學術氣息。" },
+    { id: 4, name: "新莊棒球場", audio: "新莊棒球場.mp3", info: "新莊棒球場是台灣職棒的重要基地，也是富邦悍將的主場。每到賽季，現場充滿震耳欲聾的應援打擊樂與球迷呐喊聲，是新莊現代活力與運動文化的象徵。" },
+    { id: 5, name: "新莊廟街夜市", audio: "新莊廟街夜市.mp3", info: "新莊廟街有「千帆泊靠」的美譽，白天是古蹟密布的文史老街，晚上則搖身一變成為熱鬧的夜市。傳統小吃如潤餅、鹹光餅、粿店等皆座落於此，叫賣聲不絕於耳。" },
+    { id: 6, name: "捷運新莊站", audio: "捷運橘線聲音.m4a", info: "台北捷運中和新蘆線（橘線）的通車，讓新莊與雙北生活圈緊密相連。進站音樂與車廂廣播聲，是新莊通勤族每天最熟悉的城市現代生活交響樂。" },
+    { id: 7, name: "中港大排", audio: "中港大排(幸福路上） .mp3", info: "中港大排過去曾是黑水溝，經過整治後華麗轉身為「台版清溪川」。沿著幸福路段漫步，可以聽見淙淙流水聲與綠帶鳥鳴，是新莊市民引以為傲的親水親綠空間。" },
+    { id: 8, name: "化成路(異國美食街)", audio: "化成路 蓮花泰式小吃店 音檔.mp3", info: "化成路周邊由於早期工業區聚集了許多東南亞移工，逐漸發展出極具特色的泰國、越南小吃街。店家播放的家鄉樂曲與泰語點餐聲，展現了新莊包容的多元飲食文化。" }
 ];
 
 let targetScore = 8; 
@@ -269,12 +248,12 @@ let activeSpots = [];
 
 const audioListDiv = document.getElementById('audio-list');
 const matchZoneDiv = document.getElementById('match-zone');
-const mapMockZone = document.getElementById('map-mock-zone');
 
 function selectMode(count) {
     targetScore = count;
     document.getElementById('modeModal').style.display = 'none';
     
+    // 隨機篩選題目數量
     const shuffled = [...spotsData].sort(() => Math.random() - 0.5);
     activeSpots = shuffled.slice(0, targetScore);
     
@@ -314,17 +293,6 @@ function renderGame(displayOrder) {
         `;
         matchZoneDiv.appendChild(row);
     });
-
-    // 📍 生成 8 個浮動大頭針標籤
-    spotsData.forEach(spot => {
-        const marker = document.createElement('div');
-        marker.className = 'spot-marker';
-        marker.id = `marker-${spot.id}`;
-        marker.style.top = spot.top;
-        marker.style.left = spot.left;
-        marker.innerText = spot.name;
-        mapMockZone.appendChild(marker);
-    });
 }
 
 function updateProgress() {
@@ -347,7 +315,6 @@ function submitGame() {
 
     activeSpots.forEach((spot) => {
         const selectElem = document.getElementById(`select-${spot.id}`);
-        const markerElem = document.getElementById(`marker-${spot.id}`);
         const userChoose = parseInt(selectElem.value);
         
         selectElem.disabled = true; 
@@ -355,10 +322,6 @@ function submitGame() {
         if (userChoose === spot.id) {
             correctCount++;
             selectElem.className = 'correct';
-            if (markerElem) {
-                markerElem.classList.add('matched');
-                if(!markerElem.innerText.startsWith('✓')) markerElem.innerText = `✓ ${markerElem.innerText}`;
-            }
             reportHtml += `
                 <div class="report-item">
                     <div class="report-item-header">
