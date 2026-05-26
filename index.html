@@ -40,7 +40,6 @@
             padding: 4px 12px; border-radius: 20px; font-weight: bold; font-size: 14px; margin-top: 10px;
         }
 
-        /* 💡 手機版維持單一垂直動線，大螢幕改為舒適的左右併排 */
         .game-container {
             display: flex; flex-direction: column; width: 100%; max-width: 950px; gap: 20px; margin-top: 15px;
         }
@@ -52,7 +51,7 @@
         .section-card {
             background: var(--card-bg); padding: 20px; border-radius: 16px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.04);
-            position: relative;
+            position: relative; margin-bottom: 20px; width: 100%; max-width: 950px;
         }
 
         .section-card h3 {
@@ -60,19 +59,8 @@
             padding-bottom: 8px; border-bottom: 2px solid var(--bg-color);
         }
 
-        /* 🌐 Google 地圖外框：正式合法免密鑰標準內嵌連結 */
-        .map-container-box {
-            width: 100%; height: 380px; 
-            border-radius: 12px; overflow: hidden;
-            border: 2px solid var(--secondary-color);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-            margin-bottom: 10px;
-        }
-        iframe { width: 100%; height: 100%; border: none; }
-
         .audio-list { display: flex; flex-direction: column; gap: 16px; margin-top: 5px; }
         
-        /* 音檔與選題緊密結合外框 */
         .qa-block {
             background: var(--bg-color); padding: 14px; border-radius: 12px;
             border: 1px solid #F0EDE6; display: flex; flex-direction: column; gap: 8px;
@@ -80,13 +68,21 @@
         .qa-block span { display: block; font-weight: bold; font-size: 14px; color: #555; }
         audio { width: 100%; height: 32px; }
 
-        select {
-            padding: 8px 12px; border-radius: 8px; border: 1.5px solid #CCC;
+        select, input[type="text"] {
+            padding: 10px 12px; border-radius: 8px; border: 1.5px solid #CCC;
             font-size: 13px; background: white; outline: none; width: 100%; cursor: pointer;
             margin-top: 4px;
         }
         select.correct { background-color: #E8F5E9; color: var(--success-color); border-color: var(--success-color); font-weight: bold; }
         select.wrong { background-color: #FFEBEE; color: var(--danger-color); border-color: var(--danger-color); }
+
+        .map-container-box {
+            width: 100%; height: 380px; 
+            border-radius: 12px; overflow: hidden;
+            border: 2px solid var(--secondary-color);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+        iframe { width: 100%; height: 100%; border: none; }
 
         .submit-btn {
             background: var(--primary-color); color: white; border: none; padding: 14px;
@@ -143,10 +139,14 @@
             font-weight: bold; cursor: pointer; font-size: 15px; box-shadow: 0 4px 10px rgba(225,29,72,0.3);
         }
 
+        /* 📋 表單題目排版優化 */
+        .survey-group { text-align: left; margin-bottom: 15px; }
+        .survey-group label { display: block; font-weight: bold; font-size: 14px; margin-bottom: 6px; color: var(--primary-color); }
+
         /* 工作人員核銷面板 */
         .staff-panel {
             background: #FDFBEE; border: 2px solid var(--secondary-color); border-radius: 16px;
-            padding: 20px; width: 100%; max-width: 950px; margin: 25px 0 50px 0;
+            padding: 20px; width: 100%; max-width: 950px; margin: 25px 0 20px 0;
             position: relative; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         }
         .staff-header { color: var(--primary-color); font-weight: bold; border-bottom: 2px dashed var(--secondary-color); padding-bottom: 8px; margin-bottom: 12px; font-size: 15px; }
@@ -161,10 +161,14 @@
             display: none; position: absolute; top: 50%; right: 40px; transform: translateY(-50%) rotate(-15deg);
             border: 4px solid var(--danger-color); color: var(--danger-color); font-size: 24px; font-weight: 900;
             padding: 8px 18px; border-radius: 8px; background: rgba(255, 255, 255, 0.9);
-            letter-spacing: 4px; box-shadow: 0 0 12px rgba(211,47,47,0.15);
-            z-index: 15;
+            letter-spacing: 4px; box-shadow: 0 0 12px rgba(211,47,47,0.15); z-index: 15;
         }
-        @keyframes stampIn { from { transform: translateY(-50%) scale(2) rotate(-45deg); opacity: 0; } to { transform: translateY(-50%) scale(1) rotate(-15deg); opacity: 1; } }
+
+        .csv-btn {
+            background: #4E8752; color: white; border: none; padding: 8px 16px; border-radius: 6px;
+            font-size: 12px; font-weight: bold; cursor: pointer; margin-top: 15px; transition: 0.2s;
+        }
+        .csv-btn:hover { background: #3B663E; }
 
         .close-btn { background: var(--primary-color); color: white; border: none; padding: 10px 24px; border-radius: 25px; cursor: pointer; font-weight: bold; margin-top: 10px; }
         .score-board { font-size: 15px; font-weight: bold; color: var(--primary-color); margin-top: 6px; }
@@ -172,6 +176,7 @@
 </head>
 <body>
 
+<!-- 初始模式選擇彈窗 -->
 <div class="modal" id="modeModal" style="display: flex;">
     <div class="modal-content">
         <h2 style="color: var(--primary-color); margin-bottom: 15px;">📜 請選擇遊玩模式</h2>
@@ -184,7 +189,7 @@
 <header>
     <h1>🎧 新莊聲音地圖大挑戰</h1>
     <div class="instructions">
-        <strong>🎁 遊戲機制：</strong> 依序聆聽音檔並於其正下方選單對照填答。達人版只要<b>答對滿 6 題</b>，看完解析報告後即可開啟線上扭蛋機抽取新莊限量獎品！
+        <strong>🎁 遊戲機制：</strong> 依序聆聽音檔並於其正下方選單對照填答。答對達指定題數，並填寫完活動回饋表單後，即可解鎖工作人員核銷區領取獎品！
         <br>
         <div class="mode-badge" id="current-mode-text">模式：載入中...</div>
         <div class="score-board" id="score-text">答題進度：0 題</div>
@@ -192,25 +197,26 @@
 </header>
 
 <div class="game-container">
-    <div class="section-card">
+    <!-- 左側題目與音檔區 -->
+    <div class="section-card" id="main-game-card">
         <h3>📍 1. 觀察 Google 互動地圖</h3>
-        <div class="map-container-box">
+        <div class="map-container-box" style="margin-bottom: 20px;">
             <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3615.1434316135823!2d121.45041047604675!3d25.03091213848412!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442a7dd7be79111%3A0x6b63ca52df5ef34d!2z5paw6I6K5oWI6Y祐5a6u!5e0!3m2!1szh-TW!2stw!4v1716740000000!5m2!1szh-TW!2stw" allowfullscreen="" loading="lazy"></iframe>
         </div>
-    </div>
 
-    <div class="section-card">
         <h3>🎵 2. 聆聽聲音並於下方直接配對</h3>
         <div class="audio-list" id="audio-list"></div>
         <button class="submit-btn" id="submit-game-btn" onclick="submitGame()" style="display:none;">📤 寫好了！送出答案並看解析報告</button>
     </div>
 </div>
 
+<!-- 終局文史解析與扭蛋機複合彈窗 -->
 <div class="modal" id="winModal">
     <div class="modal-content">
         <h2>📊 挑戰成果核對</h2>
         <div class="big-score-box">您總共答對了：<span class="big-score-number" id="win-score-big">0</span></div>
         
+        <!-- 🎡 扭蛋抽獎區 -->
         <div class="gacha-zone" id="gacha-area" style="display:none;">
             <h4 style="color:#E11D48;">🎁 恭喜達到門檻！解鎖線上扭蛋機</h4>
             <div class="gacha-ball-animation" id="gacha-ball"></div>
@@ -220,23 +226,69 @@
 
         <p style="font-size: 14px; color:#333; font-weight: bold; text-align:left; margin-top:15px;">📜 各題聲音景點小解析：</p>
         <div class="report-card" id="report-zone"></div>
-        <button class="close-btn" onclick="goToVerification()">看完解析，前往工作人員核銷區</button>
+        <button class="close-btn" onclick="openSurveyZone()">看完解析，前往填寫活動回饋表單</button>
     </div>
 </div>
 
+<!-- 📝 新增：強制活動回饋表單區塊（填完才開放核銷區） -->
+<div class="section-card" id="survey-section-card" style="display:none;">
+    <h3 style="color:var(--primary-color);">📝 3. 活動滿意度回饋表單</h3>
+    <p style="font-size:12px; color:#666; margin-bottom:15px;">為了讓我們未來辦得更好，請動動手指幫我們填寫回饋，填完即可解鎖領獎核銷區！</p>
+    
+    <div class="survey-group">
+        <label>● 年齡 *</label>
+        <select id="survey-age" onchange="validateSurvey()"><option value="">請選擇...</option><option value="12歲以下">12歲以下</option><option value="13-18歲">13-18歲</option><option value="19-24歲">19-24歲</option><option value="25-34歲">25-34歲</option><option value="35-49歲">35-49歲</option><option value="50歲以上">50歲以上</option></select>
+    </div>
+    <div class="survey-group">
+        <label>● 性別 *</label>
+        <select id="survey-gender" onchange="validateSurvey()"><option value="">請選擇...</option><option value="女性">女性</option><option value="男性">男性</option><option value="不便透露">不便透露</option></select>
+    </div>
+    <div class="survey-group">
+        <label>● 職業 *</label>
+        <select id="survey-job" onchange="validateSurvey()"><option value="">請選擇...</option><option value="學生">學生</option><option value="軍公教">軍公教</option><option value="服務業">服務業</option><option value="科技製造業">科技製造業</option><option value="自由業">自由業</option><option value="其他">其他</option></select>
+    </div>
+    <div class="survey-group">
+        <label>● 您覺得本次活動內容有趣程度 *</label>
+        <select id="survey-fun" onchange="validateSurvey()"><option value="">請選擇分度...</option><option value="5分 非常有趣">5分 非常有趣</option><option value="4分 有趣">4分 有趣</option><option value="3分 普通">3分 普通</option><option value="2分 無趣">2分 無趣</option><option value="1分 非常無趣">1分 非常無趣</option></select>
+    </div>
+    <div class="survey-group">
+        <label>● 本次活動是否幫助您認識新莊？ *</label>
+        <select id="survey-help" onchange="validateSurvey()"><option value="">請選擇...</option><option value="非常有幫助">非常有幫助</option><option value="有幫助">有幫助</option><option value="普通">普通</option><option value="沒幫助">沒幫助</option></select>
+    </div>
+    <div class="survey-group">
+        <label>● 您覺得本次文化大使表現與內容滿意度，會給幾分？ *</label>
+        <select id="survey-ambassador" onchange="validateSurvey()"><option value="">請選擇分數...</option><option value="100分 完美">100分 完美</option><option value="90分 優秀">90分 優秀</option><option value="80分 滿意">80分 滿意</option><option value="70分 普通">70分 普通</option><option value="60分以下 需要加強">60分以下 需要加強</option></select>
+    </div>
+    <div class="survey-group">
+        <label>● 對於這次準備的小點心及獎品滿意度？ *</label>
+        <select id="survey-prize-satisfy" onchange="validateSurvey()"><option value="">請選擇...</option><option value="非常滿意">非常滿意</option><option value="滿意">滿意</option><option value="普通">普通</option><option value="不滿意">不滿意</option></select>
+    </div>
+    <div class="survey-group">
+        <label>● 如果有任何想讓我們知道的，都歡迎回饋給我們 (選填)</label>
+        <input type="text" id="survey-comment" placeholder="寫下您的建議或鼓勵...">
+    </div>
+    
+    <button class="submit-btn" id="submit-survey-btn" onclick="saveSurveyData()" style="background:#777;" disabled>🔒 請填完所有必填題項目</button>
+</div>
+
+<!-- 📋 4. 現場工作人員核銷面板區（全新升級核對四大指標） -->
 <div class="staff-panel" id="final-staff-panel" style="display:none;">
     <div class="stamp-overlay" id="verification-stamp">已兌獎</div>
-    <div class="staff-header">🔒 現場工作人員領獎核銷專區</div>
+    <div class="staff-header">🔒 現場工作人員領獎核銷專區 (請核對以下四大指標)</div>
     <div class="staff-info-row" id="summary-mode">● 遊戲機制：載入中...</div>
-    <div class="staff-info-row" id="summary-score">● 最終答對題數：0 題</div>
+    <div class="staff-info-row" id="summary-score">● 回答正確題數：0 題</div>
+    <div class="staff-info-row" style="color: #2E7D32; font-weight: bold;">● 回饋表單已填寫：✓ 已完成提交</div>
     <div class="staff-info-row" id="summary-prize" style="font-size:18px; font-weight:bold; color:var(--success-color); background:#FFF; padding:8px; border-radius:6px; margin:8px 0; border:1px solid #EAE6DF;">● 獎品項目：尚未抽獎</div>
-    <p style="font-size:11px; color:#888; margin-top:5px;">※ 請核對民眾手機上的戰績與獎項，發放實體獎品後點擊下方按鈕進行蓋章銷帳。</p>
+    
     <button class="stamp-btn" id="stamp-execute-btn" onclick="applyVerificationStamp()">確認發放實體獎品 ➡️ 現場蓋章銷帳</button>
+    
+    <!-- 📊 工作人員後台：一鍵導出所有民眾填寫的總統計CSV報表 -->
+    <center><button class="csv-btn" onclick="exportToCSV()">📊 導出本台設備所有統計報表 (CSV)</button></center>
 </div>
 
 <script>
 const spotsData = [
-    { id: 1, name: "新莊慈祐宮", audio: "廟宇-慈祐宮.m4a", info: "慈祐宮是新莊最古老的廟宇，建於清雍正九年（1731年）。主祀媽祖，見證了新莊大漢溪重要港口商貿的黃金時期。" },
+    { id: 1, name: "新莊慈祐宮", audio: "廟宇-慈祐宮.m4a", info: "慈祐宮是新莊最古老的廟宇，主祀媽祖，見證了新莊大漢溪重要港口商貿的黃金時期。" },
     { id: 2, name: "地藏庵(大眾廟)", audio: "廟宇-大眾廟 .m4a", info: "新莊地藏庵奉祀地藏王菩薩與大眾爺，其「文武大眾爺祭典」（新莊大拜拜）是著名無形文化資產。" },
     { id: 3, name: "輔仁大學(聖言樓)", audio: "輔仁大學_彌撒聲.mp3", info: "輔仁大學為天主教名校，校園內的彌撒鐘聲與聖歌，展現出莊嚴平和的宗教與多元學術氛圍。" },
     { id: 4, name: "新莊棒球場", audio: "新莊棒球場.mp3", info: "新莊棒球場是北台灣職棒重鎮，賽季時充滿極具張力的現場應援敲擊樂與球迷吶喊聲。" },
@@ -246,7 +298,6 @@ const spotsData = [
     { id: 8, name: "化成路(異國美食街)", audio: "化成路 蓮花泰式小吃店 音檔.mp3", info: "化成路周邊工廠多，吸引大量東南亞移工進駐，異國餐廳的小吃香氣與點餐聲構築了多元包容文化。" }
 ];
 
-// 精密控量獎池（純文字，絕不亂改、絕不添加贅詞）
 let prizePool = [
     { name: "媽祖平安符", count: 50 },
     { name: "新莊朝盛飄帶", count: 70 },
@@ -255,11 +306,7 @@ let prizePool = [
     { name: "立牌", count: 10 }
 ];
 
-let targetScore = 8; 
-let activeSpots = []; 
-let finalCorrectCount = 0;
-let finalPrizeName = "小包餅乾"; 
-let hasDrawn = false; 
+let targetScore = 8; let activeSpots = []; let finalCorrectCount = 0; let finalPrizeName = "小包餅乾"; let hasDrawn = false;
 
 const audioListDiv = document.getElementById('audio-list');
 
@@ -286,12 +333,10 @@ function renderGame(displayOrder) {
     displayOrder.forEach((spot, index) => {
         const questionName = `🎵 第 ${index + 1} 題`;
         spot.displayQuestionName = questionName; 
-
         const qaBlock = document.createElement('div');
         qaBlock.className = 'qa-block';
         qaBlock.innerHTML = `
-            <span>${questionName}</span>
-            <audio controls src="${spot.audio}"></audio>
+            <span>${questionName}</span><audio controls src="${spot.audio}"></audio>
             <span>正確地點是？</span>
             <select id="select-${spot.id}" onchange="updateProgress()">
                 <option value="">請選擇景點...</option>
@@ -307,31 +352,21 @@ function updateProgress() {
     let filledCount = 0;
     allSelects.forEach(select => { if(select.value !== "") filledCount++; });
     document.getElementById('score-text').innerText = `答題進度：已填寫 ${filledCount} / ${targetScore} 題`;
-    
-    if(filledCount === targetScore) {
-        document.getElementById('submit-game-btn').style.display = 'block';
-    } else {
-        document.getElementById('submit-game-btn').style.display = 'none';
-    }
+    if(filledCount === targetScore) document.getElementById('submit-game-btn').style.display = 'block';
 }
 
 function submitGame() {
-    finalCorrectCount = 0;
-    let reportHtml = "";
-
+    finalCorrectCount = 0; let reportHtml = "";
     activeSpots.forEach((spot) => {
         const selectElem = document.getElementById(`select-${spot.id}`);
         const userChoose = parseInt(selectElem.value);
         selectElem.disabled = true; 
-
         if (userChoose === spot.id) {
-            finalCorrectCount++;
-            selectElem.className = 'correct';
+            finalCorrectCount++; selectElem.className = 'correct';
             reportHtml += `<div class="report-item"><div class="report-item-header"><span>${spot.displayQuestionName}</span><span class="badge-success">🟢 答對</span></div><div>正確解答：<b>${spot.name}</b></div><div class="analysis-box">📖 ${spot.info}</div></div>`;
         } else {
             selectElem.className = 'wrong';
-            const wrongSpotObj = spotsData.find(s => s.id === userChoose);
-            const wrongName = wrongSpotObj ? wrongSpotObj.name : "未選擇";
+            const wrongName = spotsData.find(s => s.id === userChoose)?.name || "未選擇";
             reportHtml += `<div class="report-item"><div class="report-item-header"><span>${spot.displayQuestionName}</span><span class="badge-danger">🔴 答錯</span></div><div>您選了：<span style="color:var(--danger-color);">${wrongName}</span> (正確答案：<b>${spot.name}</b>)</div><div class="analysis-box">📖 ${spot.info}</div></div>`;
         }
     });
@@ -340,78 +375,122 @@ function submitGame() {
     document.getElementById('report-zone').innerHTML = reportHtml;
 
     if ((targetScore === 8 && finalCorrectCount >= 6) || (targetScore === 3 && finalCorrectCount === 3)) {
-        if(targetScore === 8) {
-            document.getElementById('gacha-area').style.display = 'block';
-        } else {
-            document.getElementById('gacha-area').style.display = 'none';
-            finalPrizeName = "小包餅乾";
-        }
+        if(targetScore === 8) document.getElementById('gacha-area').style.display = 'block';
     } else {
         document.getElementById('gacha-area').style.display = 'none';
         finalPrizeName = "無獎品";
     }
-
     document.getElementById('winModal').style.display = 'flex';
 }
 
 function startDraw() {
-    if (hasDrawn) return;
-    hasDrawn = true;
-    
+    if (hasDrawn) return; hasDrawn = true;
     document.getElementById('gacha-start-btn').disabled = true;
-    const ball = document.getElementById('gacha-ball');
-    ball.classList.add('shake');
+    const ball = document.getElementById('gacha-ball'); ball.classList.add('shake');
 
     setTimeout(() => {
         ball.classList.remove('shake');
-        
         let availablePrizes = prizePool.filter(p => p.count > 0);
-        
-        if (availablePrizes.length === 0) {
-            finalPrizeName = "獎品已全數抽完";
-        } else {
+        if (availablePrizes.length === 0) { finalPrizeName = "獎品已全數抽完"; } else {
             let totalAvailable = availablePrizes.reduce((sum, item) => sum + item.count, 0);
             let randomWeight = Math.floor(Math.random() * totalAvailable);
-            
-            let currentSum = 0;
-            let selectedPrize = availablePrizes[availablePrizes.length - 1];
-            
+            let currentSum = 0; let selectedPrize = availablePrizes[availablePrizes.length - 1];
             for (let i = 0; i < availablePrizes.length; i++) {
                 currentSum += availablePrizes[i].count;
-                if (randomWeight < currentSum) {
-                    selectedPrize = availablePrizes[i];
-                    break;
-                }
+                if (randomWeight < currentSum) { selectedPrize = availablePrizes[i]; break; }
             }
-
-            selectedPrize.count--; // 精密減去庫存
-            finalPrizeName = selectedPrize.name; // 嚴格原名輸出
+            selectedPrize.count--; finalPrizeName = selectedPrize.name;
         }
-
         document.getElementById('gacha-status').innerHTML = `🎉 恭喜抽中：<b>${finalPrizeName}</b>`;
     }, 1500);
 }
 
-function goToVerification() {
+function openSurveyZone() {
     document.getElementById('winModal').style.display = 'none';
-    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    document.getElementById('survey-section-card').style.display = 'block';
+    document.getElementById('survey-section-card').scrollIntoView({ behavior: 'smooth' });
+}
 
-    document.getElementById('summary-mode').innerText = `● 遊戲機制：${targetScore === 3 ? '體驗版 (精選 3 個景點)' : '達人版 (挑戰 8 個景點)'}`;
-    document.getElementById('summary-score').innerText = `● 最終答對題數：${finalCorrectCount} / ${targetScore} 題`;
-    document.getElementById('summary-prize').innerText = `● 獎品項目：${finalPrizeName}`;
+// 驗證問卷必填項目
+function validateSurvey() {
+    const age = document.getElementById('survey-age').value;
+    const gender = document.getElementById('survey-gender').value;
+    const job = document.getElementById('survey-job').value;
+    const fun = document.getElementById('survey-fun').value;
+    const help = document.getElementById('survey-help').value;
+    const ambassador = document.getElementById('survey-ambassador').value;
+    const prizeS = document.getElementById('survey-prize-satisfy').value;
     
+    const btn = document.getElementById('submit-survey-btn');
+    if(age && gender && job && fun && help && ambassador && prizeS) {
+        btn.disabled = false; btn.innerText = "🚀 填寫完畢，送出表單解鎖核銷領獎區"; btn.style.background = "var(--primary-color)";
+    } else {
+        btn.disabled = true; btn.innerText = "🔒 請填完所有必填項目"; btn.style.background = "#777";
+    }
+}
+
+// 💡 儲存滿意度問卷資料庫（自動統計報表邏輯）
+function saveSurveyData() {
+    const surveyRecord = {
+        timestamp: new Date().toLocaleString(),
+        mode: targetScore === 3 ? '體驗版' : '達人版',
+        score: `${finalCorrectCount}/${targetScore}`,
+        prize: finalPrizeName,
+        age: document.getElementById('survey-age').value,
+        gender: document.getElementById('survey-gender').value,
+        job: document.getElementById('survey-job').value,
+        fun: document.getElementById('survey-fun').value,
+        help: document.getElementById('survey-help').value,
+        ambassador: document.getElementById('survey-ambassador').value,
+        prizeSatisfy: document.getElementById('survey-prize-satisfy').value,
+        comment: document.getElementById('survey-comment').value.replace(/,/g, '，') // 防止破壞CSV結構
+    };
+
+    // 存入內建 localStorage 陣列
+    let currentData = JSON.parse(localStorage.getItem('xinzhuang_survey_reports')) || [];
+    currentData.push(surveyRecord);
+    localStorage.setItem('xinzhuang_survey_reports', JSON.stringify(currentData));
+
+    // 解鎖並導向工作人員核銷區
+    document.getElementById('survey-section-card').style.display = 'none';
+    goToVerification();
+}
+
+function goToVerification() {
+    document.getElementById('summary-mode').innerText = `● 遊戲機制：${targetScore === 3 ? '體驗版 (精選 3 個景點)' : '達人版 (挑戰 8 個景點)'}`;
+    document.getElementById('summary-score').innerText = `● 回答正確題數：${finalCorrectCount} / ${targetScore} 題`;
+    document.getElementById('summary-prize').innerText = `● 獎品項目：${finalPrizeName}`;
     document.getElementById('final-staff-panel').style.display = 'block';
+    document.getElementById('final-staff-panel').scrollIntoView({ behavior: 'smooth' });
 }
 
 function applyVerificationStamp() {
-    const stamp = document.getElementById('verification-stamp');
-    stamp.style.display = 'block';
-    stamp.style.animation = "stampIn 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards";
-    
+    document.getElementById('verification-stamp').style.display = 'block';
     document.getElementById('stamp-execute-btn').disabled = true;
     document.getElementById('stamp-execute-btn').innerText = "🔒 本張闖關卡已完成核銷";
     document.getElementById('stamp-execute-btn').style.background = "#777";
     document.getElementById('submit-game-btn').disabled = true;
+}
+
+// 📊 匯出大總管自動 CSV 報表系統功能
+function exportToCSV() {
+    let records = JSON.parse(localStorage.getItem('xinzhuang_survey_reports')) || [];
+    if(records.length === 0) { alert("目前尚未有任何填寫紀錄喔！"); return; }
+
+    let csvContent = "\uFEFF"; // 避免 Excel 中文亂碼
+    csvContent += "填寫時間,遊玩機制,答對題數,獲得獎品,年齡,性別,職業,活動有趣度,認識新莊落實度,文化大使滿意度,小點心與獎品滿意度,其他回饋意見\n";
+
+    records.forEach(r => {
+        csvContent += `${r.timestamp},${r.mode},${r.score},${r.prize},${r.age},${r.gender},${r.job},${r.fun},${r.help},${r.ambassador},${r.prizeSatisfy},${r.comment}\n`;
+    });
+
+    let blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    let link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.setAttribute("download", "新莊聲音地圖_活動回饋滿意度總統計報表.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
 }
 </script>
 </body>
