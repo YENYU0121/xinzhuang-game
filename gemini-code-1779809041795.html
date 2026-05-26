@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新莊聲音地圖：聽音辨位大挑戰！</title>
+    <style>
+        :root {
+            --primary-color: #8B4513;
+            --secondary-color: #D2B48C;
+            --bg-color: #FDFBF7;
+        }
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        h1 { color: var(--primary-color); margin-bottom: 5px; }
+        .instructions { max-width: 600px; background: #fff; padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); font-size: 14px; line-height: 1.6; }
+        
+        .game-container {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            max-width: 1000px;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        @media (min-width: 768px) {
+            .game-container { flex-direction: row; }
+        }
+
+        /* 左側：音檔區 */
+        .audio-section {
+            flex: 1;
+            background: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .audio-track {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #f9f6f0;
+            padding: 12px;
+            margin-bottom: 12px;
+            border-radius: 8px;
+            border-left: 5px solid var(--primary-color);
+        }
+        .audio-track span { font-weight: bold; color: var(--primary-color); }
+        
+        /* 右側：地圖與配對區 */
+        .map-section {
+            flex: 1.2;
+            background: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+        }
+        .map-mock {
+            width: 100%;
+            height: 300px;
+            background: #e5e3df;
+            border: 2px dashed var(--secondary-color);
+            border-radius: 8px;
+            position: relative;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        /* 模擬地圖上的景點標記 */
+        .spot-marker {
+            position: absolute;
+            background: #fff;
+            border: 2px solid var(--primary-color);
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .spot-marker.matched {
+            background: #4CAF50;
+            color: white;
+            border-color: #388E3C;
+        }
+
+        /* 下拉選單配對介面 */
+        .match-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        select {
+            padding: 6px 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+        select.correct {
+            background-color: #d4edda;
+            color: #155724;
+            border-color: #c3e6cb;
+        }
+
+        /* 獲獎彈窗 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            justify-content: center; align-items: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background: white; padding: 30px; border-radius: 12px; text-align: center; max-width: 400px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+        .modal h2 { color: #4CAF50; margin-top: 0; }
+        .close-btn {
+            background: var(--primary-color); color: white; border: none;
+            padding: 10px 20px; border-radius: 5px; cursor: pointer; margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>🎧 新莊聲音地圖：聽音辨位大挑戰</h1>
+    <div class="instructions">
+        <strong>💡 遊戲玩法：</strong><br>
+        1. 依序點開左側的<strong>聲音檔案</strong>聆聽線索。<br>
+        2. 根據聲音與導覽員的提示，在右側為各個聲音<strong>選擇對應的景點</strong>。<br>
+        3. 全部 8 題答對，即可觸發驚喜獲得精美小禮物！
+    </div>
+</header>
+
+<div class="game-container">
+    
+    <!-- 左側：音檔聆聽區 -->
+    <div class="audio-section">
+        <h3>1. 點擊聆聽聲音線索</h3>
+        <div id="audio-list">
+            <!-- 由 JavaScript 動態生成 -->
+        </div>
+    </div>
+    
+    <!-- 右側：地圖與配對區 -->
+    <div class="map-section">
+        <h3>2. 對照地圖並完成配對</h3>
+        
+        <!-- 模擬地圖示意（可用實際圖片當背景） -->
+        <div class="map-mock" id="map">
+            <div style="position:absolute; top:45%; left:40%; color:#999; font-style:italic;">🗺️ 新莊區模擬地圖區域</div>
+            <!-- 由 JavaScript 動態生成景點圖標 -->
+        </div>
+
+        <!-- 下拉選單配對 -->
+        <div id="match-zone">
+            <!-- 由 JavaScript 動態生成 -->
+        </div>
+    </div>
+</div>
+
+<!-- 成功獲獎彈窗 -->
+<div class="modal" id="winModal">
+    <div class="modal-content">
+        <h2>🎉 恭喜完成挑戰！</h2>
+        <p>您太厲害了！8 個新莊景點與聲音全部配對成功！</p>
+        <p style="font-size: 18px; font-weight: bold; color: var(--primary-color);">🎁 請向導覽員出示此畫面領取小禮物！</p>
+        <button class="close-btn" onclick="closeModal()">太棒了</button>
+    </div>
+</div>
+
+<script>
+// 1. 定義 8 個景點數據（包含座標、音檔與正確對應）
+// 註：音檔網址目前使用線上免費鋼琴音階當範例，可自行替換成 your_audio.mp3
+const spotsData = [
+    { id: 1, name: "新莊慈祐宮", audio: "https://actions.google.com/sounds/v1/musical/percussion_instrument.ogg", top: "70%", left: "15%", soundName: "🔊 聲音 A (古廟鐘鼓聲)" },
+    { id: 2, name: "新莊武聖廟", audio: "https://actions.google.com/sounds/v1/musical/string_acoustic_guitar.ogg", top: "60%", left: "35%", soundName: "🔊 聲音 B (木魚與誦經聲)" },
+    { id: 3, name: "新莊文昌祠", audio: "https://actions.google.com/sounds/v1/musical/harmonica.ogg", top: "30%", left: "20%", soundName: "🔊 聲音 C (翻書與毛筆聲)" },
+    { id: 4, name: "挑水巷", audio: "https://actions.google.com/sounds/v1/water/splashing_water.ogg", top: "50%", left: "55%", soundName: "🔊 聲音 D (挑水汲水聲)" },
+    { id: 5, name: "日日用打鐵店", audio: "https://actions.google.com/sounds/v1/impacts/metal_clack.ogg", top: "40%", left: "75%", soundName: "🔊 聲音 E (鏗鏘打鐵聲)" },
+    { id: 6, name: "阿瑞官粿店", audio: "https://actions.google.com/sounds/v1/foley/crumbs_falling_on_paper.ogg", top: "75%", left: "60%", soundName: "🔊 聲音 F (炊粿蒸氣聲)" },
+    { id: 7, name: "新莊廟街夜市", audio: "https://actions.google.com/sounds/v1/ambiences/outdoor_market_ambience.ogg", top: "80%", left: "40%", soundName: "🔊 聲音 G (熱鬧叫賣聲)" },
+    { id: 8, name: "保元宮", audio: "https://actions.google.com/sounds/v1/musical/marimba_chord.ogg", top: "20%", left: "65%", soundName: "🔊 聲音 H (弄車鼓弄傳統樂)" }
+];
+
+// 打亂順序用來顯示音檔清單（讓玩家需要思考，而不是依序排列）
+const shuffledSpots = [...spotsData].sort(() => Math.random() - 0.5);
+
+const audioListDiv = document.getElementById('audio-list');
+const matchZoneDiv = document.getElementById('match-zone');
+const mapDiv = document.getElementById('map');
+
+// 2. 初始化網頁內容
+function initGame() {
+    // 生成音檔清單
+    shuffledSpots.forEach((spot, index) => {
+        const track = document.createElement('div');
+        track.className = 'audio-track';
+        track.innerHTML = `
+            <span>${spot.soundName}</span>
+            <audio controls src="${spot.audio}"></audio>
+        `;
+        audioListDiv.appendChild(track);
+
+        // 生成配對下拉選單
+        const row = document.createElement('div');
+        row.className = 'match-row';
+        row.innerHTML = `
+            <span>${spot.soundName} 是在哪裡聽到的？</span>
+            <select id="select-${spot.id}" onchange="checkAnswer(${spot.id})">
+                <option value="">--請選擇景點--</option>
+                ${spotsData.map(s => `<option value="${s.id}">${s.name}</option>`).join('')}
+            </select>
+        `;
+        matchZoneDiv.appendChild(row);
+    });
+
+    // 生成地圖上的景點標記
+    spotsData.forEach(spot => {
+        const marker = document.createElement('div');
+        marker.className = 'spot-marker';
+        marker.id = `marker-${spot.id}`;
+        marker.style.top = spot.top;
+        marker.style.left = spot.left;
+        marker.innerText = spot.name;
+        mapDiv.appendChild(marker);
+    });
+}
+
+// 3. 檢查答案
+function checkAnswer(spotId) {
+    const selectElem = document.getElementById(`select-${spotId}`);
+    const markerElem = document.getElementById(`marker-${spotId}`);
+    const selectedValue = selectElem.value;
+
+    // 如果選對了 (下拉選單的值等於該音檔原本的 spotId)
+    if (parseInt(selectedValue) === spotId) {
+        selectElem.className = 'correct';
+        selectElem.disabled = true; // 鎖定正確答案
+        if (markerElem) markerElem.classList.add('matched'); // 地圖標記變綠色
+    } else {
+        selectElem.className = '';
+        if (markerElem) markerElem.classList.remove('matched');
+    }
+
+    // 檢查是否全部答對
+    checkWinCondition();
+}
+
+// 4. 判斷勝負
+function checkWinCondition() {
+    const allSelects = document.querySelectorAll('#match-zone select');
+    const allCorrect = Array.from(allSelects).every(select => select.classList.contains('correct'));
+    
+    if (allCorrect) {
+        document.getElementById('winModal').style.display = 'flex';
+    }
+}
+
+function closeModal() {
+    document.getElementById('winModal').style.display = 'none';
+}
+
+// 執行初始化
+initGame();
+</script>
+
+</body>
+</html>
