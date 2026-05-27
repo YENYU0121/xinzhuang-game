@@ -41,7 +41,7 @@
         .csv-big-btn { background: #2E7D32; color: white; border: none; padding: 12px 24px; border-radius: 10px; font-weight: bold; display: flex; align-items: center; gap: 8px; font-size: 15px; cursor: pointer; box-shadow: 0 4px 12px rgba(46,125,50,0.2); transition: 0.2s; }
         .csv-big-btn:hover { background: #1E5322; transform: translateY(-1px); }
         
-        /* 📈 1. 頂部大數字指標面板優化 */
+        /* 指標面板 */
         .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-bottom: 30px; }
         .stat-card { background: white; padding: 24px; border-radius: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.02); display: flex; align-items: center; gap: 20px; border: 1px solid #E2E8F0; position: relative; overflow: hidden; }
         .stat-card::after { content: ''; position: absolute; top: 0; left: 0; width: 6px; height: 100%; background: var(--primary-color); }
@@ -57,7 +57,6 @@
         .stat-info .num { font-size: 32px; font-weight: 900; color: #1A202C; line-height: 1.1; }
         .stat-info .label { font-size: 13px; color: #718096; font-weight: 600; margin-top: 4px; }
 
-        /* 區塊排版 */
         .main-grid { display: grid; grid-template-columns: 1fr; gap: 25px; margin-bottom: 25px; }
         @media (min-width: 900px) { .main-grid { grid-template-columns: 1fr 1fr; } }
         
@@ -65,7 +64,6 @@
         .section-card h3 { color: #1A202C; font-size: 16px; font-weight: 800; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid #EDF2F7; display: flex; align-items: center; gap: 8px; }
         .section-card h3 i { color: var(--secondary-color); }
         
-        /* ⏳ 2. 實時庫存精緻條 */
         .prize-list-wrapper { display: flex; flex-direction: column; gap: 16px; flex: 1; justify-content: center; }
         .prize-row { background: #F8FAFC; padding: 12px 16px; border-radius: 12px; border: 1px solid #E2E8F0; }
         .prize-meta { display: flex; justify-content: space-between; font-size: 13px; font-weight: bold; margin-bottom: 8px; }
@@ -74,18 +72,21 @@
         .progress-bar-bg { width: 100%; height: 12px; background: #E2E8F0; border-radius: 6px; overflow: hidden; }
         .progress-bar-fill { height: 100%; background: #48BB78; border-radius: 6px; transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
         
-        /* 🚨 庫存低於 5 個時的閃爍警告 */
         .stock-danger { animation: pulseDanger 1.5s infinite; background: #FFF5F5; border-color: #FED7D7; }
         .stock-danger .prize-qty { color: var(--danger-color); }
         @keyframes pulseDanger { 0%, 100% { opacity: 1; } 50% { background: #FFEBEB; } }
 
-        /* 💬 4. 條列問卷意見改用舒適的對話泡泡風格 */
         .comment-list { max-height: 320px; overflow-y: auto; padding-right: 6px; display: flex; flex-direction: column; gap: 10px; }
         .comment-item { background: #EDF2F7; padding: 14px; border-radius: 16px 16px 16px 4px; font-size: 13.5px; color: #2D3748; line-height: 1.5; border: 1px solid #E2E8F0; position: relative; }
         .comment-item.suggest { background: #FFFAF0; border-color: #FEEBC8; border-radius: 16px 16px 4px 16px; }
         .comment-meta-info { display: flex; justify-content: space-between; font-size: 11px; color: #718096; margin-top: 6px; border-top: 1px dashed #CBD5E1; padding-top: 4px; }
         
         .chart-container { position: relative; height: 260px; width: 100%; margin: auto 0; }
+
+        /* 👑 後台頁尾專屬專案資訊 */
+        .footer-logo-zone { margin: 40px 0 20px 0; text-align: center; width: 100%; }
+        .footer-logo-zone img { width: 170px; height: auto; object-fit: contain; opacity: 0.9; margin-bottom: 10px; }
+        .footer-text-meta { font-size: 11.5px; color: #718096; line-height: 1.6; font-weight: 600; letter-spacing: 0.5px; }
     </style>
 </head>
 <body>
@@ -124,9 +125,7 @@
 
         <div class="section-card">
             <h3><i class="fa-solid fa-square-poll-vertical"></i> 表單滿意度核心量化數據指標</h3>
-            <div class="chart-container">
-                <canvas id="satisfactionChart"></canvas>
-            </div>
+            <div class="chart-container"><canvas id="satisfactionChart"></canvas></div>
         </div>
     </div>
 
@@ -149,6 +148,14 @@
         <div class="section-card">
             <h3><i class="fa-solid fa-comment-medical"></i> Q11. 民眾認為本次活動最需要改善的地方？</h3>
             <div class="comment-list" id="q11Comments"></div>
+        </div>
+    </div>
+
+    <div class="footer-logo-zone">
+        <img src="NTPC Logo-03.png" alt="新北文化大使 Logo">
+        <div class="footer-text-meta">
+            活動名稱：「大使出任務，解鎖新莊聲」文化探索體驗活動<br>
+            計畫名稱：新北市政府文化局 115 年新北市青年推廣文化計畫
         </div>
     </div>
 </div>
@@ -183,7 +190,6 @@ function loadDashboardData() {
     }).length;
     document.getElementById('fullScoreCount').innerText = fullScore;
 
-    // 智能庫存警示計算與渲染
     let currentStock = { ...initialStock };
     let prizeIssuedCount = { "媽祖平安符": 0, "新莊朝盛飄帶": 0, "玻璃杯墊": 0, "旅行組": 0, "立牌": 0 };
     
@@ -201,7 +207,6 @@ function loadDashboardData() {
         let remain = total - issued < 0 ? 0 : total - issued;
         let percent = Math.floor((remain / total) * 100);
         
-        // 🚨 低於或等於 4 個時自動啟動警告 Class 閃爍紅燈
         let isDanger = remain <= 4 ? "stock-danger" : "";
         let fillStyle = remain <= 4 ? "background-color: var(--danger-color)" : "background-color: #48BB78";
 
@@ -219,7 +224,6 @@ function loadDashboardData() {
     });
     document.getElementById('prizeStockZone').innerHTML = prizeHtml;
 
-    // 計算平均滿意度得分
     let totalFun = 0, totalRecommend = 0, totalGuide = 0, totalPrizeS = 0;
     records.forEach(r => {
         totalFun += parseInt(r.q6) || 5;
@@ -246,7 +250,6 @@ function loadDashboardData() {
         options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, max: 10 } } }
     });
 
-    // 群眾比例圖表
     let regions = { "新北市新莊區（在地居民）": 0, "新北市其他行政區": 0, "其他縣市": 0, "國際旅客": 0 };
     let channels = { "新北文化大使IG": 0, "親友推薦": 0, "路過": 0, "其他": 0 };
     
@@ -273,7 +276,6 @@ function loadDashboardData() {
         options: { responsive: true, maintainAspectRatio: false }
     });
 
-    // 💬 對話泡泡風格文字列表渲染
     let q10Html = "", q11Html = "";
     records.forEach(r => {
         if (r.q10 && r.q10.trim() !== "") {
