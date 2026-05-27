@@ -53,7 +53,7 @@
         .qa-block span { display: block; font-weight: bold; font-size: 14px; color: #555; }
         audio { width: 100%; height: 32px; }
 
-        select, input[type="text"] { padding: 10px 12px; border-radius: 8px; border: 1.5px solid #CCC; font-size: 13px; background: white; outline: none; width: 100%; }
+        select, input[type="text"] { padding: 12px; border-radius: 8px; border: 1.5px solid #CCC; font-size: 13px; background: white; outline: none; width: 100%; }
         select.correct { background-color: #E8F5E9; color: var(--success-color); border-color: var(--success-color); font-weight: bold; }
         select.wrong { background-color: #FFEBEE; color: var(--danger-color); border-color: var(--danger-color); }
 
@@ -80,51 +80,39 @@
         @keyframes shakeBall { 0%, 100% { transform: translate(0,0); } 20% { transform: translate(-4px,2px); } 40% { transform: translate(3px,-1px); } 60% { transform: translate(-2px,-2px); } }
         .gacha-btn { background: #E11D48; color: white; border: none; padding: 12px 24px; border-radius: 50px; font-weight: bold; cursor: pointer; }
 
-        /* 表單視覺優化 */
+        /* 📝 表單滿意度卡片視覺大優化 */
         .survey-group { text-align: left; margin-bottom: 22px; background: #FAF9F5; padding: 16px; border-radius: 12px; border: 1px solid #F0EDE4; }
-        .survey-group label { display: block; font-weight: bold; font-size: 14px; margin-bottom: 10px; color: var(--primary-color); }
+        .survey-group label { display: block; font-weight: bold; font-size: 14px; margin-bottom: 10px; color: var(--primary-color); line-height: 1.4; }
         .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-        .options-grid.full-width { grid-template-columns: 1fr; }
+        .options-grid.triple { grid-template-columns: 1fr 1fr 1fr; }
+        .options-grid.score-10 { grid-template-columns: repeat(6, 1fr); gap: 4px; }
+        @media (max-width: 500px) { .options-grid.score-10 { grid-template-columns: repeat(4, 1fr); } }
+
         .option-item { position: relative; }
         .option-item input[type="radio"] { position: absolute; opacity: 0; width: 100%; height: 100%; cursor: pointer; z-index: 2; }
-        .option-tile { display: block; padding: 10px; background: white; border: 1.5px solid #DDD; text-align: center; border-radius: 8px; font-size: 13px; font-weight: 600; color: #555; transition: 0.2s; }
+        .option-tile { display: block; padding: 10px 6px; background: white; border: 1.5px solid #DDD; text-align: center; border-radius: 8px; font-size: 12.5px; font-weight: 600; color: #555; transition: 0.2s; }
         .option-item input[type="radio"]:checked + .option-tile { background: #F4EBE1; color: var(--primary-color); border-color: var(--secondary-color); box-shadow: 0 2px 6px rgba(224, 159, 62, 0.15); }
 
         /* 工作人員核銷面板區 */
-        .staff-panel {
-            background: #FFFDF2; border: 3px double var(--secondary-color); border-radius: 20px;
-            padding: 24px; width: 100%; max-width: 950px; margin: 25px 0 20px 0; position: relative;
-            transition: all 0.3s ease;
-        }
+        .staff-panel { background: #FFFDF2; border: 3px double var(--secondary-color); border-radius: 20px; padding: 24px; width: 100%; max-width: 950px; margin: 25px 0 20px 0; position: relative; transition: all 0.3s ease; }
         .staff-panel.disabled-panel { background: #F2F1ED !important; border-color: #A3A29E !important; opacity: 0.65; box-shadow: none !important; }
-        .staff-header { color: var(--primary-color); font-weight: 900; font-size: 16px; text-align: center; border-bottom: 2px dashed var(--secondary-color); padding-bottom: 12px; margin-bottom: 20px; }
+        .staff-header { color: var(--primary-color); font-weight: 900; font-size: 16px; text-align: center; border-bottom: 2px dashed var(--secondary-color); padding-bottom: 12px; margin-bottom: 12px; }
         .staff-panel.disabled-panel .staff-header { color: #555; border-bottom-color: #A3A29E; }
 
+        .staff-notice-banner { background-color: #FFF3E0; border-left: 5px solid var(--secondary-color); color: #E65100; padding: 10px 14px; font-size: 13.5px; font-weight: bold; text-align: left; border-radius: 4px; margin-bottom: 16px; line-height: 1.4; }
         .verification-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; background: white; border-radius: 10px; overflow: hidden; border: 1px solid #EAE6DF; }
         .staff-panel.disabled-panel .verification-table { border-color: #D1D0CC; }
-
         .v-row { display: flex; border-bottom: 1px solid #F0EDE6; }
         .v-label { width: 130px; background: #F7F5EC; color: #555; padding: 12px; font-size: 13px; font-weight: bold; border-right: 1px solid #EAE6DF; display: flex; align-items: center; }
         .staff-panel.disabled-panel .v-label { background: #EAE9E3; color: #777; border-right-color: #D1D0CC; }
-
         .v-value { flex: 1; padding: 12px; font-size: 14px; font-weight: 600; display: flex; align-items: center; }
         .status-ok { color: var(--success-color); background: #E8F5E9; padding: 2px 8px; border-radius: 4px; font-size: 12.5px; }
         .prize-highlight { font-size: 18px; font-weight: 800; color: #E11D48; }
         .prize-highlight.no-prize { color: var(--danger-color); }
 
         .stamp-btn { background: #2F3E46; color: white; border: none; padding: 14px 20px; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 15px; width: 100%; }
-        
-        .retry-alert-box {
-            background-color: #FFEBEE; border: 1.5px solid var(--danger-color); color: var(--danger-color);
-            padding: 14px; border-radius: 10px; font-weight: bold; font-size: 14px; text-align: center;
-            margin-bottom: 15px; line-height: 1.5; box-shadow: 0 2px 8px rgba(198, 40, 40, 0.08);
-        }
-
-        .stamp-overlay {
-            display: none; position: absolute; top: 40%; right: 5%; transform: rotate(-15deg);
-            border: 4px solid var(--danger-color); color: var(--danger-color); font-size: 28px; font-weight: 900;
-            padding: 6px 20px; border-radius: 8px; background: rgba(255, 255, 255, 0.95); letter-spacing: 6px; z-index: 15;
-        }
+        .retry-alert-box { background-color: #FFEBEE; border: 1.5px solid var(--danger-color); color: var(--danger-color); padding: 14px; border-radius: 10px; font-weight: bold; font-size: 14px; text-align: center; margin-bottom: 15px; line-height: 1.5; box-shadow: 0 2px 8px rgba(198, 40, 40, 0.08); }
+        .stamp-overlay { display: none; position: absolute; top: 45%; right: 5%; transform: rotate(-15deg); border: 4px solid var(--danger-color); color: var(--danger-color); font-size: 28px; font-weight: 900; padding: 6px 20px; border-radius: 8px; background: rgba(255, 255, 255, 0.95); letter-spacing: 6px; z-index: 15; }
 
         .csv-btn { background: #3E6B41; color: white; border: none; padding: 10px 20px; border-radius: 8px; font-size: 13px; font-weight: bold; cursor: pointer; margin-top: 15px; }
         .close-btn { background: var(--primary-color); color: white; border: none; padding: 10px 24px; border-radius: 25px; cursor: pointer; font-weight: bold; }
@@ -140,16 +128,15 @@
         <h2 style="color: var(--primary-color); margin-bottom: 15px;">📜 請選擇遊玩模式</h2>
         <p style="font-size: 14px; color: #666; margin-bottom: 20px;">歡迎來到新莊聲音地圖！請選擇您今天想挑戰的任務：</p>
         <button class="mode-btn light" onclick="selectMode(3)">體驗版：精選 3 個景點<br><span style="font-size:12px; font-weight:normal; opacity:0.9;">🎁 全對送：小包餅乾</span></button>
-        <button class="mode-btn" onclick="selectMode(8)">達人版：挑戰 8 個景點<br><span style="font-size:12px; font-weight:normal; opacity:0.9;">🎁 答對 6 題以上解鎖大扭蛋抽獎</span></button>
+        <button class="mode-btn" onclick="selectMode(8)">達人版：挑戰 8 個景點<br><span style="font-size:12px; font-weight:normal; opacity:0.9;">🎁 8題全對解鎖大扭蛋抽獎</span></button>
     </div>
 </div>
 
 <header>
-    <!-- 💡 標題已完美回復至原本設定 -->
     <h1>新莊聲音地圖大挑戰</h1>
     <div class="instructions-board">
         <div class="board-title">📋 現行關卡機制與進度說明</div>
-        <p style="font-size:13px; color:#555; line-height:1.5;">請先透過下方 <b>Google 互動地圖</b> 縮放觀察新莊區域。聽完聲音後直接在正下方的選單完成答案配對，填完送出並填寫簡短問卷即可解鎖核銷領獎！</p>
+        <p style="font-size:13px; color:#555; line-height:1.5;">請先透過下方 <b>Google 互動地圖</b> 縮放觀察新莊區域。聽完聲音後直接在正下方的選單完成答案配對，達人挑戰版需<b> 8 題全對</b>，並填寫完活動回饋表單後即可開啟現場領獎核銷！</p>
         <div class="board-badge-row">
             <div class="board-badge" id="current-mode-text">機制：讀取中...</div>
             <div class="board-badge active" id="score-text">已填寫進度：0 題</div>
@@ -169,7 +156,6 @@
     </div>
 </div>
 
-<!-- 複合解析與扭蛋機彈窗 -->
 <div class="modal" id="winModal">
     <div class="modal-content">
         <h2 id="win-status-title">📊 挑戰成果核對</h2>
@@ -186,100 +172,135 @@
     </div>
 </div>
 
-<!-- 表單回饋 -->
 <div class="section-card" id="survey-section-card" style="display:none; max-width:950px; margin:20px auto;">
     <h3 style="color:var(--primary-color);">📝 3. 活動滿意度回饋表單</h3>
-    <p style="font-size:12px; color:#666; margin-bottom:20px;">感謝您的參與！請點選以下卡片欄位完成回饋，即可開啟領獎核銷明細單。</p>
+    <p style="font-size:12px; color:#666; margin-bottom:20px;">感謝您的參與！請完成以下回饋問題項目，填答完畢即可開啟領獎核銷明細單。</p>
     
     <div class="survey-group">
-        <label>● 年齡 *</label>
+        <label>Q1. 請問您的年齡層？ *</label>
         <div class="options-grid">
-            <div class="option-item"><input type="radio" name="age" value="12歲以下" onchange="validateSurvey()"><span class="option-tile">12歲以下</span></div>
-            <div class="option-item"><input type="radio" name="age" value="13-18歲" onchange="validateSurvey()"><span class="option-tile">13-18歲</span></div>
-            <div class="option-item"><input type="radio" name="age" value="19-24歲" onchange="validateSurvey()"><span class="option-tile">19-24歲</span></div>
-            <div class="option-item"><input type="radio" name="age" value="25-34歲" onchange="validateSurvey()"><span class="option-tile">25-34歲</span></div>
-            <div class="option-item"><input type="radio" name="age" value="35-49歲" onchange="validateSurvey()"><span class="option-tile">35-49歲</span></div>
-            <div class="option-item"><input type="radio" name="age" value="50歲以上" onchange="validateSurvey()"><span class="option-tile">50歲以上</span></div>
+            <div class="option-item"><input type="radio" name="q1" value="14歲以下" onchange="validateSurvey()"><span class="option-tile">14歲以下</span></div>
+            <div class="option-item"><input type="radio" name="q1" value="15 - 24 歲" onchange="validateSurvey()"><span class="option-tile">15 - 24 歲</span></div>
+            <div class="option-item"><input type="radio" name="q1" value="25 - 34 歲" onchange="validateSurvey()"><span class="option-tile">25 - 34 歲</span></div>
+            <div class="option-item"><input type="radio" name="q1" value="35 - 44 歲" onchange="validateSurvey()"><span class="option-tile">35 - 44 歲</span></div>
+            <div class="option-item"><input type="radio" name="q1" value="45 - 54 歲" onchange="validateSurvey()"><span class="option-tile">45 - 54 歲</span></div>
+            <div class="option-item"><input type="radio" name="q1" value="55 歲以上" onchange="validateSurvey()"><span class="option-tile">55 歲以上</span></div>
         </div>
     </div>
 
     <div class="survey-group">
-        <label>● 性別 *</label>
+        <label>Q2. 請問您的性別是？ *</label>
+        <div class="options-grid triple">
+            <div class="option-item"><input type="radio" name="q2" value="生理男" onchange="validateSurvey()"><span class="option-tile">生理男</span></div>
+            <div class="option-item"><input type="radio" name="q2" value="生理女" onchange="validateSurvey()"><span class="option-tile">生理女</span></div>
+            <div class="option-item"><input type="radio" name="q2" value="不便透露" onchange="validateSurvey()"><span class="option-tile">不便透露</span></div>
+        </div>
+    </div>
+
+    <div class="survey-group">
+        <label>Q3. 請問您居住的區域？ *</label>
         <div class="options-grid">
-            <div class="option-item"><input type="radio" name="gender" value="女性" onchange="validateSurvey()"><span class="option-tile">女性</span></div>
-            <div class="option-item"><input type="radio" name="gender" value="男性" onchange="validateSurvey()"><span class="option-tile">男性</span></div>
-            <div class="option-item" style="grid-column: span 2;"><input type="radio" name="gender" value="不便透露" onchange="validateSurvey()"><span class="option-tile">不便透露</span></div>
+            <div class="option-item"><input type="radio" name="q3" value="新北市新莊區（在地居民）" onchange="validateSurvey()"><span class="option-tile">新莊區(在地居民)</span></div>
+            <div class="option-item"><input type="radio" name="q3" value="新北市其他行政區" onchange="validateSurvey()"><span class="option-tile">新北市其他區</span></div>
+            <div class="option-item"><input type="radio" name="q3" value="其他縣市" onchange="validateSurvey()"><span class="option-tile">其他縣市</span></div>
+            <div class="option-item"><input type="radio" name="q3" value="國際旅客" onchange="validateSurvey()"><span class="option-tile">國際旅客</span></div>
         </div>
     </div>
 
     <div class="survey-group">
-        <label>● 職業 *</label>
+        <label>Q4. 請問您透過什麼管道得知/參與本活動？ *</label>
         <div class="options-grid">
-            <div class="option-item"><input type="radio" name="job" value="學生" onchange="validateSurvey()"><span class="option-tile">學生</span></div>
-            <div class="option-item"><input type="radio" name="job" value="軍公教" onchange="validateSurvey()"><span class="option-tile">軍公教</span></div>
-            <div class="option-item"><input type="radio" name="job" value="服務業" onchange="validateSurvey()"><span class="option-tile">服務業</span></div>
-            <div class="option-item"><input type="radio" name="job" value="科技製造業" onchange="validateSurvey()"><span class="option-tile">科技製造業</span></div>
-            <div class="option-item"><input type="radio" name="job" value="自由業" onchange="validateSurvey()"><span class="option-tile">自由業</span></div>
-            <div class="option-item"><input type="radio" name="job" value="其他" onchange="validateSurvey()"><span class="option-tile">其他</span></div>
+            <div class="option-item"><input type="radio" name="q4" value="新北文化大使IG" onchange="validateSurvey()"><span class="option-tile">新北文化大使IG</span></div>
+            <div class="option-item"><input type="radio" name="q4" value="親友推薦" onchange="validateSurvey()"><span class="option-tile">親友推薦</span></div>
+            <div class="option-item"><input type="radio" name="q4" value="路過" onchange="validateSurvey()"><span class="option-tile">路過</span></div>
+            <div class="option-item"><input type="radio" name="q4" value="其他" onchange="validateSurvey()"><span class="option-tile">其他</span></div>
         </div>
     </div>
 
     <div class="survey-group">
-        <label>● 您覺得本次活動內容有趣程度 *</label>
+        <label>Q5. 請問您有多大的意願，會推薦親友參加未來「新北文化大使」舉辦的相關活動？ * (0分絕不推薦，10分強力推薦)</label>
+        <div class="options-grid score-10">
+            <div class="option-item"><input type="radio" name="q5" value="0分" onchange="validateSurvey()"><span class="option-tile">0</span></div>
+            <div class="option-item"><input type="radio" name="q5" value="1分" onchange="validateSurvey()"><span class="option-tile">1</span></div>
+            <div class="option-item"><input type="radio" name="q5" value="2分" onchange="validateSurvey()"><span class="option-tile">2</span></div>
+            <div class="option-item"><input type="radio" name="q5" value="3分" onchange="validateSurvey()"><span class="option-tile">3</span></div>
+            <div class="option-item"><input type="radio" name="q5" value="4分" onchange="validateSurvey()"><span class="option-tile">4</span></div>
+            <div class="option-item"><input type="radio" name="q5" value="5分" onchange="validateSurvey()"><span class="option-tile">5</span></div>
+            <div class="option-item"><input type="radio" name="q5" value="6分" onchange="validateSurvey()"><span class="option-tile">6</span></div>
+            <div class="option-item"><input type="radio" name="q5" value="7分" onchange="validateSurvey()"><span class="option-tile">7</span></div>
+            <div class="option-item"><input type="radio" name="q5" value="8分" onchange="validateSurvey()"><span class="option-tile">8</span></div>
+            <div class="option-item"><input type="radio" name="q5" value="9分" onchange="validateSurvey()"><span class="option-tile">9</span></div>
+            <div class="option-item" style="grid-column: span 2;"><input type="radio" name="q5" value="10分" onchange="validateSurvey()"><span class="option-tile">10 (強力推薦)</span></div>
+        </div>
+    </div>
+
+    <div class="survey-group">
+        <label>Q6. 請問本次活動內容及動線體驗，您覺得？ *</label>
         <div class="options-grid full-width">
-            <div class="option-item"><input type="radio" name="fun" value="5分 非常有趣" onchange="validateSurvey()"><span class="option-tile">5分 非常有趣</span></div>
-            <div class="option-item"><input type="radio" name="fun" value="4分 有趣" onchange="validateSurvey()"><span class="option-tile">4分 有趣</span></div>
-            <div class="option-item"><input type="radio" name="fun" value="3分 普通" onchange="validateSurvey()"><span class="option-tile">3分 普通</span></div>
-            <div class="option-item"><input type="radio" name="fun" value="2分 無趣" onchange="validateSurvey()"><span class="option-tile">2分 無趣</span></div>
-            <div class="option-item"><input type="radio" name="fun" value="1分 非常無趣" onchange="validateSurvey()"><span class="option-tile">1分 非常無趣</span></div>
+            <div class="option-item"><input type="radio" name="q6" value="5分 非常滿意" onchange="validateSurvey()"><span class="option-tile">5分 非常滿意</span></div>
+            <div class="option-item"><input type="radio" name="q6" value="4分 滿意" onchange="validateSurvey()"><span class="option-tile">4分 滿意</span></div>
+            <div class="option-item"><input type="radio" name="q6" value="3分 普通" onchange="validateSurvey()"><span class="option-tile">3分 普通</span></div>
+            <div class="option-item"><input type="radio" name="q6" value="2分 不滿意" onchange="validateSurvey()"><span class="option-tile">2分 不滿意</span></div>
+            <div class="option-item"><input type="radio" name="q6" value="1分 非常不滿意" onchange="validateSurvey()"><span class="option-tile">1分 非常不滿意</span></div>
         </div>
     </div>
 
     <div class="survey-group">
-        <label>● 本次活動是否幫助您認識新莊？ *</label>
+        <label>Q7. 請問本次活動的文化知識著墨與介紹，您覺得？ *</label>
         <div class="options-grid full-width">
-            <div class="option-item"><input type="radio" name="help" value="非常有幫助" onchange="validateSurvey()"><span class="option-tile">非常有幫助</span></div>
-            <div class="option-item"><input type="radio" name="help" value="有幫助" onchange="validateSurvey()"><span class="option-tile">有幫助</span></div>
-            <div class="option-item"><input type="radio" name="help" value="普通" onchange="validateSurvey()"><span class="option-tile">普通</span></div>
-            <div class="option-item"><input type="radio" name="help" value="沒幫助" onchange="validateSurvey()"><span class="option-tile">沒幫助</span></div>
+            <div class="option-item"><input type="radio" name="q7" value="5分 非常滿意" onchange="validateSurvey()"><span class="option-tile">5分 非常滿意</span></div>
+            <div class="option-item"><input type="radio" name="q7" value="4分 滿意" onchange="validateSurvey()"><span class="option-tile">4分 滿意</span></div>
+            <div class="option-item"><input type="radio" name="q7" value="3分 普通" onchange="validateSurvey()"><span class="option-tile">3分 普通</span></div>
+            <div class="option-item"><input type="radio" name="q7" value="2分 不滿意" onchange="validateSurvey()"><span class="option-tile">2分 不滿意</span></div>
+            <div class="option-item"><input type="radio" name="q7" value="1分 非常不滿意" onchange="validateSurvey()"><span class="option-tile">1分 非常不滿意</span></div>
         </div>
     </div>
 
     <div class="survey-group">
-        <label>● 您覺得本次文化大使表現與內容滿意度，會給幾分？ *</label>
+        <label>Q8. 請問現場「新北文化大使」學員的引導、文化解說與服務態度，您覺得？ *</label>
         <div class="options-grid full-width">
-            <div class="option-item"><input type="radio" name="ambassador" value="100分 完美" onchange="validateSurvey()"><span class="option-tile">100分 完美</span></div>
-            <div class="option-item"><input type="radio" name="ambassador" value="90分 優秀" onchange="validateSurvey()"><span class="option-tile">90分 優秀</span></div>
-            <div class="option-item"><input type="radio" name="ambassador" value="80分 滿意" onchange="validateSurvey()"><span class="option-tile">80分 滿意</span></div>
-            <div class="option-item"><input type="radio" name="ambassador" value="70分 普通" onchange="validateSurvey()"><span class="option-tile">70分 普通</span></div>
-            <div class="option-item"><input type="radio" name="ambassador" value="60分以下 需要加強" onchange="validateSurvey()"><span class="option-tile">60分以下 需要加強</span></div>
+            <div class="option-item"><input type="radio" name="q8" value="5分 非常滿意" onchange="validateSurvey()"><span class="option-tile">5分 非常滿意</span></div>
+            <div class="option-item"><input type="radio" name="q8" value="4分 滿意" onchange="validateSurvey()"><span class="option-tile">4分 滿意</span></div>
+            <div class="option-item"><input type="radio" name="q8" value="3分 普通" onchange="validateSurvey()"><span class="option-tile">3分 普通</span></div>
+            <div class="option-item"><input type="radio" name="q8" value="2分 不滿意" onchange="validateSurvey()"><span class="option-tile">2分 不滿意</span></div>
+            <div class="option-item"><input type="radio" name="q8" value="1分 非常不滿意" onchange="validateSurvey()"><span class="option-tile">1分 非常不滿意</span></div>
         </div>
     </div>
 
     <div class="survey-group">
-        <label>● 對於這次準備的小點心及獎品滿意度？ *</label>
+        <label>Q9. 請問本次活動的週邊贈品，您覺得？ *</label>
         <div class="options-grid full-width">
-            <div class="option-item"><input type="radio" name="prizeS" value="非常滿意" onchange="validateSurvey()"><span class="option-tile">非常滿意</span></div>
-            <div class="option-item"><input type="radio" name="prizeS" value="滿意" onchange="validateSurvey()"><span class="option-tile">滿意</span></div>
-            <div class="option-item"><input type="radio" name="prizeS" value="普通" onchange="validateSurvey()"><span class="option-tile">普通</span></div>
-            <div class="option-item"><input type="radio" name="prizeS" value="不滿意" onchange="validateSurvey()"><span class="option-tile">不滿意</span></div>
+            <div class="option-item"><input type="radio" name="q9" value="5分 非常滿意" onchange="validateSurvey()"><span class="option-tile">5分 非常滿意</span></div>
+            <div class="option-item"><input type="radio" name="q9" value="4分 滿意" onchange="validateSurvey()"><span class="option-tile">4分 滿意</span></div>
+            <div class="option-item"><input type="radio" name="q9" value="3分 普通" onchange="validateSurvey()"><span class="option-tile">3分 普通</span></div>
+            <div class="option-item"><input type="radio" name="q9" value="2分 不滿意" onchange="validateSurvey()"><span class="option-tile">2分 不滿意</span></div>
+            <div class="option-item"><input type="radio" name="q9" value="1分 非常不滿意" onchange="validateSurvey()"><span class="option-tile">1分 非常不滿意</span></div>
         </div>
     </div>
 
     <div class="survey-group">
-        <label>● 如果有任何想讓我們知道的，都歡迎回饋給我們 (選填)</label>
-        <input type="text" id="survey-comment" placeholder="寫下您的建議或鼓勵...">
+        <label>Q10. 本次活動中，最讓您印象深刻或感到驚艷的是什麼？（特別是與文化大使的互動或聲音體驗）</label>
+        <input type="text" id="survey-q10" placeholder="寫下您的想法...">
+    </div>
+
+    <div class="survey-group">
+        <label>Q11. 為了讓我們的活動能做得更好，您認為本次活動最需要改善的地方是什麼？</label>
+        <input type="text" id="survey-q11" placeholder="寫下您的寶貴建議...">
     </div>
     
     <button class="submit-btn" id="submit-survey-btn" onclick="saveSurveyData()" style="background:#777;" disabled>🔒 請完成上述所有的星號必填題</button>
 </div>
 
-<!-- 工作人員核銷面板區 -->
 <div class="staff-panel" id="final-staff-panel" style="display:none;">
     <div class="stamp-overlay" id="verification-stamp">已兌獎</div>
     <div class="staff-header">🔒 現場工作人員領獎核銷明細單</div>
     
-    <!-- 沒達標時動態跳出的灰白警告條 -->
+    <div id="staff-notice-zone" class="staff-notice-banner">
+        📢 <b>兌獎須知：</b><br>
+        ● 請保留此畫面，出示給攤位工作人員，以換取獎品<br>
+        ● <b>請勿自行操作</b>
+    </div>
+
     <div id="retry-alert-zone" class="retry-alert-box" style="display:none;">
         💡 提示：本張闖關卡未達兌獎門檻。<br>歡迎重新整理網頁，即可再次重新挑戰一次喔！
     </div>
@@ -295,7 +316,6 @@
     <center><button class="csv-btn" onclick="exportWithPassword()">📊 導出本台設備所有統計報表 (CSV)</button></center>
 </div>
 
-<!-- 新北文化大使官方識別 Logo -->
 <div class="footer-logo-zone">
     <img src="NTPC Logo-03.png" alt="新北文化大使 Logo">
 </div>
@@ -304,7 +324,7 @@
 const spotsData = [
     { id: 1, name: "新莊慈祐宮", audio: "廟宇-慈祐宮.m4a", info: "慈祐宮是新莊最古老的廟宇，建於清雍正九年（1731年）。主祀媽祖，見證了新莊大漢溪重要港口商貿的黃金時期。" },
     { id: 2, name: "地藏庵(大眾廟)", audio: "廟宇-大眾廟 .m4a", info: "新莊地藏庵奉祀地藏王菩薩與大眾爺，其「文武大眾爺祭典」（新莊大拜拜）是著名無形文化資產。" },
-    { id: 3, name: "輔仁大學(聖言樓)", audio: "輔仁大學_彌撒聲.mp3", info: "輔仁大學為天主教名校，校園內的彌撒鐘聲與聖歌，展現出莊嚴平和的宗教與多元學術氛圍。" },
+    { id: 3, name: "輔仁大學(淨心堂)", audio: "輔仁大學_彌撒聲.mp3", info: "輔仁大學淨心堂為校園內核心的天主教精神建築，其莊嚴的彌撒鐘聲與平靜氛圍，展現校園獨特的宗教文史與西方禮儀文化融合。" },
     { id: 4, name: "新莊棒球場", audio: "新莊棒球場.mp3", info: "新莊棒球場是北台灣職棒重鎮，賽季時充滿極具張力的現場應援敲擊樂與球迷吶喊聲。" },
     { id: 5, name: "新莊廟街夜市", audio: "新莊廟街夜市.mp3", info: "廟街白天是古蹟密布的文史老街，晚上則是傳統叫賣與美食攤販齊聚、人潮喧鬧的在地夜市。" },
     { id: 6, name: "捷運新莊站", audio: "捷運橘線聲音.m4a", info: "台北捷運中和新蘆線（橘線）的通車，讓新莊與雙北生活圈緊密相連。進站音樂與車廂廣播聲，是新莊通勤族每天最熟悉的城市現代生活交響樂。" },
@@ -380,9 +400,10 @@ function submitGame() {
     document.getElementById('win-score-big').innerText = `${finalCorrectCount} / ${targetScore}`;
     document.getElementById('report-zone').innerHTML = reportHtml;
 
-    if ((targetScore === 8 && finalCorrectCount >= 6) || (targetScore === 3 && finalCorrectCount === 3)) {
+    // 門檻判定：體驗版 3/3，達人挑戰版 8/8 滿分才可抽獎
+    if ((targetScore === 8 && finalCorrectCount === 8) || (targetScore === 3 && finalCorrectCount === 3)) {
         if(targetScore === 8) {
-            document.getElementById('win-status-title').innerText = "🎉 達到獲獎標準！";
+            document.getElementById('win-status-title').innerText = "🎉 完美全對！達到獲獎標準！";
             document.getElementById('gacha-area').style.display = 'block';
         } else {
             document.getElementById('win-status-title').innerText = "🎉 完美完成挑戰！";
@@ -423,17 +444,20 @@ function openSurveyZone() {
     document.getElementById('survey-section-card').scrollIntoView({ behavior: 'smooth' });
 }
 
+// 💡 必填項按鈕卡片動態驗證
 function validateSurvey() {
-    const age = document.querySelector('input[name="age"]:checked');
-    const gender = document.querySelector('input[name="gender"]:checked');
-    const job = document.querySelector('input[name="job"]:checked');
-    const fun = document.querySelector('input[name="fun"]:checked');
-    const help = document.querySelector('input[name="help"]:checked');
-    const ambassador = document.querySelector('input[name="ambassador"]:checked');
-    const prizeS = document.querySelector('input[name="prizeS"]:checked');
+    const q1 = document.querySelector('input[name="q1"]:checked');
+    const q2 = document.querySelector('input[name="q2"]:checked');
+    const q3 = document.querySelector('input[name="q3"]:checked');
+    const q4 = document.querySelector('input[name="q4"]:checked');
+    const q5 = document.querySelector('input[name="q5"]:checked');
+    const q6 = document.querySelector('input[name="q6"]:checked');
+    const q7 = document.querySelector('input[name="q7"]:checked');
+    const q8 = document.querySelector('input[name="q8"]:checked');
+    const q9 = document.querySelector('input[name="q9"]:checked');
     
     const btn = document.getElementById('submit-survey-btn');
-    if(age && gender && job && fun && help && ambassador && prizeS) {
+    if(q1 && q2 && q3 && q4 && q5 && q6 && q7 && q8 && q9) {
         btn.disabled = false; btn.innerText = "🚀 提交填寫，開啟核銷明細單"; btn.style.background = "var(--primary-color)";
     } else {
         btn.disabled = true; btn.innerText = "🔒 請完成上述所有的星號必填題"; btn.style.background = "#777";
@@ -441,19 +465,25 @@ function validateSurvey() {
 }
 
 function saveSurveyData() {
+    // 收集資料並清空逗號，防止破壞 CSV 格式
+    const cleanComment = (id) => document.getElementById(id).value.replace(/,/g, '，').replace(/\n/g, ' ');
+
     const surveyRecord = {
         timestamp: new Date().toLocaleString(),
         mode: targetScore === 3 ? '體驗版' : '達人版',
         score: `${finalCorrectCount}/${targetScore}`,
         prize: finalPrizeName,
-        age: document.querySelector('input[name="age"]:checked').value,
-        gender: document.querySelector('input[name="gender"]:checked').value,
-        job: document.querySelector('input[name="job"]:checked').value,
-        fun: document.querySelector('input[name="fun"]:checked').value,
-        help: document.querySelector('input[name="help"]:checked').value,
-        ambassador: document.querySelector('input[name="ambassador"]:checked').value,
-        prizeSatisfy: document.querySelector('input[name="prizeS"]:checked').value,
-        comment: document.getElementById('survey-comment').value.replace(/,/g, '，')
+        q1: document.querySelector('input[name="q1"]:checked').value,
+        q2: document.querySelector('input[name="q2"]:checked').value,
+        q3: document.querySelector('input[name="q3"]:checked').value,
+        q4: document.querySelector('input[name="q4"]:checked').value,
+        q5: document.querySelector('input[name="q5"]:checked').value,
+        q6: document.querySelector('input[name="q6"]:checked').value,
+        q7: document.querySelector('input[name="q7"]:checked').value,
+        q8: document.querySelector('input[name="q8"]:checked').value,
+        q9: document.querySelector('input[name="q9"]:checked').value,
+        q10: cleanComment('survey-q10'),
+        q11: cleanComment('survey-q11')
     };
 
     let currentData = JSON.parse(localStorage.getItem('xinzhuang_survey_reports')) || [];
@@ -472,24 +502,18 @@ function goToVerification() {
     document.getElementById('summary-mode').innerText = targetScore === 3 ? '體驗版 (精選 3 個景點)' : '達人挑戰版 (挑戰 8 個景點)';
     document.getElementById('summary-score').innerText = `${finalCorrectCount} / ${targetScore} 題`;
     
-    const isQualified = (targetScore === 3 && finalCorrectCount === 3) || (targetScore === 8 && finalCorrectCount >= 6);
+    // 過關標準：體驗版3/3、達人挑戰版 8/8 全對
+    const isQualified = (targetScore === 3 && finalCorrectCount === 3) || (targetScore === 8 && finalCorrectCount === 8);
 
     if (isQualified) {
-        panel.classList.remove('disabled-panel');
-        alertBox.style.display = 'none';
-        stampBtn.style.display = 'block';
-        prizeCell.innerText = finalPrizeName;
-        prizeCell.className = "v-value prize-highlight";
+        panel.classList.remove('disabled-panel'); alertBox.style.display = 'none'; stampBtn.style.display = 'block';
+        prizeCell.innerText = finalPrizeName; prizeCell.className = "v-value prize-highlight";
     } else {
-        panel.classList.add('disabled-panel');
-        alertBox.style.display = 'block';
-        stampBtn.style.display = 'none';
-        prizeCell.innerText = "❌ 未達兌獎標準";
-        prizeCell.className = "v-value prize-highlight no-prize";
+        panel.classList.add('disabled-panel'); alertBox.style.display = 'block'; stampBtn.style.display = 'none';
+        prizeCell.innerText = "❌ 未達兌獎標準"; prizeCell.className = "v-value prize-highlight no-prize";
     }
 
-    panel.style.display = 'block';
-    panel.scrollIntoView({ behavior: 'smooth' });
+    panel.style.display = 'block'; panel.scrollIntoView({ behavior: 'smooth' });
 }
 
 function applyVerificationStamp() {
@@ -509,11 +533,14 @@ function exportToCSV() {
     let records = JSON.parse(localStorage.getItem('xinzhuang_survey_reports')) || [];
     if(records.length === 0) { alert("目前尚未有任何填寫紀錄喔！"); return; }
     let csvContent = "\uFEFF";
-    csvContent += "填寫時間,遊玩機制,答對題數,獲得獎品,年齡,性別,職業,活動有趣度,認識新莊落實度,文化大使滿意度,小點心與獎品滿意度,其他回饋意見\n";
-    records.forEach(r => { csvContent += `${r.timestamp},${r.mode},${r.score},${r.prize},${r.age},${r.gender},${r.job},${r.fun},${r.help},${r.ambassador},${r.prizeSatisfy},${r.comment}\n`; });
+    // 報表表頭精準對齊 11 大題
+    csvContent += "填寫時間,遊玩機制,答對題數,獲得獎品,Q1_年齡,Q2_性別,Q3_居住區域,Q4_得悉管道,Q5_推薦親友意願,Q6_內容動線體驗,Q7_文化知識著墨,Q8_大使引導解說態度,Q9_週邊贈品滿意度,Q10_深刻驚艷之處(簡答),Q11_改善建議(簡答)\n";
+    records.forEach(r => { 
+        csvContent += `${r.timestamp},${r.mode},${r.score},${r.prize},${r.q1},${r.q2},${r.q3},${r.q4},${r.q5},${r.q6},${r.q7},${r.q8},${r.q9},${r.q10},${r.q11}\n`; 
+    });
     let blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     let link = document.createElement("a"); link.href = URL.createObjectURL(blob);
-    link.setAttribute("download", "新莊聲音地圖_活動回饋滿意度總統計報表.csv");
+    link.setAttribute("download", "新莊聲音地圖_11題回饋表單總統計報表.csv");
     document.body.appendChild(link); link.click(); document.body.removeChild(link);
 }
 </script>
