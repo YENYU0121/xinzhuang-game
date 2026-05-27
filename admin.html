@@ -4,129 +4,150 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🔒 後台管理系統 - 大使出任務數據統計</title>
-    <!-- 引入高質感圖表庫與多功能圖標 -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
             --primary-color: #9E2A2B;
             --secondary-color: #E09F3E;
-            --bg-color: #F8F9FA;
+            --bg-color: #F4F6F8;
             --card-bg: #FFFFFF;
-            --text-color: #333333;
+            --text-color: #2D3748;
             --success-color: #2E7D32;
+            --warning-color: #ED8936;
+            --danger-color: #E53E3E;
         }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, sans-serif; }
-        body { background-color: var(--bg-color); color: var(--text-color); padding: 20px; }
         
-        /* 密碼登入層 */
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-color); padding: 24px; min-height: 100vh; }
+        
+        /* 安全鎖登入層 */
         .login-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #FFFDF9; z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; }
-        .login-box { background: white; padding: 40px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 2px solid var(--secondary-color); text-align: center; max-width: 400px; width: 90%; }
-        .login-box input { width: 100%; padding: 12px; border: 1.5px solid #CCC; border-radius: 8px; margin: 15px 0; text-align: center; font-size: 18px; letter-spacing: 4px; }
-        .login-box button { background: var(--primary-color); color: white; border: none; padding: 12px 30px; border-radius: 8px; font-weight: bold; cursor: pointer; width: 100%; }
+        .login-box { background: white; padding: 40px; border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.08); border: 2px solid var(--secondary-color); text-align: center; max-width: 400px; width: 90%; }
+        .login-box input { width: 100%; padding: 14px; border: 2px solid #E2E8F0; border-radius: 12px; margin: 18px 0; text-align: center; font-size: 20px; letter-spacing: 6px; outline: none; transition: 0.2s; }
+        .login-box input:focus { border-color: var(--secondary-color); box-shadow: 0 0 0 3px rgba(224,159,62,0.2); }
+        .login-box button { background: var(--primary-color); color: white; border: none; padding: 14px; border-radius: 12px; font-weight: bold; cursor: pointer; width: 100%; font-size: 16px; transition: 0.2s; }
+        .login-box button:hover { background: #822223; transform: translateY(-1px); }
         
-        /* 主版面 */
-        .admin-container { max-width: 1100px; margin: 0 auto; display: none; }
-        .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; border-bottom: 3px double var(--secondary-color); padding-bottom: 15px; }
-        .admin-title { color: var(--primary-color); font-size: 24px; font-weight: bold; }
+        /* 後台主容器 */
+        .admin-container { max-width: 1200px; margin: 0 auto; display: none; animation: fadeIn 0.4s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
-        /* 數據大卡片看板 */
-        .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-bottom: 30px; }
-        .stat-card { background: white; padding: 20px; border-radius: 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.03); display: flex; align-items: center; gap: 15px; border-left: 5px solid var(--primary-color); }
-        .stat-card.blue { border-left-color: #2A6F97; }
-        .stat-card.green { border-left-color: var(--success-color); }
-        .stat-icon { width: 50px; height: 50px; border-radius: 10px; background: #FAF5F0; display: flex; justify-content: center; align-items: center; font-size: 22px; color: var(--primary-color); }
-        .stat-card.blue .stat-icon { color: #2A6F97; }
-        .stat-card.green .stat-icon { color: var(--success-color); }
-        .stat-info .num { font-size: 28px; font-weight: 800; line-height: 1.2; }
-        .stat-info .label { font-size: 13px; color: #777; }
+        .admin-header { display: flex; flex-direction: column; gap: 15px; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 2px dashed #CBD5E1; }
+        @media (min-width: 768px) { .admin-header { flex-direction: row; justify-content: space-between; align-items: center; } }
+        .admin-title h2 { color: var(--primary-color); font-size: 24px; font-weight: 800; display: flex; align-items: center; gap: 10px; }
+        .admin-title p { font-size: 13px; color: #718096; margin-top: 4px; }
+        
+        .csv-big-btn { background: #2E7D32; color: white; border: none; padding: 12px 24px; border-radius: 10px; font-weight: bold; display: flex; align-items: center; gap: 8px; font-size: 15px; cursor: pointer; box-shadow: 0 4px 12px rgba(46,125,50,0.2); transition: 0.2s; }
+        .csv-big-btn:hover { background: #1E5322; transform: translateY(-1px); }
+        
+        /* 📈 1. 頂部大數字指標面板優化 */
+        .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .stat-card { background: white; padding: 24px; border-radius: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.02); display: flex; align-items: center; gap: 20px; border: 1px solid #E2E8F0; position: relative; overflow: hidden; }
+        .stat-card::after { content: ''; position: absolute; top: 0; left: 0; width: 6px; height: 100%; background: var(--primary-color); }
+        .stat-card.blue::after { background: #2A6F97; }
+        .stat-card.orange::after { background: var(--secondary-color); }
+        .stat-card.green::after { background: var(--success-color); }
+        
+        .stat-icon { width: 56px; height: 56px; border-radius: 14px; background: #FFF5F5; display: flex; justify-content: center; align-items: center; font-size: 24px; color: var(--primary-color); }
+        .stat-card.blue .stat-icon { background: #EBF8FF; color: #2A6F97; }
+        .stat-card.orange .stat-icon { background: #FFFDF5; color: var(--secondary-color); }
+        .stat-card.green .stat-icon { background: #E8F5E9; color: var(--success-color); }
+        
+        .stat-info .num { font-size: 32px; font-weight: 900; color: #1A202C; line-height: 1.1; }
+        .stat-info .label { font-size: 13px; color: #718096; font-weight: 600; margin-top: 4px; }
 
-        /* 獎品與圖表區 */
-        .main-grid { display: grid; grid-template-columns: 1fr; gap: 25px; margin-bottom: 30px; }
-        @media (min-width: 850px) { .main-grid { grid-template-columns: 1fr 1fr; } }
+        /* 區塊排版 */
+        .main-grid { display: grid; grid-template-columns: 1fr; gap: 25px; margin-bottom: 25px; }
+        @media (min-width: 900px) { .main-grid { grid-template-columns: 1fr 1fr; } }
         
-        .section-card { background: white; padding: 24px; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
-        .section-card h3 { color: var(--primary-color); font-size: 16px; margin-bottom: 15px; border-bottom: 1px dashed #EAE6DF; padding-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+        .section-card { background: white; padding: 24px; border-radius: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.02); border: 1px solid #E2E8F0; display: flex; flex-direction: column; }
+        .section-card h3 { color: #1A202C; font-size: 16px; font-weight: 800; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid #EDF2F7; display: flex; align-items: center; gap: 8px; }
+        .section-card h3 i { color: var(--secondary-color); }
         
-        /* 庫存條樣式 */
-        .prize-row { margin-bottom: 14px; }
-        .prize-meta { display: flex; justify-content: space-between; font-size: 13px; font-weight: bold; margin-bottom: 5px; }
-        .progress-bar-bg { width: 100%; height: 10px; background: #EAE6DF; border-radius: 5px; overflow: hidden; }
-        .progress-bar-fill { height: 100%; background: var(--secondary-color); border-radius: 5px; transition: 0.3s; }
+        /* ⏳ 2. 實時庫存精緻條 */
+        .prize-list-wrapper { display: flex; flex-direction: column; gap: 16px; flex: 1; justify-content: center; }
+        .prize-row { background: #F8FAFC; padding: 12px 16px; border-radius: 12px; border: 1px solid #E2E8F0; }
+        .prize-meta { display: flex; justify-content: space-between; font-size: 13px; font-weight: bold; margin-bottom: 8px; }
+        .prize-name { font-size: 14px; color: #1A202C; }
+        .prize-qty { color: #4A5568; }
+        .progress-bar-bg { width: 100%; height: 12px; background: #E2E8F0; border-radius: 6px; overflow: hidden; }
+        .progress-bar-fill { height: 100%; background: #48BB78; border-radius: 6px; transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+        
+        /* 🚨 庫存低於 5 個時的閃爍警告 */
+        .stock-danger { animation: pulseDanger 1.5s infinite; background: #FFF5F5; border-color: #FED7D7; }
+        .stock-danger .prize-qty { color: var(--danger-color); }
+        @keyframes pulseDanger { 0%, 100% { opacity: 1; } 50% { background: #FFEBEB; } }
 
-        /* 問卷簡答列表 */
-        .comment-list { max-height: 300px; overflow-y: auto; padding-right: 5px; }
-        .comment-item { background: #FAF9F5; padding: 12px; border-radius: 8px; font-size: 13px; margin-bottom: 8px; border-left: 3px solid var(--secondary-color); line-height: 1.4; }
-        .comment-time { font-size: 11px; color: #999; margin-top: 4px; }
-
-        .csv-big-btn { background: #2E7D32; color: white; border: none; padding: 12px 24px; border-radius: 8px; font-weight: bold; display: flex; align-items: center; gap: 8px; font-size: 15px; cursor: pointer; }
-        .chart-container { position: relative; height: 220px; width: 100%; }
+        /* 💬 4. 條列問卷意見改用舒適的對話泡泡風格 */
+        .comment-list { max-height: 320px; overflow-y: auto; padding-right: 6px; display: flex; flex-direction: column; gap: 10px; }
+        .comment-item { background: #EDF2F7; padding: 14px; border-radius: 16px 16px 16px 4px; font-size: 13.5px; color: #2D3748; line-height: 1.5; border: 1px solid #E2E8F0; position: relative; }
+        .comment-item.suggest { background: #FFFAF0; border-color: #FEEBC8; border-radius: 16px 16px 4px 16px; }
+        .comment-meta-info { display: flex; justify-content: space-between; font-size: 11px; color: #718096; margin-top: 6px; border-top: 1px dashed #CBD5E1; padding-top: 4px; }
+        
+        .chart-container { position: relative; height: 260px; width: 100%; margin: auto 0; }
     </style>
 </head>
 <body>
 
-<!-- 🔒 安全驗證登入層 -->
 <div class="login-overlay" id="loginOverlay">
     <div class="login-box">
-        <i class="fa-solid fa-shield-halved" style="font-size: 45px; color: var(--primary-color);"></i>
-        <h2 style="margin-top:10px; color:var(--primary-color);">新北文化大使後台</h2>
-        <p style="font-size:13px; color:#777; margin-top:5px;">請輸入工作人員專屬後台安全 PIN 碼</p>
-        <input type="password" id="pinInput" placeholder="請輸入密碼" maxlength="4">
-        <button onclick="verifyAdminPin()">驗證認證並登入</button>
+        <i class="fa-solid fa-shield-halved" style="font-size: 50px; color: var(--primary-color);"></i>
+        <h2 style="margin-top:12px; color:var(--primary-color); font-weight:800;">新北文化大使後台</h2>
+        <p style="font-size:13px; color:#718096; margin-top:6px;">請輸入工作人員專屬後台安全 PIN 碼</p>
+        <input type="password" id="pinInput" placeholder="••••" maxlength="4">
+        <button onclick="verifyAdminPin()">認證並開啟儀表板</button>
     </div>
 </div>
 
-<!-- 📊 數據統計主儀表板 -->
 <div class="admin-container" id="adminContainer">
     <div class="admin-header">
-        <div class="admin-title"><i class="fa-solid fa-chart-pie"></i> 活動現場數據即時統計儀表板</div>
-        <button class="csv-big-btn" onclick="downloadCSVReport()"><i class="fa-solid fa-file-excel"></i> 導出完整統計報表 (CSV)</button>
+        <div class="admin-title">
+            <h2><i class="fa-solid fa-chart-line"></i> 大使出任務 ‧ 數據即時統計</h2>
+            <p>※ 本系統採用公用記憶體統計，即時呈現目前攤位設備之發放與問卷進度。</p>
+        </div>
+        <button class="csv-big-btn" onclick="downloadCSVReport()"><i class="fa-solid fa-file-excel"></i> 匯出完整問卷統計 (CSV)</button>
     </div>
 
-    <!-- 頂部即時計數看板 -->
     <div class="dashboard-grid">
         <div class="stat-card"><div class="stat-icon"><i class="fa-solid fa-users"></i></div><div class="stat-info"><div class="num" id="totalCount">0</div><div class="label">累積參與總人數</div></div></div>
-        <div class="stat-card blue"><div class="stat-icon"><i class="fa-solid fa-gamepad"></i></div><div class="stat-info"><div class="num" id="mode8Count">0</div><div class="label">挑戰達人版(8題)人數</div></div></div>
-        <div class="stat-card green"><div class="stat-icon"><i class="fa-solid fa-child"></i></div><div class="stat-info"><div class="num" id="mode3Count">0</div><div class="label">挑戰體驗版(3題)人數</div></div></div>
-        <div class="stat-card"><div class="stat-icon"><i class="fa-solid fa-award"></i></div><div class="stat-info"><div class="num" id="fullScoreCount">0</div><div class="label">完美全對通關人數</div></div></div>
+        <div class="stat-card blue"><div class="stat-icon"><i class="fa-solid fa-graduation-cap"></i></div><div class="stat-info"><div class="num" id="mode8Count">0</div><div class="label">挑戰達人版(8題)</div></div></div>
+        <div class="stat-card orange"><div class="stat-icon"><i class="fa-solid fa-flag"></i></div><div class="stat-info"><div class="num" id="mode3Count">0</div><div class="label">挑戰體驗版(3題)</div></div></div>
+        <div class="stat-card green"><div class="stat-icon"><i class="fa-solid fa-circle-check"></i></div><div class="stat-info"><div class="num" id="fullScoreCount">0</div><div class="label">全對完美通關數</div></div></div>
     </div>
 
-    <!-- 中層：實時獎品庫存控制 + 滿意度統計 -->
     <div class="main-grid">
         <div class="section-card">
-            <h3><i class="fa-solid fa-box-open"></i> 現場實體獎品剩餘發放情形與估算庫存</h3>
-            <div id="prizeStockZone"></div>
-            <p style="font-size:11px; color:#888; margin-top:15px; line-height:1.4;">※ 數據依據本台公用設備民眾現場線上扭蛋機抽出銷帳之結果自動即時扣除。</p>
+            <h3><i class="fa-solid fa-boxes-stacked"></i> 現場實體獎品剩餘發放情形 (智能警示)</h3>
+            <div class="prize-list-wrapper" id="prizeStockZone"></div>
         </div>
 
         <div class="section-card">
-            <h3><i class="fa-solid fa-star"></i> 回饋表單核心指標數據統整</h3>
+            <h3><i class="fa-solid fa-square-poll-vertical"></i> 表單滿意度核心量化數據指標</h3>
             <div class="chart-container">
                 <canvas id="satisfactionChart"></canvas>
             </div>
         </div>
     </div>
 
-    <!-- 下層：人口結構分佈圖表 -->
     <div class="main-grid">
         <div class="section-card">
-            <h3><i class="fa-solid fa-chart-pie"></i> 參與群眾居住區域比例</h3>
+            <h3><i class="fa-solid fa-map-location-dot"></i> 參與群眾居住區域比例分佈</h3>
             <div class="chart-container"><canvas id="regionChart"></canvas></div>
         </div>
         <div class="section-card">
-            <h3><i class="fa-solid fa-circle-info"></i> 參與群眾得悉/參與管道比例</h3>
+            <h3><i class="fa-solid fa-share-nodes"></i> 參與群眾得悉/參與管道比例</h3>
             <div class="chart-container"><canvas id="channelChart"></canvas></div>
         </div>
     </div>
 
-    <!-- 最底層：民眾意見回饋回條清單 -->
-    <div class="main-grid" style="grid-template-columns: 1fr 1fr;">
+    <div class="main-grid">
         <div class="section-card">
-            <h3><i class="fa-solid fa-heart"></i> Q10. 最讓您印象深刻或感到驚艷的是什麼？</h3>
+            <h3><i class="fa-solid fa-face-smile-beam"></i> Q10. 最讓群眾感到驚艷或深刻的地方？</h3>
             <div class="comment-list" id="q10Comments"></div>
         </div>
         <div class="section-card">
-            <h3><i class="fa-solid fa-screwdriver-wrench"></i> Q11. 您認為本次活動最需要改善的地方是什麼？</h3>
+            <h3><i class="fa-solid fa-comment-medical"></i> Q11. 民眾認為本次活動最需要改善的地方？</h3>
             <div class="comment-list" id="q11Comments"></div>
         </div>
     </div>
@@ -135,7 +156,6 @@
 <script>
 const initialStock = { "媽祖平安符": 50, "新莊朝盛飄帶": 70, "玻璃杯墊": 23, "旅行組": 8, "立牌": 10 };
 
-// 💡 修正：已移除多餘的 style 關鍵字，確保能順利讀取 PIN 碼並關閉隱藏登入遮罩
 function verifyAdminPin() {
     const pin = document.getElementById('pinInput').value;
     if (pin === "0121") {
@@ -163,6 +183,7 @@ function loadDashboardData() {
     }).length;
     document.getElementById('fullScoreCount').innerText = fullScore;
 
+    // 智能庫存警示計算與渲染
     let currentStock = { ...initialStock };
     let prizeIssuedCount = { "媽祖平安符": 0, "新莊朝盛飄帶": 0, "玻璃杯墊": 0, "旅行組": 0, "立牌": 0 };
     
@@ -179,20 +200,26 @@ function loadDashboardData() {
         let issued = prizeIssuedCount[pName];
         let remain = total - issued < 0 ? 0 : total - issued;
         let percent = Math.floor((remain / total) * 100);
+        
+        // 🚨 低於或等於 4 個時自動啟動警告 Class 閃爍紅燈
+        let isDanger = remain <= 4 ? "stock-danger" : "";
+        let fillStyle = remain <= 4 ? "background-color: var(--danger-color)" : "background-color: #48BB78";
+
         prizeHtml += `
-            <div class="prize-row">
+            <div class="prize-row ${isDanger}">
                 <div class="prize-meta">
-                    <span>🎁 ${pName}</span>
-                    <span style="color:${remain <= 3 ? 'var(--danger-color)' : '#555'}">剩餘 ${remain} / 初始 ${total} (已發放 ${issued})</span>
+                    <span class="prize-name"><b>🎁 ${pName}</b></span>
+                    <span class="prize-qty">剩餘 <b>${remain}</b> / 初始 ${total} <span style="font-weight:normal;opacity:0.7;">(已發 ${issued})</span></span>
                 </div>
                 <div class="progress-bar-bg">
-                    <div class="progress-bar-fill" style="width: ${percent}%; background-color: ${remain <= 3 ? 'var(--danger-color)' : 'var(--secondary-color)'}"></div>
+                    <div class="progress-bar-fill" style="width: ${percent}%; ${fillStyle}"></div>
                 </div>
             </div>
         `;
     });
     document.getElementById('prizeStockZone').innerHTML = prizeHtml;
 
+    // 計算平均滿意度得分
     let totalFun = 0, totalRecommend = 0, totalGuide = 0, totalPrizeS = 0;
     records.forEach(r => {
         totalFun += parseInt(r.q6) || 5;
@@ -208,17 +235,18 @@ function loadDashboardData() {
     new Chart(document.getElementById('satisfactionChart'), {
         type: 'bar',
         data: {
-            labels: ['Q6_內容動線體驗(滿分5)', 'Q5_推薦親友意願(滿分10)', 'Q8_大使引導解說(滿分5)', 'Q9_週邊贈品滿意(滿分5)'],
+            labels: ['Q6_內容動線(滿5)', 'Q5_推薦意願(滿10)', 'Q8_學員引導解說(滿5)', 'Q9_週邊贈品(滿5)'],
             datasets: [{
-                label: '本台設備目前平均回饋得分',
+                label: '當前平均回饋得分',
                 data: [avgFun, avgRec, avgGuide, avgPrizeS],
                 backgroundColor: ['#2A6F97', '#E09F3E', '#9E2A2B', '#3E6B41'],
-                borderRadius: 6
+                borderRadius: 8
             }]
         },
         options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, max: 10 } } }
     });
 
+    // 群眾比例圖表
     let regions = { "新北市新莊區（在地居民）": 0, "新北市其他行政區": 0, "其他縣市": 0, "國際旅客": 0 };
     let channels = { "新北文化大使IG": 0, "親友推薦": 0, "路過": 0, "其他": 0 };
     
@@ -245,17 +273,18 @@ function loadDashboardData() {
         options: { responsive: true, maintainAspectRatio: false }
     });
 
+    // 💬 對話泡泡風格文字列表渲染
     let q10Html = "", q11Html = "";
     records.forEach(r => {
         if (r.q10 && r.q10.trim() !== "") {
-            q10Html += `<div class="comment-item">💬 ${r.q10}<div class="comment-time">⏱️ ${r.timestamp} (得分:${r.score})</div></div>`;
+            q10Html += `<div class="comment-item"><b>💬 民眾回饋：</b>${r.q10}<div class="comment-meta-info"><span>⏱️ ${r.timestamp}</span><span>答對: ${r.score}</span></div></div>`;
         }
         if (r.q11 && r.q11.trim() !== "") {
-            q11Html += `<div class="comment-item">⚠️ ${r.q11}<div class="comment-time">⏱️ ${r.timestamp}</div></div>`;
+            q11Html += `<div class="comment-item suggest"><b>⚠️ 改善建議：</b>${r.q11}<div class="comment-meta-info"><span>⏱️ ${r.timestamp}</span></div></div>`;
         }
     });
-    document.getElementById('q10Comments').innerHTML = q10Html || '<div style="color:#888;font-size:13px;padding:10px;">目前尚無簡答回饋紀錄</div>';
-    document.getElementById('q11Comments').innerHTML = q11Html || '<div style="color:#888;font-size:13px;padding:10px;">目前尚無簡答回饋紀錄</div>';
+    document.getElementById('q10Comments').innerHTML = q10Html || '<div style="color:#A0AEC0;font-size:13px;padding:10px;text-align:center;">暫無印象深刻回饋</div>';
+    document.getElementById('q11Comments').innerHTML = q11Html || '<div style="color:#A0AEC0;font-size:13px;padding:10px;text-align:center;">暫無改善建議回饋</div>';
 }
 
 function downloadCSVReport() {
