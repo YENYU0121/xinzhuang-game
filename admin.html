@@ -59,7 +59,7 @@
         .comment-item { background: #FAF9F5; padding: 12px; border-radius: 8px; font-size: 13px; margin-bottom: 8px; border-left: 3px solid var(--secondary-color); line-height: 1.4; }
         .comment-time { font-size: 11px; color: #999; margin-top: 4px; }
 
-        .csv-big-btn { background: #2E7D32; color: white; border: none; padding: 12px 24px; border-radius: 8px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 15px; }
+        .csv-big-btn { background: #2E7D32; color: white; border: none; padding: 12px 24px; border-radius: 8px; font-weight: bold; display: flex; align-items: center; gap: 8px; font-size: 15px; cursor: pointer; }
         .chart-container { position: relative; height: 220px; width: 100%; }
     </style>
 </head>
@@ -68,10 +68,10 @@
 <!-- 🔒 安全驗證登入層 -->
 <div class="login-overlay" id="loginOverlay">
     <div class="login-box">
-        <i class="fa-solid :fa-shield-halved" style="font-size: 45px; color: var(--primary-color);"></i>
+        <i class="fa-solid fa-shield-halved" style="font-size: 45px; color: var(--primary-color);"></i>
         <h2 style="margin-top:10px; color:var(--primary-color);">新北文化大使後台</h2>
         <p style="font-size:13px; color:#777; margin-top:5px;">請輸入工作人員專屬後台安全 PIN 碼</p>
-        <input type="password" id="pinInput" placeholder="请输入密碼" maxlength="4">
+        <input type="password" id="pinInput" placeholder="請輸入密碼" maxlength="4">
         <button onclick="verifyAdminPin()">驗證認證並登入</button>
     </div>
 </div>
@@ -93,14 +93,12 @@
 
     <!-- 中層：實時獎品庫存控制 + 滿意度統計 -->
     <div class="main-grid">
-        <!-- 現場實體獎品消耗與發放情形 -->
         <div class="section-card">
             <h3><i class="fa-solid fa-box-open"></i> 現場實體獎品剩餘發放情形與估算庫存</h3>
             <div id="prizeStockZone"></div>
-            <p style="font-size:11px; color:#888; margin-top:15px; line-height:1.4;">※ 初始基準：平安符50、飄帶70、杯墊23、旅行組8、立牌10。數據依據本台公用設備民眾現場線上扭蛋機抽出銷帳之結果自動即時扣除扣減。</p>
+            <p style="font-size:11px; color:#888; margin-top:15px; line-height:1.4;">※ 數據依據本台公用設備民眾現場線上扭蛋機抽出銷帳之結果自動即時扣除。</p>
         </div>
 
-        <!-- 問卷核心量化平均指標 -->
         <div class="section-card">
             <h3><i class="fa-solid fa-star"></i> 回饋表單核心指標數據統整</h3>
             <div class="chart-container">
@@ -112,11 +110,11 @@
     <!-- 下層：人口結構分佈圖表 -->
     <div class="main-grid">
         <div class="section-card">
-            <h3><i class="fa-solid fa-pie-chart"></i> 參與群眾居住區域比例</h3>
+            <h3><i class="fa-solid fa-chart-pie"></i> 參與群眾居住區域比例</h3>
             <div class="chart-container"><canvas id="regionChart"></canvas></div>
         </div>
         <div class="section-card">
-            <h3><i class="fa-solid fa-info-circle"></i> 參與群眾得悉/參與管道比例</h3>
+            <h3><i class="fa-solid fa-circle-info"></i> 參與群眾得悉/參與管道比例</h3>
             <div class="chart-container"><canvas id="channelChart"></canvas></div>
         </div>
     </div>
@@ -128,20 +126,20 @@
             <div class="comment-list" id="q10Comments"></div>
         </div>
         <div class="section-card">
-            <h3><i class="fa-solid fa-tools"></i> Q11. 您認為本次活動最需要改善的地方是什麼？</h3>
+            <h3><i class="fa-solid fa-screwdriver-wrench"></i> Q11. 您認為本次活動最需要改善的地方是什麼？</h3>
             <div class="comment-list" id="q11Comments"></div>
         </div>
     </div>
 </div>
 
 <script>
-// 基準庫存常量定義
 const initialStock = { "媽祖平安符": 50, "新莊朝盛飄帶": 70, "玻璃杯墊": 23, "旅行組": 8, "立牌": 10 };
 
+// 💡 修正：已移除多餘的 style 關鍵字，確保能順利讀取 PIN 碼並關閉隱藏登入遮罩
 function verifyAdminPin() {
     const pin = document.getElementById('pinInput').value;
     if (pin === "0121") {
-        document.getElementById('loginOverlay').style.style.display = 'none';
+        document.getElementById('loginOverlay').style.display = 'none';
         document.getElementById('adminContainer').style.display = 'block';
         loadDashboardData();
     } else {
@@ -151,10 +149,8 @@ function verifyAdminPin() {
 }
 
 function loadDashboardData() {
-    // 讀取前端本地資料庫
     let records = JSON.parse(localStorage.getItem('xinzhuang_survey_reports')) || [];
     
-    // 1. 基本人數計數
     document.getElementById('totalCount').innerText = records.length;
     let mode8 = records.filter(r => r.mode === '達人版').length;
     let mode3 = records.filter(r => r.mode === '體驗版').length;
@@ -167,7 +163,6 @@ function loadDashboardData() {
     }).length;
     document.getElementById('fullScoreCount').innerText = fullScore;
 
-    // 2. 實時獎品庫存扣減情形計算
     let currentStock = { ...initialStock };
     let prizeIssuedCount = { "媽祖平安符": 0, "新莊朝盛飄帶": 0, "玻璃杯墊": 0, "旅行組": 0, "立牌": 0 };
     
@@ -198,7 +193,6 @@ function loadDashboardData() {
     });
     document.getElementById('prizeStockZone').innerHTML = prizeHtml;
 
-    // 3. 回饋表單核心滿意度平均分數計算
     let totalFun = 0, totalRecommend = 0, totalGuide = 0, totalPrizeS = 0;
     records.forEach(r => {
         totalFun += parseInt(r.q6) || 5;
@@ -211,11 +205,10 @@ function loadDashboardData() {
     let avgGuide = records.length ? (totalGuide / records.length).toFixed(1) : 0;
     let avgPrizeS = records.length ? (totalPrizeS / records.length).toFixed(1) : 0;
 
-    // 渲染滿意度長條圖
     new Chart(document.getElementById('satisfactionChart'), {
         type: 'bar',
         data: {
-            labels: ['Q6_活動動線體驗(滿分5)', 'Q5_推薦親友意願(滿分10)', 'Q8_大使引導解說(滿分5)', 'Q9_週邊贈品滿意(滿分5)'],
+            labels: ['Q6_內容動線體驗(滿分5)', 'Q5_推薦親友意願(滿分10)', 'Q8_大使引導解說(滿分5)', 'Q9_週邊贈品滿意(滿分5)'],
             datasets: [{
                 label: '本台設備目前平均回饋得分',
                 data: [avgFun, avgRec, avgGuide, avgPrizeS],
@@ -226,7 +219,6 @@ function loadDashboardData() {
         options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, max: 10 } } }
     });
 
-    // 4. 群眾分佈比例圖表彙整
     let regions = { "新北市新莊區（在地居民）": 0, "新北市其他行政區": 0, "其他縣市": 0, "國際旅客": 0 };
     let channels = { "新北文化大使IG": 0, "親友推薦": 0, "路過": 0, "其他": 0 };
     
@@ -235,7 +227,6 @@ function loadDashboardData() {
         if(channels[r.q4] !== undefined) channels[r.q4]++;
     });
 
-    // 居住區域圓餅圖
     new Chart(document.getElementById('regionChart'), {
         type: 'pie',
         data: {
@@ -245,7 +236,6 @@ function loadDashboardData() {
         options: { responsive: true, maintainAspectRatio: false }
     });
 
-    // 得知管道圓餅圖
     new Chart(document.getElementById('channelChart'), {
         type: 'doughnut',
         data: {
@@ -255,7 +245,6 @@ function loadDashboardData() {
         options: { responsive: true, maintainAspectRatio: false }
     });
 
-    // 5. 渲染 Q10 與 Q11 的文字簡答列表
     let q10Html = "", q11Html = "";
     records.forEach(r => {
         if (r.q10 && r.q10.trim() !== "") {
