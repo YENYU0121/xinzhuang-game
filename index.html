@@ -28,8 +28,12 @@
             min-height: 100vh;
         }
 
-        header { text-align: center; margin: 20px 0; max-width: 600px; width: 100%; }
-        h1 { color: var(--primary-color); font-size: 1.8rem; margin-bottom: 12px; font-weight: bold; }
+        /* 💡 頂部 Banner 容器優化 */
+        header { text-align: center; margin: 10px 0 20px 0; max-width: 600px; width: 100%; }
+        .main-banner {
+            width: 100%; height: auto; max-width: 550px; object-fit: contain; 
+            margin-bottom: 5px; filter: drop-shadow(0px 4px 8px rgba(0,0,0,0.06));
+        }
         
         .instructions-board {
             background: var(--card-bg); padding: 18px; border-radius: 14px;
@@ -61,7 +65,11 @@
 
         /* 彈窗樣式 */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(40, 30, 24, 0.6); backdrop-filter: blur(5px); justify-content: center; align-items: center; z-index: 1000; }
-        .modal-content { background: white; padding: 25px; border-radius: 24px; text-align: center; max-width: 480px; width: 90%; max-height: 80vh; overflow-y: auto; box-shadow: 0 10px 30px rgba(0,0,0,0.25); border: 3px solid var(--secondary-color); }
+        .modal-content { background: white; padding: 25px; border-radius: 24px; text-align: center; max-width: 480px; width: 90%; max-height: 85vh; overflow-y: auto; box-shadow: 0 10px 30px rgba(0,0,0,0.25); border: 3px solid var(--secondary-color); }
+        
+        /* 💡 初始選擇框內的 Banner 樣式優化 */
+        .modal-banner { width: 100%; height: auto; max-width: 380px; object-fit: contain; margin-bottom: 15px; }
+
         .mode-btn { background: var(--primary-color); color: white; border: none; padding: 16px 20px; border-radius: 14px; cursor: pointer; font-weight: bold; font-size: 16px; margin: 12px 0; width: 100%; }
         .mode-btn.light { background: #4A5759; }
 
@@ -80,7 +88,7 @@
         @keyframes shakeBall { 0%, 100% { transform: translate(0,0); } 20% { transform: translate(-4px,2px); } 40% { transform: translate(3px,-1px); } 60% { transform: translate(-2px,-2px); } }
         .gacha-btn { background: #E11D48; color: white; border: none; padding: 12px 24px; border-radius: 50px; font-weight: bold; cursor: pointer; }
 
-        /* 📝 表單滿意度卡片視覺大優化 */
+        /* 表單滿意度 */
         .survey-group { text-align: left; margin-bottom: 22px; background: #FAF9F5; padding: 16px; border-radius: 12px; border: 1px solid #F0EDE4; }
         .survey-group label { display: block; font-weight: bold; font-size: 14px; margin-bottom: 10px; color: var(--primary-color); line-height: 1.4; }
         .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
@@ -125,15 +133,18 @@
 
 <div class="modal" id="modeModal" style="display: flex;">
     <div class="modal-content">
-        <h2 style="color: var(--primary-color); margin-bottom: 15px;">📜 請選擇遊玩模式</h2>
-        <p style="font-size: 14px; color: #666; margin-bottom: 20px;">歡迎來到新莊聲音地圖！請選擇您今天想挑戰的任務：</p>
+        <img src="活動banner.png" alt="大使出任務，解鎖新莊聲！" class="modal-banner">
+        
+        <h3 style="color: var(--primary-color); margin-bottom: 10px;">📜 請選擇遊玩模式</h3>
+        <p style="font-size: 13px; color: #666; margin-bottom: 15px;">歡迎來到新莊聲音地圖！請選擇您今天想挑戰的任務：</p>
         <button class="mode-btn light" onclick="selectMode(3)">體驗版：精選 3 個景點<br><span style="font-size:12px; font-weight:normal; opacity:0.9;">🎁 全對送：小包餅乾</span></button>
         <button class="mode-btn" onclick="selectMode(8)">達人版：挑戰 8 個景點<br><span style="font-size:12px; font-weight:normal; opacity:0.9;">🎁 8題全對解鎖大扭蛋抽獎</span></button>
     </div>
 </div>
 
 <header>
-    <h1>新莊聲音地圖大挑戰</h1>
+    <img src="活動banner.png" alt="大使出任務，解鎖新莊聲！" class="main-banner">
+    
     <div class="instructions-board">
         <div class="board-title">📋 現行關卡機制與進度說明</div>
         <p style="font-size:13px; color:#555; line-height:1.5;">請先透過下方 <b>Google 互動地圖</b> 縮放觀察新莊區域。聽完聲音後直接在正下方的選單完成答案配對，達人挑戰版需<b> 8 題全對</b>，並填寫完活動回饋表單後即可開啟現場領獎核銷！</p>
@@ -400,7 +411,6 @@ function submitGame() {
     document.getElementById('win-score-big').innerText = `${finalCorrectCount} / ${targetScore}`;
     document.getElementById('report-zone').innerHTML = reportHtml;
 
-    // 門檻判定：體驗版 3/3，達人挑戰版 8/8 滿分才可抽獎
     if ((targetScore === 8 && finalCorrectCount === 8) || (targetScore === 3 && finalCorrectCount === 3)) {
         if(targetScore === 8) {
             document.getElementById('win-status-title').innerText = "🎉 完美全對！達到獲獎標準！";
@@ -444,7 +454,6 @@ function openSurveyZone() {
     document.getElementById('survey-section-card').scrollIntoView({ behavior: 'smooth' });
 }
 
-// 💡 必填項按鈕卡片動態驗證
 function validateSurvey() {
     const q1 = document.querySelector('input[name="q1"]:checked');
     const q2 = document.querySelector('input[name="q2"]:checked');
@@ -465,7 +474,6 @@ function validateSurvey() {
 }
 
 function saveSurveyData() {
-    // 收集資料並清空逗號，防止破壞 CSV 格式
     const cleanComment = (id) => document.getElementById(id).value.replace(/,/g, '，').replace(/\n/g, ' ');
 
     const surveyRecord = {
@@ -502,7 +510,6 @@ function goToVerification() {
     document.getElementById('summary-mode').innerText = targetScore === 3 ? '體驗版 (精選 3 個景點)' : '達人挑戰版 (挑戰 8 個景點)';
     document.getElementById('summary-score').innerText = `${finalCorrectCount} / ${targetScore} 題`;
     
-    // 過關標準：體驗版3/3、達人挑戰版 8/8 全對
     const isQualified = (targetScore === 3 && finalCorrectCount === 3) || (targetScore === 8 && finalCorrectCount === 8);
 
     if (isQualified) {
@@ -524,6 +531,7 @@ function applyVerificationStamp() {
     document.getElementById('submit-game-btn').disabled = true;
 }
 
+// 安全保護碼：0121
 function exportWithPassword() {
     const inputPin = prompt("🔒 請工作人員輸入後台導出安全密碼 (PIN)：");
     if (inputPin === "0121") { exportToCSV(); } else if (inputPin !== null) { alert("❌ 密碼錯誤！無權限下載統計報表。"); }
@@ -533,7 +541,6 @@ function exportToCSV() {
     let records = JSON.parse(localStorage.getItem('xinzhuang_survey_reports')) || [];
     if(records.length === 0) { alert("目前尚未有任何填寫紀錄喔！"); return; }
     let csvContent = "\uFEFF";
-    // 報表表頭精準對齊 11 大題
     csvContent += "填寫時間,遊玩機制,答對題數,獲得獎品,Q1_年齡,Q2_性別,Q3_居住區域,Q4_得悉管道,Q5_推薦親友意願,Q6_內容動線體驗,Q7_文化知識著墨,Q8_大使引導解說態度,Q9_週邊贈品滿意度,Q10_深刻驚艷之處(簡答),Q11_改善建議(簡答)\n";
     records.forEach(r => { 
         csvContent += `${r.timestamp},${r.mode},${r.score},${r.prize},${r.q1},${r.q2},${r.q3},${r.q4},${r.q5},${r.q6},${r.q7},${r.q8},${r.q9},${r.q10},${r.q11}\n`; 
