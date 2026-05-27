@@ -28,20 +28,11 @@
             min-height: 100vh;
         }
 
-        /* 💡 修正：為去背 Banner 加上網頁頂端舒適的純白圓角襯底與微陰影 */
+        /* 💡 頂部 Banner 容器優化 */
         header { text-align: center; margin: 10px 0 20px 0; max-width: 600px; width: 100%; }
-        .banner-container {
-            background: #FFFFFF;
-            padding: 12px 20px;
-            border-radius: 16px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
-            border: 1px solid #F0EDE6;
-            margin-bottom: 15px;
-            display: inline-block;
-            width: 100%;
-        }
         .main-banner {
-            width: 100%; height: auto; max-width: 520px; object-fit: contain; display: block; margin: 0 auto;
+            width: 100%; height: auto; max-width: 550px; object-fit: contain; 
+            margin-bottom: 5px; filter: drop-shadow(0px 4px 8px rgba(0,0,0,0.06));
         }
         
         .instructions-board {
@@ -72,17 +63,12 @@
 
         .submit-btn { background: var(--primary-color); color: white; border: none; padding: 14px; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 15px; }
 
-        /* 彈窗與初始選擇框樣式 */
+        /* 彈窗樣式 */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(40, 30, 24, 0.6); backdrop-filter: blur(5px); justify-content: center; align-items: center; z-index: 1000; }
         .modal-content { background: white; padding: 25px; border-radius: 24px; text-align: center; max-width: 480px; width: 90%; max-height: 85vh; overflow-y: auto; box-shadow: 0 10px 30px rgba(0,0,0,0.25); border: 3px solid var(--secondary-color); }
         
-        /* 💡 修正：為初始彈窗內的去背 Banner 同步加上質感純白微陰影襯底 */
-        .modal-banner-container {
-            background: #FFFFFF; padding: 10px; border-radius: 12px;
-            box-shadow: inset 0 0 0 1px #F0EDE6, 0 2px 8px rgba(0,0,0,0.04);
-            margin-bottom: 18px; width: 100%;
-        }
-        .modal-banner { width: 100%; height: auto; max-width: 360px; object-fit: contain; display: block; margin: 0 auto; }
+        /* 💡 初始選擇框內的 Banner 樣式優化 */
+        .modal-banner { width: 100%; height: auto; max-width: 380px; object-fit: contain; margin-bottom: 15px; }
 
         .mode-btn { background: var(--primary-color); color: white; border: none; padding: 16px 20px; border-radius: 14px; cursor: pointer; font-weight: bold; font-size: 16px; margin: 12px 0; width: 100%; }
         .mode-btn.light { background: #4A5759; }
@@ -147,9 +133,7 @@
 
 <div class="modal" id="modeModal" style="display: flex;">
     <div class="modal-content">
-        <div class="modal-banner-container">
-            <img src="活動banner.png" alt="大使出任務，解鎖新莊聲！" class="modal-banner">
-        </div>
+        <img src="活動banner.png" alt="大使出任務，解鎖新莊聲！" class="modal-banner">
         
         <h3 style="color: var(--primary-color); margin-bottom: 10px;">📜 請選擇遊玩模式</h3>
         <p style="font-size: 13px; color: #666; margin-bottom: 15px;">歡迎來到新莊聲音地圖！請選擇您今天想挑戰的任務：</p>
@@ -159,9 +143,7 @@
 </div>
 
 <header>
-    <div class="banner-container">
-        <img src="活動banner.png" alt="大使出任務，解鎖新莊聲！" class="main-banner">
-    </div>
+    <img src="活動banner.png" alt="大使出任務，解鎖新莊聲！" class="main-banner">
     
     <div class="instructions-board">
         <div class="board-title">📋 現行關卡機制與進度說明</div>
@@ -176,9 +158,7 @@
 <div class="game-container">
     <div class="section-card">
         <h3>📍 1. 觀察 Google 互動地圖</h3>
-        <div class="map-container-box">
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3614.9042571216694!2d121.45012587604314!3d25.03731553815599!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1m3!1d1523!2d121.451!3d25.037!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1szh-TW!2stw!4v1716800000000!5m2!1szh-TW!2stw" allowfullscreen="" loading="lazy"></iframe>
-        </div>
+        <div class="map-container-box"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3614.9221193301077!2d121.4503714!3d25.0367204!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442a7da30bdf3cb%3A0x6b840bf24754593!2z5paw6I6K5oWI56WC66Ku!5e0!3m2!1szh-TW!2stw!4v1716740000000!5m2!1szh-TW!2stw" allowfullscreen="" loading="lazy"></iframe></div>
     </div>
     <div class="section-card" id="main-game-card">
         <h3>🎵 2. 聆聽聲音並於正下方直接選答</h3>
@@ -316,7 +296,7 @@
 
     <div class="survey-group">
         <label>Q11. 為了讓我們的活動能做得更好，您認為本次活動最需要改善的地方是什麼？</label>
-        <input type="text" id="survey-q11" placeholder="寫下您的寶寶貴建議...">
+        <input type="text" id="survey-q11" placeholder="寫下您的寶貴建議...">
     </div>
     
     <button class="submit-btn" id="submit-survey-btn" onclick="saveSurveyData()" style="background:#777;" disabled>🔒 請完成上述所有的星號必填題</button>
@@ -551,6 +531,7 @@ function applyVerificationStamp() {
     document.getElementById('submit-game-btn').disabled = true;
 }
 
+// 安全保護碼：0121
 function exportWithPassword() {
     const inputPin = prompt("🔒 請工作人員輸入後台導出安全密碼 (PIN)：");
     if (inputPin === "0121") { exportToCSV(); } else if (inputPin !== null) { alert("❌ 密碼錯誤！無權限下載統計報表。"); }
@@ -561,7 +542,9 @@ function exportToCSV() {
     if(records.length === 0) { alert("目前尚未有任何填寫紀錄喔！"); return; }
     let csvContent = "\uFEFF";
     csvContent += "填寫時間,遊玩機制,答對題數,獲得獎品,Q1_年齡,Q2_性別,Q3_居住區域,Q4_得悉管道,Q5_推薦親友意願,Q6_內容動線體驗,Q7_文化知識著墨,Q8_大使引導解說態度,Q9_週邊贈品滿意度,Q10_深刻驚艷之處(簡答),Q11_改善建議(簡答)\n";
-    records.forEach(r => { csvContent += `${r.timestamp},${r.mode},${r.score},${r.prize},${r.q1},${r.q2},${r.q3},${r.q4},${r.q5},${r.q6},${r.q7},${r.q8},${r.q9},${r.q10},${r.q11}\n`; });
+    records.forEach(r => { 
+        csvContent += `${r.timestamp},${r.mode},${r.score},${r.prize},${r.q1},${r.q2},${r.q3},${r.q4},${r.q5},${r.q6},${r.q7},${r.q8},${r.q9},${r.q10},${r.q11}\n`; 
+    });
     let blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     let link = document.createElement("a"); link.href = URL.createObjectURL(blob);
     link.setAttribute("download", "新莊聲音地圖_11題回饋表單總統計報表.csv");
