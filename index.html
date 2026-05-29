@@ -41,12 +41,13 @@
         .section-card { background: var(--card-bg); padding: 24px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); width: 100%; margin-bottom: 20px; border: 1px solid #F0EDE6; }
         .section-card h3 { color: var(--primary-color); font-size: 1.2rem; margin-bottom: 15px; padding-bottom: 8px; border-bottom: 2px solid var(--bg-color); display: flex; align-items: center; gap: 8px; }
 
-        /* 🔘 大按鈕選單風格（首頁分流專用） */
+        /* 🔘 大按鈕選單分流優化 */
         .flow-grid { display: grid; grid-template-columns: 1fr; gap: 16px; margin: 20px 0; }
         @media (min-width: 600px) { .flow-grid { grid-template-columns: 1fr 1fr; } }
         .flow-btn {
             background: white; border: 2px solid var(--primary-color); padding: 25px; border-radius: 16px;
             cursor: pointer; text-align: center; transition: 0.2s; box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
         }
         .flow-btn:hover { background: #FAF5F5; transform: translateY(-2px); }
         .flow-btn i { font-size: 2.5rem; color: var(--primary-color); margin-bottom: 12px; }
@@ -130,12 +131,12 @@
         
         <div class="flow-grid">
             <button class="flow-btn" onclick="startFlow('A')">
-                <i class="fa-solid fa-comments-question"></i>
+                <i class="fa-solid fa-clipboard-question"></i>
                 <div>形式一：【先回答問題】</div>
                 <p>先聆聽在地環境音檔進行地圖配對答題 ➡️ 再由大使學員進行精彩的新莊文史故事解說。</p>
             </button>
             <button class="flow-btn" onclick="startFlow('B')">
-                <i class="fa-solid fa-chalkboard-user"></i>
+                <i class="fa-solid fa-user-tie"></i>
                 <div>形式二：【先聽解說介紹】</div>
                 <p>先聆聽現場文化大使的文史導覽解說 ➡️ 再透過聲音地圖進行配對，驗收新莊聲音線索。</p>
             </button>
@@ -160,13 +161,13 @@
 
 <div class="step-panel" id="panel-game-core">
     <div class="section-card">
-        <h3><i class="fa-solid fa-map-location-dot"></i> 觀察 Google 互動地圖</h3>
+        <h3><i class="fa-solid fa-map-location-dot"></i> 1. 觀察 Google 互動地圖</h3>
         <div class="map-container-box"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3614.9221193301077!2d121.4503714!3d25.0367204!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442a7da30bdf3cb%3A0x6b840bf24754593!2z5paw6I6K5oWI56WC66Ku!5e0!3m2!1szh-TW!2stw!4v1716740000000!5m2!1szh-TW!2stw" allowfullscreen="" loading="lazy"></iframe></div>
     </div>
     <div class="section-card">
-        <h3><i class="fa-solid fa-ear-listen"></i> 聆聽環境音並於正下方直接選答</h3>
+        <h3><i class="fa-solid fa-ear-listen"></i> 2. 聆聽環境音並於正下方直接選答</h3>
         <div class="audio-list" id="audio-list"></div>
-        <button class="step-next-btn" id="submit-game-btn" onclick="checkAnswers()" style="display:none; margin-top:20px;">📤 填寫完畢！送出答案並看核對結果</button>
+        <button class="step-next-btn" id="submit-game-btn" onclick="checkAnswers()" style="display:none; margin-top:20px;"><i class="fa-solid fa-paper-plane"></i> 填寫完畢！送出答案並看核對結果</button>
     </div>
 </div>
 
@@ -177,27 +178,27 @@
             <h3>🔒 解鎖學員解說與文史小解析</h3>
             <p style="font-size: 13.5px; color:#555; line-height: 1.5; max-width: 500px; margin: 0 auto;">請聆聽現場「新北文化大使」學員為您帶來的精彩新莊故事介紹。解說完畢後，<b>向學員索取新莊專屬郵遞區號密碼</b>輸入，即可跳轉解鎖下一頁！</p>
             <input type="password" id="zipCodeInput" placeholder="••••" maxlength="4">
-            <button class="step-next-btn" onclick="verifyZipCode()" style="max-width:200px; margin:10px auto;">解鎖下一頁</button>
+            <button class="step-next-btn" onclick="verifyZipCode()" style="max-width:200px; margin:10px auto;"><i class="fa-solid fa-key"></i> 解鎖下一頁</button>
         </div>
     </div>
     <div class="section-card" id="explanation-content-zone" style="display:none;">
-        <h3><i class="fa-solid fa-book-open-reader"></i> 📖 新莊在地聲音景點文史大解析</h3>
+        <h3><i class="fa-solid fa-book-open"></i> 新莊在地聲音景點文史大解析</h3>
         <div class="info-list" id="info-list-zone"></div>
         <button class="step-next-btn" onclick="proceedAfterExplanation()" style="margin-top:20px;">🚀 我聽完學員介紹了，前往下一步 <i class="fa-solid fa-arrow-right"></i></button>
     </div>
 </div>
 
-<div class="modal" id="scoreModal">
+<div class="modal" id="scoreModal" style="display: none;">
     <div class="modal-content">
-        <h2 id="modal-status-title">📊 答題成果結算</h2>
+        <h2><i class="fa-solid fa-chart-bar"></i> 答題成果結算</h2>
         <div class="modal-score">您總共答對了：<span id="modal-score-text">0/0</span> 題</div>
-        <div id="modal-report-details" style="text-align:left; max-height:200px; overflow-y:auto; margin:10px 0; font-size:13px;"></div>
+        <div id="modal-report-details" style="text-align:left; max-height:200px; overflow-y:auto; margin:10px 0; font-size:13px; border:1px solid #EAE6DF; padding:10px; border-radius:8px; background:#F9F8F6;"></div>
         
         <div class="gacha-zone" id="gacha-area" style="display:none;">
-            <h4 style="color:#E11D48;">🎁 賀！解鎖達人限定線上扭蛋機</h4>
+            <h4 style="color:#E11D48;"><i class="fa-solid fa-gift"></i> 賀！解鎖達人限定線上扭蛋機</h4>
             <div class="gacha-ball-animation" id="gacha-ball"></div>
             <p id="gacha-status" style="font-size:12px; font-weight:bold; color:#666;">點擊按鈕啟動大扭蛋</p>
-            <button class="gacha-btn" id="gacha-start-btn" onclick="startGachaDraw()">開啟扭蛋</button>
+            <button class="gacha-btn" id="gacha-start-btn" onclick="startGachaDraw()"><i class="fa-solid fa-dice"></i> 開啟扭蛋</button>
         </div>
         <button class="close-btn" onclick="closeScoreModal()" style="width:100%; margin-top:15px;">確定確認成果，關閉視窗</button>
     </div>
@@ -233,7 +234,7 @@
             <label>Q3. 請問您居住的區域？ *</label>
             <div class="options-grid">
                 <div class="option-item"><input type="radio" name="q3" value="新北市新莊區（在地居民）" onchange="validateSurvey()"><span class="option-tile">新莊區(在地居民)</span></div>
-                <div class="option-item"><input type="radio" name="q3" value="新北市其他行政區" onchange="validateSurvey()"><span class="option-tile">新北市其他區</span></div>
+                <div class="option-item"><input type="radio" name="q3" value="新北市反他行政區" onchange="validateSurvey()"><span class="option-tile">新北市其他區</span></div>
                 <div class="option-item"><input type="radio" name="q3" value="其他縣市" onchange="validateSurvey()"><span class="option-tile">其他縣市</span></div>
                 <div class="option-item"><input type="radio" name="q3" value="國際旅客" onchange="validateSurvey()"><span class="option-tile">國際旅客</span></div>
             </div>
@@ -285,8 +286,8 @@
                 <div class="option-item"><input type="radio" name="q7" value="3分 普通" onchange="validateSurvey()"><span class="option-tile">3分 普通</span></div>
                 <div class="option-item"><input type="radio" name="q7" value="2分 不滿意" onchange="validateSurvey()"><span class="option-tile">2分 不滿意</span></div>
                 <div class="option-item"><input type="radio" name="q7" value="1分 非常不滿意" onchange="validateSurvey()"><span class="option-tile">1分 非常不滿意</span></div>
-            </div>
         </div>
+    </div>
 
         <div class="survey-group">
             <label>Q8. 請問現場「新北文化大使」學員的引導、文化解說與服務態度，您覺得？ *</label>
@@ -320,14 +321,14 @@
             <input type="text" id="survey-q11" placeholder="寫下您的寶貴建議...">
         </div>
         
-        <button class="submit-btn" id="submit-survey-btn" onclick="saveSurveyData()" style="background:#777;" disabled>🔒 請完成上述所有的星號必填題</button>
+        <button class="submit-btn" id="submit-survey-btn" onclick="saveSurveyData()" style="background:#777;" disabled><i class="fa-solid fa-lock"></i> 請完成上述所有的星號必填題</button>
     </div>
 </div>
 
 <div class="step-panel" id="panel-verification">
     <div class="staff-panel" id="final-staff-panel">
         <div class="stamp-overlay" id="verification-stamp">已兌獎</div>
-        <div class="staff-header">🔒 現場工作人員領獎核銷明細單</div>
+        <div class="staff-header"><i class="fa-solid fa-id-card-clip"></i> 現場工作人員領獎核銷明細單</div>
         
         <div id="staff-notice-zone" class="staff-notice-banner">
             📢 <b>兌獎須知：</b><br>
@@ -346,7 +347,7 @@
             <div class="v-row"><div class="v-label">● 應發放獎品</div><div class="v-value prize-highlight" id="summary-prize">尚未抽獎</div></div>
         </div>
         
-        <button class="stamp-btn" id="stamp-execute-btn" onclick="applyVerificationStamp()">確認發放實體獎品 ➡️ 現場蓋章銷帳</button>
+        <button class="stamp-btn" id="stamp-execute-btn" onclick="applyVerificationStamp()"><i class="fa-solid fa-stamp"></i> 確認發放實體獎品 ➡️ 現場蓋章銷帳</button>
     </div>
 </div>
 
@@ -375,29 +376,26 @@ let prizePool = [
     { name: "玻璃杯墊", count: 23 }, { name: "旅行組", count: 8 }, { name: "立牌", count: 10 }
 ];
 
-let selectedFlow = ""; // "A" 或 "B"
+let selectedFlow = ""; 
 let targetScore = 8; 
 let activeSpots = []; 
 let finalCorrectCount = 0; 
 let finalPrizeName = "無獎品"; 
 let hasDrawn = false;
-let isExplanationUnlocked = false;
 
-// 💡 動線 A/B 首頁控制
 function startFlow(type) {
     selectedFlow = type;
     document.getElementById('panel-step1').classList.remove('active');
     
     if (type === 'A') {
-        // 先選題答題
+        // 先選題答題動線
         document.getElementById('panel-select-mode').classList.add('active');
     } else {
-        // 先聽介紹（解鎖密碼畫面）
+        // 先聽介紹解說動線
         document.getElementById('panel-explanation-lock').classList.add('active');
     }
 }
 
-// 💡 確認題數機制
 function confirmMode(count) {
     targetScore = count;
     document.getElementById('panel-select-mode').classList.remove('active');
@@ -406,7 +404,6 @@ function confirmMode(count) {
     activeSpots = shuffled.slice(0, targetScore);
     const displayOrder = [...activeSpots].sort(() => Math.random() - 0.5);
 
-    // 重置音檔與答題 HTML
     const audioListDiv = document.getElementById('audio-list');
     audioListDiv.innerHTML = "";
     displayOrder.forEach((spot, index) => {
@@ -425,7 +422,6 @@ function confirmMode(count) {
         audioListDiv.appendChild(qaBlock);
     });
 
-    // 顯示遊戲作答區
     document.getElementById('panel-game-core').classList.add('active');
 }
 
@@ -438,7 +434,7 @@ function updateProgress() {
     }
 }
 
-// 💡 送出答案並結算（跳出成果彈窗）
+// 💡 修正：送出作答，這時才會精準彈出結算視窗
 function checkAnswers() {
     finalCorrectCount = 0;
     let reportHtml = "";
@@ -449,14 +445,13 @@ function checkAnswers() {
         selectElem.disabled = true; 
         if (userChoose === spot.id) {
             finalCorrectCount++;
-            reportHtml += `<div>🟢 <b>${spot.displayQuestionName}</b>：答對 (解答: ${spot.name})</div>`;
+            reportHtml += `<div style="margin-bottom:4px; color:var(--success-color);"><b>✓ ${spot.displayQuestionName}</b>：答對 (解答: ${spot.name})</div>`;
         } else {
             const wrongName = spotsData.find(s => s.id === userChoose)?.name || "未選擇";
-            reportHtml += `<div>🔴 <b>${spot.displayQuestionName}</b>：答錯 (您選: ${wrongName} / 解答: ${spot.name})</div>`;
+            reportHtml += `<div style="margin-bottom:4px; color:var(--danger-color);"><b>✗ ${spot.displayQuestionName}</b>：答錯 (選: ${wrongName} / 解答: ${spot.name})</div>`;
         }
     });
 
-    // 結算獎品項目
     if ((targetScore === 8 && finalCorrectCount === 8) || (targetScore === 3 && finalCorrectCount === 3)) {
         if(targetScore === 3) {
             finalPrizeName = "泰國斑蘭蛋糕";
@@ -464,15 +459,17 @@ function checkAnswers() {
         } else {
             document.getElementById('gacha-area').style.display = 'block';
         }
-        document.getElementById('modal-status-title').innerText = "🎉 恭喜符合兌獎標準！";
+        document.getElementById('win-status-title').innerText = "🎉 完美全對！達到過關標準";
     } else {
         finalPrizeName = "無獎品";
         document.getElementById('gacha-area').style.display = 'none';
-        document.getElementById('modal-status-title').innerText = "💪 再接再厲！";
+        document.getElementById('win-status-title').innerText = "💪 再接再厲！";
     }
 
     document.getElementById('modal-score-text').innerText = `${finalCorrectCount}/${targetScore}`;
     document.getElementById('modal-report-details').innerHTML = reportHtml;
+    
+    // 💡 修正核心：將 display 設為 flex 讓彈窗在此刻準時浮現
     document.getElementById('scoreModal').style.display = 'flex';
 }
 
@@ -498,27 +495,22 @@ function startGachaDraw() {
     }, 1200);
 }
 
-// 💡 關閉計分小彈窗，引導到下一步
 function closeScoreModal() {
     document.getElementById('scoreModal').style.display = 'none';
     document.getElementById('panel-game-core').classList.remove('active');
 
     if (selectedFlow === 'A') {
-        // 先答題動線 ➡️ 接著去學員解說區
         document.getElementById('panel-explanation-lock').classList.add('active');
     } else {
-        // 先聽介紹動線 ➡️ 答題完了，直接去問卷區
         document.getElementById('panel-survey').classList.add('active');
     }
 }
 
-// 💡 驗證導覽解鎖密碼（新莊郵遞區號242）
 function verifyZipCode() {
     const code = document.getElementById('zipCodeInput').value;
     if (code === "242") {
         document.getElementById('lock-zone').style.display = 'none';
         
-        // 渲染文史解析內容
         const infoZone = document.getElementById('info-list-zone');
         infoZone.innerHTML = spotsData.map(spot => `
             <div class="info-item">
@@ -534,20 +526,16 @@ function verifyZipCode() {
     }
 }
 
-// 💡 聽完解說後的下一步判定
 function proceedAfterExplanation() {
     document.getElementById('panel-explanation-lock').classList.remove('active');
     
     if (selectedFlow === 'A') {
-        // 先答題動線 ➡️ 聽完了介紹 ➡️ 去問卷
         document.getElementById('panel-survey').classList.add('active');
     } else {
-        // 先聽介紹動線 ➡️ 聽完了 ➡️ 回去選題答題
         document.getElementById('panel-select-mode').classList.add('active');
     }
 }
 
-// 💡 問卷核心邏輯
 function validateSurvey() {
     const q1 = document.querySelector('input[name="q1"]:checked');
     const q2 = document.querySelector('input[name="q2"]:checked');
@@ -591,7 +579,6 @@ function saveSurveyData() {
 
     document.getElementById('panel-survey').classList.remove('active');
     
-    // 渲染最終核銷單
     document.getElementById('summary-mode').innerText = `【形式 ${selectedFlow}】+ ${targetScore === 3 ? '體驗版(3題)' : '達人版(8題)'}`;
     document.getElementById('summary-score').innerText = `${finalCorrectCount} / ${targetScore} 題`;
     document.getElementById('summary-prize').innerText = finalPrizeName;
@@ -610,7 +597,7 @@ function saveSurveyData() {
 }
 
 function applyVerificationStamp() {
-    document.getElementById('verification-stamp').style.display = 'block';
+    const stamp = document.getElementById('verification-stamp'); stamp.style.display = 'block';
     document.getElementById('stamp-execute-btn').disabled = true;
     document.getElementById('stamp-execute-btn').innerText = "🔒 本單張已完成現場銷帳";
     document.getElementById('stamp-execute-btn').style.background = "#777";
