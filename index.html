@@ -85,7 +85,7 @@
         .option-item { position: relative; }
         .option-item input[type="radio"] { position: absolute; opacity: 0; width: 100%; height: 100%; cursor: pointer; z-index: 2; }
         .option-tile { display: block; padding: 10px 6px; background: white; border: 1.5px solid #DDD; text-align: center; border-radius: 8px; font-size: 12.5px; font-weight: 600; color: #555; transition: 0.2s; }
-        .option-item input[type="radio"]:checked + .option-tile { background: #F4EBE1; color: var(--primary-color); border-color: var(--secondary-gold); box-shadow: 0 2px 6px rgba(224, 159, 62, 0.15); }
+        .option-item input[type="radio"]:checked + .option-tile { background: #F4EBE1; color: var(--primary-color); border-color: var(--secondary-color); box-shadow: 0 2px 6px rgba(224, 159, 62, 0.15); }
 
         /* 按鈕基礎樣式 */
         .step-next-btn { background: var(--primary-color); color: white; border: none; padding: 15px; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 10px; box-shadow: 0 4px 12px rgba(158, 42, 43, 0.2); display: flex; justify-content: center; align-items: center; gap: 8px; }
@@ -283,7 +283,7 @@
                 <div class="option-item"><input type="radio" name="q7" value="4分 滿意" onchange="validateSurvey()"><span class="option-tile">4分 滿意</span></div>
                 <div class="option-item"><input type="radio" name="q7" value="3分 普通" onchange="validateSurvey()"><span class="option-tile">3分 普通</span></div>
                 <div class="option-item"><input type="radio" name="q7" value="2分 不滿意" onchange="validateSurvey()"><span class="option-tile">2分 不滿意</span></div>
-                <div class="option-item"><input type="radio" name="q7" value="1分 非常不慢意" onchange="validateSurvey()"><span class="option-tile">1分 非常不滿意</span></div>
+                <div class="option-item"><input type="radio" name="q7" value="1分 非常不滿意" onchange="validateSurvey()"><span class="option-tile">1分 非常不滿意</span></div>
             </div>
         </div>
 
@@ -293,8 +293,8 @@
                 <div class="option-item"><input type="radio" name="q8" value="5分 非常滿意" onchange="validateSurvey()"><span class="option-tile">5分 非常滿意</span></div>
                 <div class="option-item"><input type="radio" name="q8" value="4分 滿意" onchange="validateSurvey()"><span class="option-tile">4分 滿意</span></div>
                 <div class="option-item"><input type="radio" name="q8" value="3分 普通" onchange="validateSurvey()"><span class="option-tile">3分 普通</span></div>
-                <div class="option-item"><input type="radio" name="q8" value="2分 不滿意" onchange="validateSurvey()"><span class="option-tile">2分 不滿意</span></div>
-                <div class="option-item"><input type="radio" name="q8" value="1分 非常不滿意" onchange="validateSurvey()"><span class="option-tile">1分 非常不滿意</span></div>
+                <div class="option-item"><input type="radio" name="q8" value="2分 不慢意" onchange="validateSurvey()"><span class="option-tile">2分 不滿意</span></div>
+                <div class="option-item"><input type="radio" name="q8" value="1分 非常不滿意" onchange="validateSurvey()"><span class="option-tile">1分 非常不慢意</span></div>
             </div>
         </div>
 
@@ -353,7 +353,7 @@
     <img src="NTPC Logo-03.png" alt="新北文化大使 Logo">
     <div class="footer-text-meta">
         活動名稱：「大使出任務，解鎖新莊聲」文化探索體驗活動<br>
-        計畫名稱：新北市政府文化局 115 年新北市青年推廣文化計畫
+        計畫名稱：新北市政府文化局 115 年新北市青年推推廣文化計畫
     </div>
 </div>
 
@@ -367,6 +367,11 @@ const spotsData = [
     { id: 6, name: "捷運新莊站", audio: "捷運橘線聲音.m4a", info: "台北捷運橘線的開通串聯了新莊與大台北生活圈，車廂廣播與進站聲為現代通勤的交響樂。" },
     { id: 7, name: "中港大排", audio: "中港大排(幸福路上） .mp3", info: "中港大排歷經綠化整治，從黑水溝華麗轉身為親水公園。走在幸福路上能聽見淙淙流水的療癒環境音。" },
     { id: 8, name: "化成路(異國美食街)", audio: "化成路 蓮花泰式小吃店 音檔.mp3", info: "化成路周邊工廠多，吸引大量東南亞移工進駐，異國餐廳的小吃香氣構築了多元包容文化。" }
+];
+
+let prizePool = [
+    { name: "媽祖平安符", count: 50 }, { name: "新莊朝盛飄帶", count: 70 },
+    { name: "玻璃杯墊", count: 23 }, { name: "旅行組", count: 8 }, { name: "立牌", count: 10 }
 ];
 
 let targetScore = 8; 
@@ -397,15 +402,16 @@ function confirmMode(count) {
 
     const audioListDiv = document.getElementById('audio-list');
     audioListDiv.innerHTML = "";
+    
+    // 💡 修正：動態渲染時綁定正確對齊的 DOM ID 選項
     displayOrder.forEach((spot, index) => {
         const questionName = `🎵 第 ${index + 1} 題`;
-        spot.displayQuestionName = questionName; 
         const qaBlock = document.createElement('div');
         qaBlock.className = 'qa-block';
         qaBlock.innerHTML = `
             <span>${questionName}</span><audio controls src="${spot.audio}"></audio>
             <span style="margin-top:4px;">正確地點是？</span>
-            <select id="select-${spot.id}" onchange="updateProgress()">
+            <select id="select-${spot.id}" class="game-select-input" onchange="updateProgress()">
                 <option value="">請選擇景點...</option>
                 ${spotsData.map(s => `<option value="${s.id}">${s.name}</option>`).join('')}
             </select>
@@ -417,7 +423,7 @@ function confirmMode(count) {
 }
 
 function updateProgress() {
-    const allSelects = document.querySelectorAll('.qa-block select');
+    const allSelects = document.querySelectorAll('.game-select-input');
     let filledCount = 0;
     allSelects.forEach(select => { if(select.value !== "") filledCount++; });
     if(filledCount === targetScore) {
@@ -425,25 +431,27 @@ function updateProgress() {
     }
 }
 
-// 💡 修正：更換為全對精準判定變數名稱，徹底解決送出當機 Bug
+// 💡 修正：大考驗算法邏輯重塑，確保能抓到每一題的值並順暢跳出結算
 function checkAnswers() {
     finalCorrectCount = 0;
     let reportHtml = "";
 
     activeSpots.forEach((spot) => {
         const selectElem = document.getElementById(`select-${spot.id}`);
-        const userChoose = parseInt(selectElem.value);
-        selectElem.disabled = true; 
+        // 確保精準抓取當前題目的 value
+        const userChoose = selectElem ? parseInt(selectElem.value) : NaN;
+        
+        if (selectElem) selectElem.disabled = true; 
+        
         if (userChoose === spot.id) {
             finalCorrectCount++;
-            reportHtml += `<div style="margin-bottom:4px; color:var(--success-color);"><b>✓ ${spot.displayQuestionName}</b>：答對 (解答: ${spot.name})</div>`;
+            reportHtml += `<div style="margin-bottom:4px; color:var(--success-color);"><b>✓ ${spot.name}</b>：答對</div>`;
         } else {
             const wrongName = spotsData.find(s => s.id === userChoose)?.name || "未選擇";
-            reportHtml += `<div style="margin-bottom:4px; color:var(--danger-color);"><b>✗ ${spot.displayQuestionName}</b>：答錯 (選: ${wrongName} / 解答: ${spot.name})</div>`;
+            reportHtml += `<div style="margin-bottom:4px; color:var(--danger-color);"><b>✗ ${spot.name}</b>：答錯 (選: ${wrongName})</div>`;
         }
     });
 
-    // 💡 修正：對齊當前多形式的過關獎品規則
     if ((targetScore === 8 && finalCorrectCount === 8) || (targetScore === 3 && finalCorrectCount === 3)) {
         if(targetScore === 3) {
             finalPrizeName = "泰國斑蘭蛋糕";
@@ -461,11 +469,10 @@ function checkAnswers() {
     document.getElementById('modal-score-text').innerText = `${finalCorrectCount}/${targetScore}`;
     document.getElementById('modal-report-details').innerHTML = reportHtml;
     
-    // 💡 修正：呼叫彈窗
+    // 順暢浮現彈窗
     document.getElementById('scoreModal').style.display = 'flex';
 }
 
-// 扭蛋庫存精密抽獎
 function startGachaDraw() {
     if (hasDrawn) return; hasDrawn = true;
     document.getElementById('gacha-start-btn').disabled = true;
@@ -592,7 +599,7 @@ function saveSurveyData() {
 function applyVerificationStamp() {
     const stamp = document.getElementById('verification-stamp'); stamp.style.display = 'block';
     document.getElementById('stamp-execute-btn').disabled = true;
-    document.getElementById('stamp-execute-btn').innerText = "🔒 本單張已完成現場銷帳";
+    document.getElementById('stamp-execute-btn').innerText = "🔒 本單張已成功蓋章銷帳";
     document.getElementById('stamp-execute-btn').style.background = "#777";
 }
 </script>
