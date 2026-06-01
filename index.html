@@ -229,7 +229,7 @@
     </div>
 
     <div class="survey-group">
-        <label>Q5. 請問您有多大的意願，會推薦親友參加未來「新北文化大使」舉辦的相關活動？ *</label>
+        <label>Q5. 請問您有多大的意願，會推薦親友習慣參加未來「新北文化大使」舉辦的相關活動？ *</label>
         <div class="options-grid score-10">
             <div class="option-item"><input type="radio" name="q5" value="0分" onchange="validateSurvey()"><span class="option-tile">0</span></div>
             <div class="option-item"><input type="radio" name="q5" value="1分" onchange="validateSurvey()"><span class="option-tile">1</span></div>
@@ -252,7 +252,7 @@
             <div class="option-item"><input type="radio" name="q6" value="4分 滿意" onchange="validateSurvey()"><span class="option-tile">4分 滿意</span></div>
             <div class="option-item"><input type="radio" name="q6" value="3分 普通" onchange="validateSurvey()"><span class="option-tile">3分 普通</span></div>
             <div class="option-item"><input type="radio" name="q6" value="2分 不滿意" onchange="validateSurvey()"><span class="option-tile">2分 不滿意</span></div>
-            <div class="option-item"><input type="radio" name="q6" value="1分 非常不滿意" onchange="validateSurvey()"><span class="option-tile">1分 非常不滿意</span></div>
+            <div class="option-item"><input type="radio" name="q6" value="1分 非常不滿意" onchange="validateSurvey()"><span class="option-tile">1分 非常不慢意</span></div>
         </div>
     </div>
 
@@ -262,7 +262,7 @@
             <div class="option-item"><input type="radio" name="q7" value="5分 非常滿意" onchange="validateSurvey()"><span class="option-tile">5分 非常滿意</span></div>
             <div class="option-item"><input type="radio" name="q7" value="4分 滿意" onchange="validateSurvey()"><span class="option-tile">4分 滿意</span></div>
             <div class="option-item"><input type="radio" name="q7" value="3分 普通" onchange="validateSurvey()"><span class="option-tile">3分 普通</span></div>
-            <div class="option-item"><input type="radio" name="q7" value="2分 不滿意" onchange="validateSurvey()"><span class="option-tile">2分 不慢意</span></div>
+            <div class="option-item"><input type="radio" name="q7" value="2分 不滿意" onchange="validateSurvey()"><span class="option-tile">2分 不滿意</span></div>
             <div class="option-item"><input type="radio" name="q7" value="1分 非常不滿意" onchange="validateSurvey()"><span class="option-tile">1分 非常不滿意</span></div>
         </div>
     </div>
@@ -274,17 +274,17 @@
             <div class="option-item"><input type="radio" name="q8" value="4分 滿意" onchange="validateSurvey()"><span class="option-tile">4分 滿意</span></div>
             <div class="option-item"><input type="radio" name="q8" value="3分 普通" onchange="validateSurvey()"><span class="option-tile">3分 普通</span></div>
             <div class="option-item"><input type="radio" name="q8" value="2分 不滿意" onchange="validateSurvey()"><span class="option-tile">2分 不滿意</span></div>
-            <div class="option-item"><input type="radio" name="q8" value="1分 非常不滿意" onchange="validateSurvey()"><span class="option-tile">1分 非常不滿意</span></div>
+            <div class="option-item"><input type="radio" name="q8" value="1分 非常不滿意" onchange="validateSurvey()"><span class="option-tile">1分 非常不慢意</span></div>
         </div>
     </div>
 
     <div class="survey-group">
-        <label>Q9. 請問本次活動的週邊贈品，您覺得？ *</label>
+        <label>Q9. 請問現場週邊贈品，您覺得？ *</label>
         <div class="options-grid full-width">
             <div class="option-item"><input type="radio" name="q9" value="5分 非常滿意" onchange="validateSurvey()"><span class="option-tile">5分 非常滿意</span></div>
             <div class="option-item"><input type="radio" name="q9" value="4分 滿意" onchange="validateSurvey()"><span class="option-tile">4分 滿意</span></div>
             <div class="option-item"><input type="radio" name="q9" value="3分 普通" onchange="validateSurvey()"><span class="option-tile">3分 普通</span></div>
-            <div class="option-item"><input type="radio" name="q9" value="2分 不滿意" onchange="validateSurvey()"><span class="option-tile">2分 不慢意</span></div>
+            <div class="option-item"><input type="radio" name="q9" value="2分 不慢意" onchange="validateSurvey()"><span class="option-tile">2分 不滿意</span></div>
             <div class="option-item"><input type="radio" name="q9" value="1分 非常不滿意" onchange="validateSurvey()"><span class="option-tile">1分 非常不滿意</span></div>
         </div>
     </div>
@@ -335,20 +335,19 @@
 </div>
 
 <script>
-// 聲音景點資料庫（已完全移除新莊慈祐宮，現存 11 個項目）
+// 精準對齊真實上傳之 11 個聲音景點資料庫（已移除慈祐宮）
 const spotsData = [
-   const spotsData = [
-    { id: 2, name: "新莊地藏庵(大眾廟)｜官將首", audio: "新莊大眾廟官將首.mp3", info: "..." },
-    { id: 3, name: "輔仁大學(淨心堂)", audio: "輔仁大學_彌撒聲.mp3", info: "..." },
-    { id: 4, name: "新莊棒球場", audio: "新莊棒球場.mp3", info: "..." },
-    { id: 5, name: "新莊廟街夜市", audio: "新莊廟街夜市 (1).mp3", info: "..." },
-    { id: 6, name: "捷運新莊站", audio: "捷運橘線聲音.m4a", info: "..." },
-    { id: 7, name: "中港大排", audio: "中港大排2.mp3", info: "..." },
-    { id: 8, name: "化成路(異國美食街)", audio: "化成路 蓮花泰式小吃店 音檔.mp3", info: "..." },
-    { id: 9, name: "廣福宮", audio: "廣福宮介紹二版.mp3", info: "..." },
-    { id: 10, name: "新北鼓藝節｜响仁和", audio: "响仁和.m4a", info: "..." },
-    { id: 11, name: "新莊戲曲巷", audio: "花博-新西園布袋戲 .mp3", info: "..." },
-    { id: 12, name: "日日用打鐵店", audio: "新莊日日用打鐵店.mp3", info: "..." }
+    { id: 2, name: "新莊地藏庵(大眾廟)｜官將首", audio: "新莊大眾廟官將首.mp3", info: "新莊地藏庵（大眾廟）奉祀地藏王菩薩與大眾爺，為北台灣官將首藝陣的發源地。其「文武大眾爺祭典」是著名無形文化資產，現場充滿威赫威嚴的喊聲與鑼鼓。" },
+    { id: 3, name: "輔仁大學(淨心堂)", audio: "輔仁大學_彌撒聲.mp3", info: "輔仁大學淨心堂為校園內核心的天主教精神建築，其莊嚴的彌撒鐘聲與平靜氛圍，展現校園獨特的宗教文史與西方禮儀文化融合。" },
+    { id: 4, name: "新莊棒球場", audio: "新莊棒球場.mp3", info: "新莊棒球場是北台灣職棒重鎮，賽季時充滿極具張力的現場應援敲擊樂與球迷吶喊聲。" },
+    { id: 5, name: "新莊廟街夜市", audio: "新莊廟街夜市 (1).mp3", info: "廟街白天是古蹟密布的文史老街，晚上則是傳統叫賣與美食攤販齊聚、人潮喧鬧的在地夜市。" },
+    { id: 6, name: "捷運新莊站", audio: "捷運橘線聲音.m4a", info: "台北捷運橘線的開通串聯了新莊與大台北生活圈，車廂廣播與進站聲為現代通勤的交響樂。" },
+    { id: 7, name: "中港大排", audio: "中港大排2.mp3", info: "中港大排歷經綠化整治，從黑水溝華麗轉身為親水公園。走在幸福路上能聽見淙淙流水的療癒環境音。" },
+    { id: 8, name: "化成路(異國美食街)", audio: "化成路 蓮花泰式小吃店 音檔.mp3", info: "化成路周邊工廠多，吸引大量東南亞移工進駐，異國餐廳的小吃香氣與點餐聲構築了多元包容文化。" },
+    { id: 9, name: "廣福宮", audio: "廣福宮介紹二版.mp3", info: "廣福宮（舊稱三山國王廟）建於清乾隆年間，是新莊唯一的國定古蹟。建築樸實、不崇尚雕飾，完整保留早期客家移民在北台灣開墾的歷史見證。" },
+    { id: 10, name: "新北鼓藝節｜响仁和", audio: "响仁和.m4a", info: "响仁和鐘鼓廠由王阿塗師傅創立，其工藝技術名聞遐邇。新莊每年以此為基底舉辦新北鼓藝節，現場沉穩磅礴的製鼓與擊鼓聲，彰顯了傳統職人一甲子的堅持。" },
+    { id: 11, name: "新莊戲曲巷", audio: "花博-新西園布袋戲 .mp3", info: "新莊廟街359巷曾被譽為「戲曲巷」，早期知名布袋戲團如「小西園」、「亦宛然」皆在此落腳或交流，悠揚的北管與偶戲對白音調，交織出北台灣布袋戲重鎮的輝煌記憶。" },
+    { id: 12, name: "日日用打鐵店", audio: "新莊日日用打鐵店.mp3", info: "日日用打鐵店是新莊碩果僅存的百年打鐵舖，歷經新莊港口開墾對農具、鐵器的大量需求。至今店內依然傳出規律、高亢的鏗鏘鑄鐵鍛造聲，是活生生的文化工藝地標。" }
 ];
 
 let prizePool = [
@@ -381,6 +380,7 @@ function selectMode(count) {
 }
 
 function renderGame(displayOrder) {
+    audioListDiv.innerHTML = ""; // 清空舊畫面防呆
     displayOrder.forEach((spot, index) => {
         const questionName = `🎵 第 ${index + 1} 題`; spot.displayQuestionName = questionName; 
         const qaBlock = document.createElement('div'); qaBlock.className = 'qa-block';
