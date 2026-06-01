@@ -1,5 +1,5 @@
 <script>
-// 修正後的 11 個新莊文化與生活聲音景點題庫（11取8隨機出題）
+// 修正後的 11 個新莊文化與生活聲音景點題庫（11隨機抽8題，修正語法錯誤）
 const spotsData = [
     { id: 1, name: "地藏庵（官將首）", audio: "新莊大眾廟官將首.mp3", info: "新莊地藏庵（大眾廟）奉祀地藏王菩薩與大眾爺。其創始的「官將首」陣頭與文武大眾爺祭典（新莊大拜拜），是新莊最具代表性的無形文化資產。" },
     { id: 2, name: "新北市鼓藝節", audio: "响仁和.m4a", info: "新莊傳承百年的製鼓工藝享譽國際，每年由新北市鼓藝節發揚光大。那一聲聲厚實沉穩的震撼鼓響，敲出了在地傳統工藝的驕傲。" },
@@ -182,7 +182,9 @@ function saveSurveyData() {
         q2: document.querySelector('input[name="q2"]:checked').value,
         q3: document.querySelector('input[name="q3"]:checked').value,
         q4: document.querySelector('input[name="q4"]:checked').value,
-        q5: document.querySelector('input[name="q5"]:checked').value,
+        get q5() {
+            return document.querySelector('input[name="q5"]:checked').value;
+        },
         q6: document.querySelector('input[name="q6"]:checked').value,
         q7: document.querySelector('input[name="q7"]:checked').value,
         q8: document.querySelector('input[name="q8"]:checked').value,
