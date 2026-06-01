@@ -1,5 +1,322 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>新莊文化與生活聲音景點挑戰</title>
+<style>
+:root {
+  --primary-color:#2f7d68;
+  --secondary-color:#f5b942;
+  --danger-color:#d9534f;
+  --success-color:#2e9d5b;
+  --bg-color:#f7f3ea;
+  --card-color:#fffdf8;
+  --text-color:#333;
+}
+* { box-sizing:border-box; }
+body {
+  margin:0;
+  font-family:"Noto Sans TC", "Microsoft JhengHei", Arial, sans-serif;
+  background:var(--bg-color);
+  color:var(--text-color);
+  line-height:1.6;
+}
+.container {
+  max-width:900px;
+  margin:0 auto;
+  padding:24px 16px 80px;
+}
+.hero {
+  background:linear-gradient(135deg, #fff7d6, #e4f4ec);
+  border:3px solid #333;
+  border-radius:24px;
+  padding:24px;
+  text-align:center;
+  box-shadow:6px 6px 0 #333;
+  margin-bottom:22px;
+}
+.hero h1 { margin:0 0 8px; font-size:clamp(26px, 5vw, 42px); }
+.hero p { margin:0; font-weight:700; }
+.card {
+  background:var(--card-color);
+  border:2px solid #333;
+  border-radius:18px;
+  padding:18px;
+  margin:18px 0;
+  box-shadow:4px 4px 0 #333;
+}
+.status-bar {
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  justify-content:space-between;
+  align-items:center;
+}
+.pill {
+  background:#fff;
+  border:2px solid #333;
+  border-radius:999px;
+  padding:8px 12px;
+  font-weight:700;
+}
+.qa-block {
+  display:grid;
+  gap:10px;
+  padding:16px;
+  border:2px dashed #999;
+  border-radius:16px;
+  margin:14px 0;
+  background:#fff;
+}
+.qa-block > span:first-child {
+  font-size:20px;
+  font-weight:900;
+}
+audio { width:100%; }
+select, textarea {
+  width:100%;
+  padding:12px;
+  border:2px solid #333;
+  border-radius:12px;
+  font-size:16px;
+  background:#fff;
+}
+textarea { min-height:90px; resize:vertical; }
+button {
+  border:2px solid #333;
+  border-radius:14px;
+  padding:12px 18px;
+  font-size:16px;
+  font-weight:900;
+  cursor:pointer;
+  background:var(--secondary-color);
+  color:#222;
+  box-shadow:3px 3px 0 #333;
+}
+button:disabled {
+  cursor:not-allowed;
+  opacity:.55;
+  box-shadow:none;
+}
+.primary-btn { background:var(--primary-color); color:white; }
+.danger-btn { background:var(--danger-color); color:white; }
+.correct { border-color:var(--success-color); background:#ebfff1; }
+.wrong { border-color:var(--danger-color); background:#fff0ef; }
+.modal {
+  position:fixed;
+  inset:0;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:rgba(0,0,0,.55);
+  z-index:99;
+  padding:16px;
+}
+.modal-content {
+  width:min(760px, 100%);
+  max-height:88vh;
+  overflow:auto;
+  background:var(--card-color);
+  border:3px solid #333;
+  border-radius:24px;
+  padding:22px;
+  box-shadow:8px 8px 0 #111;
+}
+.mode-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+  gap:14px;
+}
+.mode-card {
+  border:2px solid #333;
+  border-radius:18px;
+  padding:18px;
+  background:#fff;
+}
+.report-item {
+  border:2px solid #333;
+  border-radius:16px;
+  padding:14px;
+  margin:12px 0;
+  background:#fff;
+}
+.report-item-header {
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  font-weight:900;
+  margin-bottom:6px;
+}
+.badge-success, .badge-danger {
+  padding:4px 8px;
+  border-radius:999px;
+  color:white;
+  white-space:nowrap;
+}
+.badge-success { background:var(--success-color); }
+.badge-danger { background:var(--danger-color); }
+.analysis-box {
+  margin-top:8px;
+  background:#f1f6ff;
+  border-left:6px solid #4d83d1;
+  padding:10px;
+  border-radius:10px;
+}
+#gacha-area {
+  display:none;
+  padding:16px;
+  text-align:center;
+  border:2px solid #333;
+  border-radius:18px;
+  background:#fff7d6;
+  margin:16px 0;
+}
+#gacha-ball {
+  width:100px;
+  height:100px;
+  border-radius:50%;
+  margin:10px auto;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:48px;
+  background:radial-gradient(circle at 30% 25%, #fff, #f5b942 40%, #d97c00 100%);
+  border:3px solid #333;
+}
+.shake { animation:shake .16s infinite alternate; }
+@keyframes shake { from { transform:rotate(-8deg) translateX(-4px); } to { transform:rotate(8deg) translateX(4px); } }
+.question-group {
+  border:2px solid #333;
+  border-radius:14px;
+  padding:12px;
+  margin:12px 0;
+  background:#fff;
+}
+.question-group label { display:block; margin:6px 0; }
+#final-staff-panel { display:none; }
+.v-row {
+  display:grid;
+  grid-template-columns:150px 1fr;
+  gap:8px;
+  border-bottom:1px solid #ddd;
+  padding:10px 0;
+}
+.v-label { font-weight:900; }
+.prize-highlight { font-size:20px; font-weight:900; color:var(--success-color); }
+.no-prize { color:var(--danger-color); }
+.disabled-panel { filter:grayscale(.7); opacity:.75; }
+#verification-stamp {
+  display:none;
+  margin:20px auto;
+  width:170px;
+  height:170px;
+  border:8px solid var(--danger-color);
+  border-radius:50%;
+  color:var(--danger-color);
+  font-size:30px;
+  font-weight:900;
+  transform:rotate(-12deg);
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+}
+#retry-alert-zone {
+  display:none;
+  padding:12px;
+  background:#fff0ef;
+  border:2px solid var(--danger-color);
+  border-radius:14px;
+  font-weight:900;
+}
+.small-note { font-size:14px; color:#666; }
+</style>
+</head>
+<body>
+<div class="container">
+  <section class="hero">
+    <h1>🎧 新莊文化與生活聲音景點挑戰</h1>
+    <p>聽聲音，猜景點，完成挑戰後填寫回饋表單。</p>
+  </section>
+
+  <section class="card status-bar">
+    <div class="pill" id="current-mode-text">請先選擇挑戰模式</div>
+    <div class="pill" id="score-text">已填寫進度：0 / 0 題</div>
+  </section>
+
+  <section class="card">
+    <h2>答題區</h2>
+    <p class="small-note">音檔需與本 HTML 放在同一個資料夾，或把 audio 欄位改成正確網址。</p>
+    <div id="audio-list"></div>
+    <button id="submit-game-btn" class="primary-btn" onclick="submitGame()" style="display:none;">送出答案，查看結果</button>
+  </section>
+
+  <section id="survey-section-card" class="card" style="display:none;">
+    <h2>活動回饋表單</h2>
+    <p>請完成所有星號必填題後提交。</p>
+    <div id="survey-form">
+      <div class="question-group"><b>1. 你覺得活動有趣嗎？*</b><label><input type="radio" name="q1" value="非常有趣" onchange="validateSurvey()"> 非常有趣</label><label><input type="radio" name="q1" value="普通" onchange="validateSurvey()"> 普通</label><label><input type="radio" name="q1" value="不太有趣" onchange="validateSurvey()"> 不太有趣</label></div>
+      <div class="question-group"><b>2. 題目難度如何？*</b><label><input type="radio" name="q2" value="剛剛好" onchange="validateSurvey()"> 剛剛好</label><label><input type="radio" name="q2" value="太難" onchange="validateSurvey()"> 太難</label><label><input type="radio" name="q2" value="太簡單" onchange="validateSurvey()"> 太簡單</label></div>
+      <div class="question-group"><b>3. 音檔是否清楚？*</b><label><input type="radio" name="q3" value="清楚" onchange="validateSurvey()"> 清楚</label><label><input type="radio" name="q3" value="普通" onchange="validateSurvey()"> 普通</label><label><input type="radio" name="q3" value="不清楚" onchange="validateSurvey()"> 不清楚</label></div>
+      <div class="question-group"><b>4. 是否更認識新莊？*</b><label><input type="radio" name="q4" value="是" onchange="validateSurvey()"> 是</label><label><input type="radio" name="q4" value="還好" onchange="validateSurvey()"> 還好</label><label><input type="radio" name="q4" value="否" onchange="validateSurvey()"> 否</label></div>
+      <div class="question-group"><b>5. 是否願意推薦朋友參加？*</b><label><input type="radio" name="q5" value="願意" onchange="validateSurvey()"> 願意</label><label><input type="radio" name="q5" value="不確定" onchange="validateSurvey()"> 不確定</label><label><input type="radio" name="q5" value="不願意" onchange="validateSurvey()"> 不願意</label></div>
+      <div class="question-group"><b>6. 活動流程是否順暢？*</b><label><input type="radio" name="q6" value="順暢" onchange="validateSurvey()"> 順暢</label><label><input type="radio" name="q6" value="普通" onchange="validateSurvey()"> 普通</label><label><input type="radio" name="q6" value="不順" onchange="validateSurvey()"> 不順</label></div>
+      <div class="question-group"><b>7. 解析內容是否有幫助？*</b><label><input type="radio" name="q7" value="有幫助" onchange="validateSurvey()"> 有幫助</label><label><input type="radio" name="q7" value="普通" onchange="validateSurvey()"> 普通</label><label><input type="radio" name="q7" value="沒幫助" onchange="validateSurvey()"> 沒幫助</label></div>
+      <div class="question-group"><b>8. 你最喜歡哪種題型？*</b><label><input type="radio" name="q8" value="文化景點" onchange="validateSurvey()"> 文化景點</label><label><input type="radio" name="q8" value="生活聲音" onchange="validateSurvey()"> 生活聲音</label><label><input type="radio" name="q8" value="交通城市" onchange="validateSurvey()"> 交通城市</label></div>
+      <div class="question-group"><b>9. 整體滿意度？*</b><label><input type="radio" name="q9" value="5星" onchange="validateSurvey()"> 5星</label><label><input type="radio" name="q9" value="4星" onchange="validateSurvey()"> 4星</label><label><input type="radio" name="q9" value="3星以下" onchange="validateSurvey()"> 3星以下</label></div>
+      <div class="question-group"><b>10. 想補充的建議</b><textarea id="survey-q10" placeholder="可自由填寫"></textarea></div>
+      <div class="question-group"><b>11. 最有印象的景點或聲音</b><textarea id="survey-q11" placeholder="可自由填寫"></textarea></div>
+    </div>
+    <button id="submit-survey-btn" class="primary-btn" onclick="saveSurveyData()" disabled>🔒 請完成上述所有的星號必填題</button>
+  </section>
+
+  <section id="final-staff-panel" class="card">
+    <h2>工作人員核銷明細單</h2>
+    <div id="retry-alert-zone">❌ 未達兌獎標準，無法核銷獎品。</div>
+    <div class="v-row"><div class="v-label">挑戰模式</div><div id="summary-mode"></div></div>
+    <div class="v-row"><div class="v-label">答對題數</div><div id="summary-score"></div></div>
+    <div class="v-row"><div class="v-label">獎品</div><div id="summary-prize" class="v-value"></div></div>
+    <div id="verification-stamp">已核銷</div>
+    <button id="stamp-execute-btn" class="danger-btn" onclick="applyVerificationStamp()">工作人員確認蓋章核銷</button>
+  </section>
+</div>
+
+<div id="modeModal" class="modal">
+  <div class="modal-content">
+    <h2>請選擇挑戰模式</h2>
+    <div class="mode-grid">
+      <div class="mode-card">
+        <h3>體驗版</h3>
+        <p>從 11 個景點隨機抽 3 題，3 題全對可獲得小包餅乾。</p>
+        <button onclick="selectMode(3)">開始體驗版</button>
+      </div>
+      <div class="mode-card">
+        <h3>達人挑戰版</h3>
+        <p>11 個景點隨機抽 8 題，8 題全對才可啟動扭蛋抽獎。</p>
+        <button class="primary-btn" onclick="selectMode(8)">開始達人挑戰</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="winModal" class="modal" style="display:none;">
+  <div class="modal-content">
+    <h2 id="win-status-title">挑戰結果</h2>
+    <h1 id="win-score-big">0 / 0</h1>
+    <div id="gacha-area">
+      <h3>🎁 扭蛋抽獎區</h3>
+      <div id="gacha-ball">🎊</div>
+      <button id="gacha-start-btn" onclick="startDraw()">啟動扭蛋抽獎</button>
+      <div id="gacha-status" style="margin-top:12px;font-weight:900;"></div>
+    </div>
+    <h3>答題解析</h3>
+    <div id="report-zone"></div>
+    <button class="close-btn primary-btn" onclick="openSurveyZone()">看完解析，前往填寫活動回饋表單</button>
+  </div>
+</div>
+
 <script>
-// 修正後的 11 個新莊文化與生活聲音景點題庫（11隨機抽8題，修正語法錯誤）
+// 修正後的 11 個新莊文化與生活聲音景點題庫（11隨機抽8題）
 const spotsData = [
     { id: 1, name: "地藏庵（官將首）", audio: "新莊大眾廟官將首.mp3", info: "新莊地藏庵（大眾廟）奉祀地藏王菩薩與大眾爺。其創始的「官將首」陣頭與文武大眾爺祭典（新莊大拜拜），是新莊最具代表性的無形文化資產。" },
     { id: 2, name: "新北市鼓藝節", audio: "响仁和.m4a", info: "新莊傳承百年的製鼓工藝享譽國際，每年由新北市鼓藝節發揚光大。那一聲聲厚實沉穩的震撼鼓響，敲出了在地傳統工藝的驕傲。" },
@@ -22,37 +339,60 @@ let prizePool = [
     { name: "立牌", count: 10 }
 ];
 
-let targetScore = 8; let activeSpots = []; let finalCorrectCount = 0; let finalPrizeName = "無獎品"; let hasDrawn = false;
+let targetScore = 0;
+let activeSpots = [];
+let finalCorrectCount = 0;
+let finalPrizeName = "無獎品";
+let hasDrawn = false;
 const audioListDiv = document.getElementById('audio-list');
 
-function selectMode(count) {
-    targetScore = count; document.getElementById('modeModal').style.display = 'none';
-    audioListDiv.innerHTML = ""; // 清空上一次的題目
+function resetGameState() {
+    hasDrawn = false;
+    finalCorrectCount = 0;
+    finalPrizeName = "無獎品";
+    document.getElementById('submit-game-btn').style.display = 'none';
+    document.getElementById('submit-game-btn').disabled = false;
+    document.getElementById('gacha-start-btn').disabled = false;
+    document.getElementById('gacha-status').innerHTML = "";
+    document.getElementById('gacha-area').style.display = 'none';
+    document.getElementById('survey-section-card').style.display = 'none';
+    document.getElementById('final-staff-panel').style.display = 'none';
+    document.getElementById('verification-stamp').style.display = 'none';
+    const nextBtn = document.querySelector('.close-btn');
+    nextBtn.disabled = false;
+    nextBtn.innerText = "看完解析，前往填寫活動回饋表單";
+    nextBtn.style.opacity = "1";
+}
 
-    // 將總共 11 個景點進行隨機洗牌打散
+function selectMode(count) {
+    resetGameState();
+    targetScore = count;
+    document.getElementById('modeModal').style.display = 'none';
+    audioListDiv.innerHTML = "";
+
     const shuffled = [...spotsData].sort(() => Math.random() - 0.5);
 
     if(count === 3) {
         document.getElementById('current-mode-text').innerText = "機制：體驗版 (隨機3題)";
-        document.getElementById('score-text').innerText = "已填寫進度：0 / 3 題"; finalPrizeName = "小包餅乾";
-        // 體驗版：從 11 個中盲抽前 3 個景點
+        document.getElementById('score-text').innerText = "已填寫進度：0 / 3 題";
+        finalPrizeName = "小包餅乾";
         activeSpots = shuffled.slice(0, 3);
     } else {
         document.getElementById('current-mode-text').innerText = "機制：達人挑戰版 (11隨機抽8題)";
-        document.getElementById('score-text').innerText = "已填寫進度：0 / 8 題"; finalPrizeName = "無獎品"; 
-        // 達人挑戰版：實作 11 取 8 隨機出題
+        document.getElementById('score-text').innerText = "已填寫進度：0 / 8 題";
+        finalPrizeName = "無獎品";
         activeSpots = shuffled.slice(0, 8);
     }
-    
-    // 再次確保出題順序被打散
     const displayOrder = [...activeSpots].sort(() => Math.random() - 0.5);
     renderGame(displayOrder);
 }
 
 function renderGame(displayOrder) {
     displayOrder.forEach((spot, index) => {
-        const questionName = `🎵 第 ${index + 1} 題`; spot.displayQuestionName = questionName; 
-        const qaBlock = document.createElement('div'); qaBlock.className = 'qa-block';
+        const questionName = `🎵 第 ${index + 1} 題`;
+        spot.displayQuestionName = questionName;
+        const qaBlock = document.createElement('div');
+        qaBlock.className = 'qa-block';
         qaBlock.innerHTML = `
             <span>${questionName}</span><audio controls src="${spot.audio}"></audio>
             <span style="margin-top:4px;">正確地點是？</span>
@@ -67,29 +407,32 @@ function renderGame(displayOrder) {
 
 function updateProgress() {
     const allSelects = document.querySelectorAll('.qa-block select');
-    let filledCount = 0; allSelects.forEach(select => { if(select.value !== "") filledCount++; });
+    let filledCount = 0;
+    allSelects.forEach(select => { if(select.value !== "") filledCount++; });
     document.getElementById('score-text').innerText = `已填寫進度：${filledCount} / ${targetScore} 題`;
-    if(filledCount === targetScore) document.getElementById('submit-game-btn').style.display = 'block';
+    document.getElementById('submit-game-btn').style.display = filledCount === targetScore ? 'block' : 'none';
 }
 
 function submitGame() {
-    finalCorrectCount = 0; let reportHtml = "";
+    finalCorrectCount = 0;
+    let reportHtml = "";
     activeSpots.forEach((spot) => {
         const selectElem = document.getElementById(`select-${spot.id}`);
-        const userChoose = parseInt(selectElem.value); selectElem.disabled = true; 
+        const userChoose = parseInt(selectElem.value, 10);
+        selectElem.disabled = true;
         if (userChoose === spot.id) {
-            finalCorrectCount++; selectElem.className = 'correct';
+            finalCorrectCount++;
+            selectElem.className = 'correct';
             reportHtml += `<div class="report-item"><div class="report-item-header"><span>${spot.displayQuestionName}</span><span class="badge-success">🟢 答對</span></div><div>正確解答：<b>${spot.name}</b></div><div class="analysis-box">📖 ${spot.info}</div></div>`;
         } else {
             selectElem.className = 'wrong';
             const wrongName = spotsData.find(s => s.id === userChoose)?.name || "未選擇";
-            reportHtml += `<div class="report-item"><div class="report-item-header"><span>${spot.displayQuestionName}</span><span class="badge-danger">🔴 答錯</span></div><div>您選了：<span style="color:var(--danger-color);">${wrongName}</span> (正確答案：<b>${spot.name}</b>)</div><div class="analysis-box">📖 ${spot.info}</div></div>`;
+            reportHtml += `<div class="report-item"><div class="report-item-header"><span>${spot.displayQuestionName}</span><span class="badge-danger">🔴 答錯</span></div><div>您選了：<span style="color:var(--danger-color);">${wrongName}</span>（正確答案：<b>${spot.name}</b>）</div><div class="analysis-box">📖 ${spot.info}</div></div>`;
         }
     });
 
     document.getElementById('win-score-big').innerText = `${finalCorrectCount} / ${targetScore}`;
     document.getElementById('report-zone').innerHTML = reportHtml;
-
     const nextBtn = document.querySelector('.close-btn');
 
     if ((targetScore === 8 && finalCorrectCount === 8) || (targetScore === 3 && finalCorrectCount === 3)) {
@@ -101,7 +444,7 @@ function submitGame() {
             nextBtn.style.opacity = "0.5";
         } else {
             document.getElementById('win-status-title').innerText = "🎉 完美完成挑戰！";
-            document.getElementById('gacha-area').style.display = 'none'; 
+            document.getElementById('gacha-area').style.display = 'none';
             finalPrizeName = "小包餅乾";
             nextBtn.disabled = false;
             nextBtn.innerText = "看完解析，前往填寫活動回饋表單";
@@ -109,7 +452,7 @@ function submitGame() {
         }
     } else {
         document.getElementById('win-status-title').innerText = "💪 再接再厲！";
-        document.getElementById('gacha-area').style.display = 'none'; 
+        document.getElementById('gacha-area').style.display = 'none';
         finalPrizeName = "無獎品";
         nextBtn.disabled = false;
         nextBtn.innerText = "看完解析，前往填寫活動回饋表單";
@@ -119,25 +462,33 @@ function submitGame() {
 }
 
 function startDraw() {
-    if (hasDrawn) return; hasDrawn = true;
+    if (hasDrawn) return;
+    hasDrawn = true;
     document.getElementById('gacha-start-btn').disabled = true;
-    const ball = document.getElementById('gacha-ball'); ball.classList.add('shake');
+    const ball = document.getElementById('gacha-ball');
+    ball.classList.add('shake');
 
     setTimeout(() => {
         ball.classList.remove('shake');
         let availablePrizes = prizePool.filter(p => p.count > 0);
-        if (availablePrizes.length === 0) { finalPrizeName = "獎品已全數抽完"; } else {
+        if (availablePrizes.length === 0) {
+            finalPrizeName = "獎品已全數抽完";
+        } else {
             let totalAvailable = availablePrizes.reduce((sum, item) => sum + item.count, 0);
             let randomWeight = Math.floor(Math.random() * totalAvailable);
-            let currentSum = 0; let selectedPrize = availablePrizes[availablePrizes.length - 1];
+            let currentSum = 0;
+            let selectedPrize = availablePrizes[availablePrizes.length - 1];
             for (let i = 0; i < availablePrizes.length; i++) {
                 currentSum += availablePrizes[i].count;
-                if (randomWeight < currentSum) { selectedPrize = availablePrizes[i]; break; }
+                if (randomWeight < currentSum) {
+                    selectedPrize = availablePrizes[i];
+                    break;
+                }
             }
-            selectedPrize.count--; finalPrizeName = selectedPrize.name;
+            selectedPrize.count--;
+            finalPrizeName = selectedPrize.name;
         }
         document.getElementById('gacha-status').innerHTML = `🎉 抽中項目：<b>${finalPrizeName}</b>`;
-        
         const nextBtn = document.querySelector('.close-btn');
         nextBtn.disabled = false;
         nextBtn.innerText = "解鎖成功！前往填寫活動回饋表單 ➡️";
@@ -152,27 +503,22 @@ function openSurveyZone() {
 }
 
 function validateSurvey() {
-    const q1 = document.querySelector('input[name="q1"]:checked');
-    const q2 = document.querySelector('input[name="q2"]:checked');
-    const q3 = document.querySelector('input[name="q3"]:checked');
-    const q4 = document.querySelector('input[name="q4"]:checked');
-    const q5 = document.querySelector('input[name="q5"]:checked');
-    const q6 = document.querySelector('input[name="q6"]:checked');
-    const q7 = document.querySelector('input[name="q7"]:checked');
-    const q8 = document.querySelector('input[name="q8"]:checked');
-    const q9 = document.querySelector('input[name="q9"]:checked');
-    
+    const requiredNames = ['q1','q2','q3','q4','q5','q6','q7','q8','q9'];
+    const isComplete = requiredNames.every(name => document.querySelector(`input[name="${name}"]:checked`));
     const btn = document.getElementById('submit-survey-btn');
-    if(q1 && q2 && q3 && q4 && q5 && q6 && q7 && q8 && q9) {
-        btn.disabled = false; btn.innerText = "🚀 提交填寫，開啟核銷明細單"; btn.style.background = "var(--primary-color)";
+    if(isComplete) {
+        btn.disabled = false;
+        btn.innerText = "🚀 提交填寫，開啟核銷明細單";
+        btn.style.background = "var(--primary-color)";
     } else {
-        btn.disabled = true; btn.innerText = "🔒 請完成上述所有的星號必填題"; btn.style.background = "#777";
+        btn.disabled = true;
+        btn.innerText = "🔒 請完成上述所有的星號必填題";
+        btn.style.background = "#777";
     }
 }
 
 function saveSurveyData() {
     const cleanComment = (id) => document.getElementById(id).value.replace(/,/g, '，').replace(/\n/g, ' ');
-
     const surveyRecord = {
         timestamp: new Date().toLocaleString(),
         mode: targetScore === 3 ? '體驗版' : '達人版',
@@ -182,9 +528,7 @@ function saveSurveyData() {
         q2: document.querySelector('input[name="q2"]:checked').value,
         q3: document.querySelector('input[name="q3"]:checked').value,
         q4: document.querySelector('input[name="q4"]:checked').value,
-        get q5() {
-            return document.querySelector('input[name="q5"]:checked').value;
-        },
+        q5: document.querySelector('input[name="q5"]:checked').value,
         q6: document.querySelector('input[name="q6"]:checked').value,
         q7: document.querySelector('input[name="q7"]:checked').value,
         q8: document.querySelector('input[name="q8"]:checked').value,
@@ -192,10 +536,9 @@ function saveSurveyData() {
         q10: cleanComment('survey-q10'),
         q11: cleanComment('survey-q11')
     };
-
     let currentData = JSON.parse(localStorage.getItem('xinzhuang_survey_reports')) || [];
-    currentData.push(surveyRecord); localStorage.setItem('xinzhuang_survey_reports', JSON.stringify(currentData));
-
+    currentData.push(surveyRecord);
+    localStorage.setItem('xinzhuang_survey_reports', JSON.stringify(currentData));
     document.getElementById('survey-section-card').style.display = 'none';
     goToVerification();
 }
@@ -208,25 +551,37 @@ function goToVerification() {
 
     document.getElementById('summary-mode').innerText = targetScore === 3 ? '體驗版 (精選 3 個景點)' : '達人挑戰版 (11隨機抽8題)';
     document.getElementById('summary-score').innerText = `${finalCorrectCount} / ${targetScore} 題`;
-    
     const isQualified = (targetScore === 3 && finalCorrectCount === 3) || (targetScore === 8 && finalCorrectCount === 8);
 
     if (isQualified) {
-        panel.classList.remove('disabled-panel'); alertBox.style.display = 'none'; stampBtn.style.display = 'block';
-        prizeCell.innerText = finalPrizeName; prizeCell.className = "v-value prize-highlight";
+        panel.classList.remove('disabled-panel');
+        alertBox.style.display = 'none';
+        stampBtn.style.display = 'block';
+        stampBtn.disabled = false;
+        stampBtn.innerText = "工作人員確認蓋章核銷";
+        stampBtn.style.background = "var(--danger-color)";
+        prizeCell.innerText = finalPrizeName;
+        prizeCell.className = "v-value prize-highlight";
     } else {
-        panel.classList.add('disabled-panel'); alertBox.style.display = 'block'; stampBtn.style.display = 'none';
-        prizeCell.innerText = "❌ 未達兌獎標準"; prizeCell.className = "v-value prize-highlight no-prize";
+        panel.classList.add('disabled-panel');
+        alertBox.style.display = 'block';
+        stampBtn.style.display = 'none';
+        prizeCell.innerText = "❌ 未達兌獎標準";
+        prizeCell.className = "v-value prize-highlight no-prize";
     }
 
-    panel.style.display = 'block'; panel.scrollIntoView({ behavior: 'smooth' });
+    panel.style.display = 'block';
+    panel.scrollIntoView({ behavior: 'smooth' });
 }
 
 function applyVerificationStamp() {
-    const stamp = document.getElementById('verification-stamp'); stamp.style.display = 'block';
+    const stamp = document.getElementById('verification-stamp');
+    stamp.style.display = 'flex';
     document.getElementById('stamp-execute-btn').disabled = true;
     document.getElementById('stamp-execute-btn').innerText = "🔒 本單張已成功蓋章銷帳";
     document.getElementById('stamp-execute-btn').style.background = "#777";
     document.getElementById('submit-game-btn').disabled = true;
 }
 </script>
+</body>
+</html>
