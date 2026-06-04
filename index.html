@@ -136,7 +136,7 @@
         <h3 style="color: var(--primary-color); margin-bottom: 10px; font-size: 1.4rem;">📜 請選擇遊玩模式</h3>
         <p style="font-size: 15px; color: #555; margin-bottom: 15px; line-height: 1.4;">歡迎來到新莊聲音地圖！請選擇您今天想挑戰的任務：</p>
         <button class="mode-btn light" onclick="selectMode(3)">體驗版：精選 3 個景點<br><span style="font-size:14px; font-weight:normal; opacity:0.9;">🎁 全對送：小包餅乾</span></button>
-        <button class="mode-btn" onclick="selectMode(8)">達人版：挑戰 8 個景點<br><span style="font-size:14px; font-weight:normal; opacity:0.9;">🎁 8題全對解鎖大扭蛋抽獎</span></button>
+        <button class="mode-btn" onclick="selectMode(8)">達人版：挑戰 8 個景點<br><span style="font-size:14px; font-weight:normal; opacity:0.9;">🎁 答對4-7題送氣泡水｜8題全對抽大扭蛋</span></button>
     </div>
 </div>
 
@@ -145,7 +145,7 @@
     <h1>新莊聲音地圖大挑戰</h1>
     <div class="instructions-board">
         <div class="board-title">📋 現行關卡機制與進度說明</div>
-        <p style="font-size:15px; color:#444; line-height:1.6;">請先透過下方 <b>Google 互動地圖</b> 縮放觀察新莊區域。聽完聲音後直接在正下方的選單完成答案配對，達人挑戰版與體驗版均需<b>完美全對</b>，並填寫完活動回饋表單後即可開啟現場領獎核銷！</p>
+        <p style="font-size:15px; color:#444; line-height:1.6;">請先透過下方 <b>Google 互動地圖</b> 縮放觀察新莊區域。聽完聲音後直接在正下方的選單完成答案配對。體驗版需<b>完美全對</b>；達人挑戰版答對 <b>4-7 題</b>可獲氣泡水，<b>8 題全對</b>可解鎖大扭蛋！填寫完活動回饋表單後即可開啟現場領獎核銷！</p>
         <div class="board-badge-row">
             <div class="board-badge" id="current-mode-text">機制：讀取中...</div>
             <div class="board-badge active" id="score-text">已填寫進度：0 題</div>
@@ -264,8 +264,8 @@
             <div class="option-item"><input type="radio" name="q7" value="5分 非常滿意" onchange="validateSurvey()"><span class="option-tile">5分 非常滿意</span></div>
             <div class="option-item"><input type="radio" name="q7" value="4分 滿意" onchange="validateSurvey()"><span class="option-tile">4分 滿意</span></div>
             <div class="option-item"><input type="radio" name="q7" value="3分 普通" onchange="validateSurvey()"><span class="option-tile">3分 普通</span></div>
-            <div class="option-item"><input type="radio" name="q7" value="2分 不滿意" onchange="validateSurvey()"><span class="option-tile">2分 不滿意</span></div>
-            <div class="option-item"><input type="radio" name="q7" value="1分 非常不滿意" onchange="validateSurvey()"><span class="option-tile">1分 非常不滿意</span></div>
+            <div class="option-item"><input type="radio" name="q7" value="2分 不慢意" onchange="validateSurvey()"><span class="option-tile">2分 不滿意</span></div>
+            <div class="option-item"><input type="radio" name="q7" value="1分 非常不慢意" onchange="validateSurvey()"><span class="option-tile">1分 非常不滿意</span></div>
         </div>
     </div>
 
@@ -275,7 +275,7 @@
             <div class="option-item"><input type="radio" name="q8" value="5分 非常滿意" onchange="validateSurvey()"><span class="option-tile">5分 非常滿意</span></div>
             <div class="option-item"><input type="radio" name="q8" value="4分 滿意" onchange="validateSurvey()"><span class="option-tile">4分 滿意</span></div>
             <div class="option-item"><input type="radio" name="q8" value="3分 普通" onchange="validateSurvey()"><span class="option-tile">3分 普通</span></div>
-            <div class="option-item"><input type="radio" name="q8" value="2分 不慢意" onchange="validateSurvey()"><span class="option-tile">2分 不滿意</span></div>
+            <div class="option-item"><input type="radio" name="q8" value="2分 不滿意" onchange="validateSurvey()"><span class="option-tile">2分 不慢意</span></div>
             <div class="option-item"><input type="radio" name="q8" value="1分 非常不滿意" onchange="validateSurvey()"><span class="option-tile">1分 非常不滿意</span></div>
         </div>
     </div>
@@ -286,8 +286,8 @@
             <div class="option-item"><input type="radio" name="q9" value="5分 非常滿意" onchange="validateSurvey()"><span class="option-tile">5分 非常滿意</span></div>
             <div class="option-item"><input type="radio" name="q9" value="4分 滿意" onchange="validateSurvey()"><span class="option-tile">4分 滿意</span></div>
             <div class="option-item"><input type="radio" name="q9" value="3分 普通" onchange="validateSurvey()"><span class="option-tile">3分 普通</span></div>
-            <div class="option-item"><input type="radio" name="q9" value="2分 不滿意" onchange="validateSurvey()"><span class="option-tile">2分 不滿意</span></div>
-            <div class="option-item"><input type="radio" name="q9" value="1分 非常不滿意" onchange="validateSurvey()"><span class="option-tile">1分 非常不慢意</span></div>
+            <div class="option-item"><input type="radio" name="q9" value="2分 不慢意" onchange="validateSurvey()"><span class="option-tile">2分 不滿意</span></div>
+            <div class="option-item"><input type="radio" name="q9" value="1分 非常不滿意" onchange="validateSurvey()"><span class="option-tile">1分 非常不滿意</span></div>
         </div>
     </div>
 
@@ -349,16 +349,17 @@ const spotsData = [
     { id: 9, name: "廣福宮", audio: "廣福宮介紹二版.mp3", info: "廣福宮（舊稱三山國王廟）建於清乾隆年間，是新莊唯一的國定古蹟。建築樸實、不崇尚雕飾，完整保留早期客家移民在北台灣開墾的歷史見證。" },
     { id: 10, name: "新北鼓藝節｜响仁和", audio: "响仁和.m4a", info: "响仁和鐘鼓廠由王阿塗師傅創立，其工藝技術名聞遐邇。新莊每年以此為基底舉辦新北鼓藝節，現場沉穩磅礴的製鼓與擊鼓聲，彰顯了傳統職人一甲子的堅持。" },
     { id: 11, name: "新莊戲曲巷", audio: "花博-新西園布袋戲 .mp3", info: "新莊廟街359巷曾被譽為「戲曲巷」，早期知名布袋戲團如「小西園」、「亦宛然」皆在此落腳或交流，悠揚的北管與偶戲對白音調，交織出北台灣布袋戲重鎮的輝煌記憶。" },
-    { id: 12, name: "日日用打鐵店", audio: "新莊日日用打鐵店.mp3", info: "日日用打鐵店是新莊碩果僅存的百年打鐵舖，歷經新莊港口開墾對農具、鐵器的大量需求。至今店內依然傳出規律、高亢的鏗鏘鑄鐵鍛造聲，是活生生的文化工藝地標。" }
+    { id: 12, name: "日日用打鐵店", audio: "新莊日日用打鐵店.mp3", info: "日日用打鐵店是新莊碩果經存的百年打鐵舖，歷經新莊港口開墾對農具、鐵器的大量需求。至今店內依然傳出規律、高亢的鏗鏘鑄鐵鍛造聲，是活生生的文化工藝地標。" }
 ];
 
+// 已補上原始漏掉的逗號
 let prizePool = [
     { name: "咖啡渣手工皂", count: 14 },
-    { name: "牡蠣殼再生擴香識", count: 32 },
+    { name: "牡蠣殼再生擴香石", count: 32 },
     { name: "玻璃杯墊", count: 23 },
     { name: "旅行組", count: 8 },
     { name: "鼓藝節造型悠遊卡", count: 10 },
-    { name: "立牌", count: 15 }
+    { name: "立牌", count: 15 },
     { name: "氣泡水", count: 120 }
 ];
 
@@ -426,16 +427,10 @@ function submitGame() {
     document.getElementById('report-zone').innerHTML = reportHtml;
 
     const modalActionBtn = document.getElementById('modal-action-btn');
-    const isQualified = (targetScore === 3 && finalCorrectCount === 3) || (targetScore === 8 && finalCorrectCount === 8);
 
-    if (isQualified) {
-        if(targetScore === 8) {
-            document.getElementById('win-status-title').innerText = "🎉 完美全對！達到獲獎標準！";
-            document.getElementById('gacha-area').style.display = 'block';
-            modalActionBtn.innerText = "🔒 請先完成上方開啟扭蛋抽獎";
-            modalActionBtn.disabled = true;
-            modalActionBtn.style.background = "#777";
-        } else {
+    // 判斷是否符合過關或發氣泡水標準
+    if (targetScore === 3) {
+        if (finalCorrectCount === 3) {
             document.getElementById('win-status-title').innerText = "🎉 完美完成挑戰！";
             document.getElementById('gacha-area').style.display = 'none'; 
             finalPrizeName = "小包餅乾";
@@ -443,17 +438,42 @@ function submitGame() {
             modalActionBtn.disabled = false;
             modalActionBtn.style.background = "var(--secondary-color)";
             modalActionBtn.onclick = openSurveyZone;
+        } else {
+            setChallengeFailed(modalActionBtn);
         }
-    } else {
-        document.getElementById('win-status-title').innerText = "💪 再接再厲！";
-        document.getElementById('gacha-area').style.display = 'none'; 
-        finalPrizeName = "無獎品";
-        modalActionBtn.innerText = "❌ 挑戰失敗，點擊此處重新挑戰";
-        modalActionBtn.disabled = false;
-        modalActionBtn.style.background = "var(--danger-color)";
-        modalActionBtn.onclick = function() { location.reload(); };
+    } else if (targetScore === 8) {
+        if (finalCorrectCount === 8) {
+            // 8題全對：開啟扭蛋抽獎，且排除氣泡水
+            document.getElementById('win-status-title').innerText = "🎉 完美全對！達到大獎獲獎標準！";
+            document.getElementById('gacha-area').style.display = 'block';
+            modalActionBtn.innerText = "🔒 請先完成上方開啟扭蛋抽獎";
+            modalActionBtn.disabled = true;
+            modalActionBtn.style.background = "#777";
+        } else if (finalCorrectCount >= 4 && finalCorrectCount <= 7) {
+            // 答對 4-7 題：不開扭蛋，直接給氣泡水
+            document.getElementById('win-status-title').innerText = "👍 相當不錯！達到氣泡水獲獎標準！";
+            document.getElementById('gacha-area').style.display = 'none';
+            finalPrizeName = "SPARKEAU 思帕可氣泡水一瓶";
+            modalActionBtn.innerText = "看完解析，前往填寫活動回饋表單";
+            modalActionBtn.disabled = false;
+            modalActionBtn.style.background = "var(--secondary-color)";
+            modalActionBtn.onclick = openSurveyZone;
+        } else {
+            // 0-3 題：挑戰失敗
+            setChallengeFailed(modalActionBtn);
+        }
     }
     document.getElementById('winModal').style.display = 'flex';
+}
+
+function setChallengeFailed(btnElement) {
+    document.getElementById('win-status-title').innerText = "💪 再接再厲！";
+    document.getElementById('gacha-area').style.display = 'none'; 
+    finalPrizeName = "無獎品";
+    btnElement.innerText = "❌ 未達門檻，點擊此處重新挑戰";
+    btnElement.disabled = false;
+    btnElement.style.background = "var(--danger-color)";
+    btnElement.onclick = function() { location.reload(); };
 }
 
 function startDraw() {
@@ -463,8 +483,12 @@ function startDraw() {
 
     setTimeout(() => {
         ball.classList.remove('shake');
-        let availablePrizes = prizePool.filter(p => p.count > 0);
-        if (availablePrizes.length === 0) { finalPrizeName = "獎品已全數抽完"; } else {
+        // 達人全對抽獎：過濾掉數量小於0的獎品，且「嚴格排除氣泡水」
+        let availablePrizes = prizePool.filter(p => p.count > 0 && p.name !== "氣泡水");
+        
+        if (availablePrizes.length === 0) { 
+            finalPrizeName = "獎品已全數抽完"; 
+        } else {
             let totalAvailable = availablePrizes.reduce((sum, item) => sum + item.count, 0);
             let randomWeight = Math.floor(Math.random() * totalAvailable);
             let currentSum = 0; let selectedPrize = availablePrizes[availablePrizes.length - 1];
@@ -546,7 +570,8 @@ function goToVerification() {
     document.getElementById('summary-mode').innerText = targetScore === 3 ? '體驗版 (精選 3 個景點)' : '達人挑戰版 (挑戰 8 個景點)';
     document.getElementById('summary-score').innerText = `${finalCorrectCount} / ${targetScore} 題`;
     
-    const isQualified = (targetScore === 3 && finalCorrectCount === 3) || (targetScore === 8 && finalCorrectCount === 8);
+    // 重新評估核銷面板的開放資格（體驗全對、達人全對、或達人4-7題）
+    const isQualified = (targetScore === 3 && finalCorrectCount === 3) || (targetScore === 8 && finalCorrectCount >= 4);
 
     if (isQualified) {
         panel.classList.remove('disabled-panel'); alertBox.style.display = 'none'; stampBtn.style.display = 'block';
