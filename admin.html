@@ -64,7 +64,7 @@
         .section-card h3 { color: #1A202C; font-size: 16px; font-weight: 800; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid #EDF2F7; display: flex; align-items: center; gap: 8px; }
         .section-card h3 i { color: var(--secondary-color); }
         
-        .prize-list-wrapper { display: flex; flex-direction: column; gap: 16px; flex: 1; justify-content: center; }
+        .prize-list-wrapper { display: flex; flex-direction: column; gap: 12px; flex: 1; justify-content: flex-start; max-height: 420px; overflow-y: auto; padding-right: 4px; }
         .prize-row { background: #F8FAFC; padding: 12px 16px; border-radius: 12px; border: 1px solid #E2E8F0; }
         .prize-meta { display: flex; justify-content: space-between; font-size: 13px; font-weight: bold; margin-bottom: 8px; }
         .prize-name { font-size: 14px; color: #1A202C; }
@@ -79,6 +79,7 @@
         .comment-list { max-height: 320px; overflow-y: auto; padding-right: 6px; display: flex; flex-direction: column; gap: 10px; }
         .comment-item { background: #EDF2F7; padding: 14px; border-radius: 16px 16px 16px 4px; font-size: 13.5px; color: #2D3748; line-height: 1.5; border: 1px solid #E2E8F0; position: relative; }
         .comment-item.suggest { background: #FFFAF0; border-color: #FEEBC8; border-radius: 16px 16px 4px 16px; }
+        .comment-item.normal-prize { background: #F0FDF4; border-color: #DCFCE7; }
         .comment-meta-info { display: flex; justify-content: space-between; font-size: 11px; color: #718096; margin-top: 6px; border-top: 1px dashed #CBD5E1; padding-top: 4px; }
         
         .chart-container { position: relative; height: 260px; width: 100%; margin: auto 0; }
@@ -161,7 +162,17 @@
 </div>
 
 <script>
-const initialStock = { "媽祖平安符": 50, "新莊朝盛飄帶": 70, "玻璃杯墊": 23, "旅行組": 8, "立牌": 10 };
+// 🌟 已精準同步前台更新之 7 項完整獎品池初始庫存
+const initialStock = { 
+    "咖啡渣手工皂": 14, 
+    "牡蠣殼再生擴香石": 32, 
+    "玻璃杯墊": 23, 
+    "旅行組": 8, 
+    "鼓藝節造型悠遊卡": 10, 
+    "立牌": 15,
+    "SPARKEAU 思帕可氣泡水一瓶": 120,
+    "泰式小點心": 150  // 預留體驗版過關基礎發放量
+};
 
 function verifyAdminPin() {
     const pin = document.getElementById('pinInput').value;
@@ -190,13 +201,19 @@ function loadDashboardData() {
     }).length;
     document.getElementById('fullScoreCount').innerText = fullScore;
 
+    // 建立目前即時庫存與發放統計資料
     let currentStock = { ...initialStock };
-    let prizeIssuedCount = { "媽祖平安符": 0, "新莊朝盛飄帶": 0, "玻璃杯墊": 0, "旅行組": 0, "立牌": 0 };
+    let prizeIssuedCount = {};
+    Object.keys(initialStock).forEach(k => prizeIssuedCount[k] = 0);
     
     records.forEach(r => {
-        if (currentStock[r.prize] !== undefined) {
-            currentStock[r.prize]--;
-            prizeIssuedCount[r.prize]++;
+        let prizeKey = r.prize;
+        // 精準模糊比對（容錯部分前台回傳的純字串「泰式小點心」或「氣泡水」等）
+        if (prizeKey === "氣泡水") prizeKey = "SPARKEAU 思帕可氣泡水一瓶";
+        
+        if (currentStock[prizeKey] !== undefined) {
+            currentStock[prizeKey]--;
+            prizeIssuedCount[prizeKey]++;
         }
     });
 
@@ -207,8 +224,10 @@ function loadDashboardData() {
         let remain = total - issued < 0 ? 0 : total - issued;
         let percent = Math.floor((remain / total) * 100);
         
-        let isDanger = remain <= 4 ? "stock-danger" : "";
-        let fillStyle = remain <= 4 ? "background-color: var(--danger-color)" : "background-color: #48BB78";
+        // 智能警示低水位門檻（氣泡水與小點心基數大，設為剩餘 15 瓶以下告警；其餘小於 4 個告警）
+        let dangerThreshold = (pName.includes("氣泡水") || pName.includes("點心")) ? 15 : 4;
+        let isDanger = remain <= dangerThreshold ? "stock-danger" : "";
+        let fillStyle = remain <= dangerThreshold ? "background-color: var(--danger-color)" : "background-color: #48BB78";
 
         prizeHtml += `
             <div class="prize-row ${isDanger}">
@@ -224,12 +243,13 @@ function loadDashboardData() {
     });
     document.getElementById('prizeStockZone').innerHTML = prizeHtml;
 
+    // 🌟 修正 bug：使用 parseFloat 搭配正則表達式，完美過濾「5分 非常滿意」或「10分」裡面的文字，確保量化數據計算正確
     let totalFun = 0, totalRecommend = 0, totalGuide = 0, totalPrizeS = 0;
     records.forEach(r => {
-        totalFun += parseInt(r.q6) || 5;
-        totalRecommend += parseInt(r.q5) || 10;
-        totalGuide += parseInt(r.q8) || 5;
-        totalPrizeS += parseInt(r.q9) || 5;
+        totalFun += parseFloat(r.q6?.replace(/[^0-9.]/g, '')) || 5;
+        totalRecommend += parseFloat(r.q5?.replace(/[^0-9.]/g, '')) || 10;
+        totalGuide += parseFloat(r.q8?.replace(/[^0-9.]/g, '')) || 5;
+        totalPrizeS += parseFloat(r.q9?.replace(/[^0-9.]/g, '')) || 5;
     });
     let avgFun = records.length ? (totalFun / records.length).toFixed(1) : 0;
     let avgRec = records.length ? (totalRecommend / records.length).toFixed(1) : 0;
@@ -279,7 +299,8 @@ function loadDashboardData() {
     let q10Html = "", q11Html = "";
     records.forEach(r => {
         if (r.q10 && r.q10.trim() !== "") {
-            q10Html += `<div class="comment-item"><b>💬 民眾回饋：</b>${r.q10}<div class="comment-meta-info"><span>⏱️ ${r.timestamp}</span><span>答對: ${r.score}</span></div></div>`;
+            let itemClass = (r.prize.includes("氣泡水") || r.prize.includes("點心")) ? "" : "normal-prize";
+            q10Html += `<div class="comment-item ${itemClass}"><b>💬 民眾回饋：</b>${r.q10}<div class="comment-meta-info"><span>⏱️ ${r.timestamp}</span><span>獎品: ${r.prize} (答對: ${r.score})</span></div></div>`;
         }
         if (r.q11 && r.q11.trim() !== "") {
             q11Html += `<div class="comment-item suggest"><b>⚠️ 改善建議：</b>${r.q11}<div class="comment-meta-info"><span>⏱️ ${r.timestamp}</span></div></div>`;
